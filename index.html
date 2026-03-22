@@ -266,8 +266,8 @@
     }
 
     .hero-avatar {
-      width: 108px;
-      height: 108px;
+      width: 168px;
+      height: 168px;
       border-radius: 50%;
       overflow: hidden;
       background: #d5d5d5;
@@ -281,15 +281,15 @@
     .hero-word {
       display: block;
       overflow: hidden;
-      line-height: 0.88;
+      line-height: 1.0;
     }
 
     .hw-inner {
       display: block;
-      font-size: clamp(4.5rem, 14.8vw, 16rem);
+      font-size: clamp(2.4rem, 5.5vw, 3.6rem);
       font-weight: 800;
-      letter-spacing: -0.05em;
-      line-height: 0.88;
+      letter-spacing: -0.055em;
+      line-height: 1.0;
       transform: translateY(108%);
       animation: slideWord 1.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
@@ -351,11 +351,13 @@
     .hero-email-link:hover .icon-copy { opacity: 0.9; }
 
     .hero-bio {
-      max-width: 360px;
-      font-size: 0.97rem;
-      line-height: 1.72;
+      max-width: 520px;
+      font-size: 1.15rem;
+      font-weight: 500;
+      line-height: 1.55;
+      letter-spacing: -0.02em;
       text-align: justify;
-      color: var(--grey-dk);
+      color: var(--black);
     }
 
     /* ============================================================
@@ -375,9 +377,9 @@
     }
 
     .sec-title {
-      font-size: clamp(2rem, 5.5vw, 5.5rem);
-      font-weight: 800;
-      letter-spacing: -0.045em;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
       line-height: 1;
     }
 
@@ -495,44 +497,49 @@
     }
 
     .about-statement p {
-      font-size: clamp(1.35rem, 2.8vw, 2.6rem);
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
       font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.22;
+      letter-spacing: -0.03em;
+      line-height: 1.4;
       text-align: justify;
       color: var(--black);
     }
 
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5vw;
-      padding: 1rem 5vw 3rem;
+      grid-template-columns: 2fr 3fr;
+      gap: 4vw;
+      padding: 1.5rem 5vw 3rem;
       align-items: start;
     }
 
     .about-portrait-col {
       display: flex;
-      justify-content: center;
-      padding-top: 0.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding-top: 0.25rem;
     }
 
     .portrait-circle {
-      width: 200px;
-      height: 200px;
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 1;
       border-radius: 50%;
       overflow: hidden;
       background: #d2d2d2;
     }
 
-    .about-text-col { padding-top: 0.5rem; }
+    .about-text-col { padding-top: 0.25rem; }
 
     .about-text-col p {
-      font-size: 0.92rem;
-      line-height: 1.82;
-      color: var(--grey-dk);
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.65;
+      letter-spacing: -0.02em;
+      color: var(--black);
       text-align: justify;
-      margin-bottom: 1.15rem;
+      margin-bottom: 1.4rem;
     }
 
     .about-meta {
@@ -545,18 +552,19 @@
     .meta-row { display: flex; flex-direction: column; gap: 0.22rem; }
 
     .meta-lbl {
-      font-size: 0.63rem;
+      font-size: 0.68rem;
       font-weight: 700;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--grey-md);
     }
 
     .meta-val {
-      font-size: 0.88rem;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--black);
       line-height: 1.45;
+      letter-spacing: -0.015em;
     }
 
     /* ============================================================
@@ -776,18 +784,22 @@
        RESPONSIVE
     ============================================================ */
     @media (max-width: 768px) {
-      .hw-inner { font-size: clamp(3.8rem, 17vw, 5.5rem); }
+      .hw-inner { font-size: clamp(2rem, 10vw, 2.8rem); line-height: 1.05; }
+      .hero-avatar { width: 100px; height: 100px; }
       .hero-bottom-row { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
-      .hero-bio { text-align: left; max-width: 100%; }
+      .hero-bio { text-align: left; max-width: 100%; font-size: 1rem; }
       .work-grid { grid-template-columns: 1fr; }
-      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .about-portrait-col { justify-content: flex-start; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .about-portrait-col { align-items: center; }
+      .portrait-circle { max-width: 200px; }
       .client-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-grid { grid-template-columns: 1fr; }
       .footer-copy, .footer-links { text-align: left; justify-content: flex-start; }
-      .cta-text { font-size: clamp(1.7rem, 7vw, 2.8rem); }
+      .cta-text { font-size: clamp(1.5rem, 6vw, 2.2rem); }
       .mo-nav a { font-size: clamp(3rem, 12vw, 5rem); }
       nav { padding: 1.3rem 4vw; }
+      .about-text-col p { font-size: 1rem; }
+      .sec-title { font-size: clamp(1.3rem, 5vw, 1.8rem); }
     }
 
     @media (max-width: 480px) {
@@ -848,10 +860,10 @@
     <div class="hero-top-row">
       <div class="hero-avatar">
         <!-- Placeholder — replace with <img src="your-photo.jpg" alt="Hristiyan Stratev"> -->
-        <svg viewBox="0 0 108 108" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="54" cy="54" r="54" fill="#d2d2d2"/>
-          <circle cx="54" cy="42" r="17" fill="#b2b2b2"/>
-          <ellipse cx="54" cy="82" rx="27" ry="19" fill="#b2b2b2"/>
+        <svg viewBox="0 0 168 168" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="84" cy="84" r="84" fill="#d2d2d2"/>
+          <circle cx="84" cy="66" r="26" fill="#b2b2b2"/>
+          <ellipse cx="84" cy="126" rx="42" ry="30" fill="#b2b2b2"/>
         </svg>
       </div>
     </div>
@@ -981,10 +993,10 @@
       <div class="about-portrait-col reveal">
         <div class="portrait-circle">
           <!-- Placeholder — replace with <img src="your-photo.jpg" alt=""> -->
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="100" cy="100" r="100" fill="#d2d2d2"/>
-            <circle cx="100" cy="80"  r="32"  fill="#b2b2b2"/>
-            <ellipse cx="100" cy="152" rx="48" ry="36" fill="#b2b2b2"/>
+          <svg viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <circle cx="150" cy="150" r="150" fill="#d2d2d2"/>
+            <circle cx="150" cy="118" r="48"  fill="#b2b2b2"/>
+            <ellipse cx="150" cy="228" rx="72" ry="54" fill="#b2b2b2"/>
           </svg>
         </div>
       </div>
