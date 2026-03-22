@@ -6,36 +6,149 @@
   <title>Hristiyan Stratev — Product Design Lead</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #F5F3EF;
-      --ink: #1A1916;
-      --muted: #8A8580;
-      --accent: #C8A96E;
-      --rule: #D8D4CE;
-      --fs-name: clamp(2.2rem, 5vw, 3.8rem);
-      --fs-xl: clamp(1.6rem, 3vw, 2.4rem);
-      --fs-base: 1rem;
-      --fs-sm: 0.875rem;
-      --fs-xs: 0.78rem;
+      --white:   #ffffff;
+      --black:   #0a0a0a;
+      --gray:    #888888;
+      --border:  rgba(0, 0, 0, 0.1);
     }
 
     html { scroll-behavior: smooth; }
 
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      font-weight: 300;
-      line-height: 1.6;
-      min-height: 100vh;
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      line-height: 1.5;
+      overflow-x: hidden;
     }
 
-    /* ── NAV ── */
+    body.no-scroll { overflow: hidden; }
+
+    /* ─────────────────────────────────────
+       MENU OVERLAY
+    ───────────────────────────────────── */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2rem 5vw 3rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .menu-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    .menu-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .menu-logo {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--white);
+      text-decoration: none;
+    }
+
+    .menu-close-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .menu-close-btn .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--white); }
+
+    .menu-close-btn .grid-icon {
+      display: grid;
+      grid-template-columns: repeat(2, 6px);
+      gap: 3px;
+    }
+
+    .menu-close-btn .grid-icon span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--white);
+      display: block;
+    }
+
+    .menu-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .menu-nav a {
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 800;
+      color: var(--white);
+      text-decoration: none;
+      line-height: 1.0;
+      letter-spacing: -0.04em;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0.3em 0;
+      transition: color 0.2s, padding-left 0.3s ease;
+      display: block;
+    }
+
+    .menu-nav a:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+
+    .menu-nav a:hover {
+      color: var(--gray);
+      padding-left: 1rem;
+    }
+
+    .menu-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .menu-socials {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .menu-socials a {
+      color: #444;
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+
+    .menu-socials a:hover { color: var(--white); }
+
+    .menu-hint {
+      font-size: 0.7rem;
+      color: #333;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────
+       NAV
+    ───────────────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -43,265 +156,247 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.5rem 4vw;
-      background: var(--bg);
-      border-bottom: 1px solid var(--rule);
+      padding: 1.6rem 5vw;
     }
 
     .nav-logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.05rem;
-      font-weight: 400;
-      letter-spacing: 0.01em;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
       text-decoration: none;
-      color: var(--ink);
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 2.5rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--muted);
+      color: var(--black);
       transition: color 0.2s;
     }
 
-    .nav-links a:hover { color: var(--ink); }
-
-    /* ── HERO ── */
-    #hero {
-      padding: 14rem 4vw 6rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .hero-label {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.5rem;
-    }
-
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: var(--fs-name);
-      font-weight: 400;
-      line-height: 1.1;
-      letter-spacing: -0.01em;
-      max-width: 700px;
-    }
-
-    h1 em {
-      font-style: italic;
-      color: var(--muted);
-    }
-
-    .hero-tagline {
-      margin-top: 2rem;
-      max-width: 480px;
-      font-size: 1.05rem;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .hero-divider {
-      margin: 3rem 0;
-      border: none;
-      border-top: 1px solid var(--rule);
-    }
-
-    .hero-meta {
-      display: flex;
-      gap: 3rem;
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .hero-meta span strong {
-      display: block;
-      color: var(--ink);
-      font-weight: 400;
-      font-size: 0.82rem;
-      margin-top: 0.25rem;
-      text-transform: none;
-      letter-spacing: 0;
-    }
-
-    /* ── SECTION TITLES ── */
-    .section-head {
+    .nav-menu-btn {
       display: flex;
       align-items: center;
-      gap: 1.5rem;
-      margin-bottom: 3rem;
+      gap: 0.7rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
     }
 
-    .section-head h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+    .nav-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--black);
+      transition: transform 0.2s;
+    }
+
+    .nav-menu-btn:hover .nav-dot { transform: scale(1.4); }
+
+    .nav-grid-icon {
+      display: grid;
+      grid-template-columns: repeat(2, 6px);
+      gap: 3px;
+    }
+
+    .nav-grid-icon span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--black);
+      display: block;
+      transition: background 0.2s;
+    }
+
+    /* ─────────────────────────────────────
+       HERO
+    ───────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      padding: 7rem 5vw 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-name {
+      font-size: clamp(4.5rem, 13.5vw, 15rem);
+      font-weight: 800;
+      line-height: 0.92;
+      letter-spacing: -0.045em;
+    }
+
+    .hero-name .word {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-name .word-inner {
+      display: block;
+      transform: translateY(105%);
+      animation: slideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero-name .word:nth-child(2) .word-inner { animation-delay: 0.1s; }
+
+    .hero-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      opacity: 0;
+      animation: fadeIn 0.8s ease 0.45s forwards;
+    }
+
+    .hero-email {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--black);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .hero-email:hover { color: var(--gray); }
+
+    .hero-email svg { width: 15px; height: 15px; opacity: 0.45; }
+
+    .hero-tagline {
+      max-width: 360px;
+      font-size: 1rem;
+      line-height: 1.65;
+      text-align: right;
+      color: #333;
+    }
+
+    /* ─────────────────────────────────────
+       SECTION BAR
+    ───────────────────────────────────── */
+    .section-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 5vw;
+      border-top: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+
+    .view-all {
+      font-size: 0.82rem;
+      color: var(--black);
+      text-decoration: none;
+      background: #f0f0f0;
+      padding: 0.38rem 1rem;
+      transition: background 0.2s;
       font-weight: 400;
     }
 
-    .section-head::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--rule);
-    }
+    .view-all:hover { background: #e0e0e0; }
 
-    /* ── WORK GRID ── */
-    #work {
-      padding: 6rem 4vw;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
+    /* ─────────────────────────────────────
+       WORK
+    ───────────────────────────────────── */
     .work-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 2px;
+      background: #ddd;
     }
 
     .work-item {
       position: relative;
       overflow: hidden;
-      background: var(--rule);
       aspect-ratio: 4/3;
       cursor: pointer;
       text-decoration: none;
-    }
-
-    .work-item:first-child {
-      grid-column: 1 / -1;
-      aspect-ratio: 16/7;
+      background: #eee;
+      display: block;
     }
 
     .work-item img {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s;
-      opacity: 0.92;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
-    .work-item:hover img {
-      transform: scale(1.04);
-      opacity: 1;
+    .work-item:hover img { transform: scale(1.04); }
+
+    /* ─────────────────────────────────────
+       ABOUT
+    ───────────────────────────────────── */
+    .about-statement {
+      padding: 4rem 5vw 2.5rem;
+      max-width: 65%;
     }
 
-    .work-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(26,25,22,0.72) 0%, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.35s;
+    .about-statement p {
+      font-size: clamp(1.7rem, 3.2vw, 3rem);
+      font-weight: 700;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      color: var(--black);
     }
 
-    .work-item:hover .work-overlay { opacity: 1; }
-
-    .work-info {
-      position: absolute;
-      bottom: 1.8rem;
-      left: 1.8rem;
-      color: #fff;
-      transform: translateY(6px);
-      transition: transform 0.35s;
-    }
-
-    .work-item:hover .work-info { transform: translateY(0); }
-
-    .work-info .proj-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 400;
-    }
-
-    .work-info .proj-year {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      opacity: 0.7;
-      margin-top: 0.15rem;
-    }
-
-    /* ── ABOUT ── */
-    #about {
-      padding: 6rem 4vw;
-      border-top: 1px solid var(--rule);
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .about-layout {
+    .about-cols {
       display: grid;
-      grid-template-columns: 1fr 2fr;
-      gap: 5rem;
+      grid-template-columns: 1fr 1fr;
+      gap: 5vw;
+      padding: 1.5rem 5vw 5rem;
       align-items: start;
     }
 
-    .about-aside {
-      position: sticky;
-      top: 8rem;
-    }
-
-    .about-aside .label {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1rem;
-    }
-
-    .about-aside h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 400;
-      line-height: 1.25;
-    }
-
-    .about-aside .current-role {
-      margin-top: 1.5rem;
-      font-size: var(--fs-sm);
-      color: var(--muted);
-      border-left: 2px solid var(--accent);
-      padding-left: 1rem;
-      line-height: 1.6;
-    }
-
-    .about-body p {
-      font-size: 1.05rem;
-      color: #3D3B37;
+    .about-text p {
+      font-size: 0.93rem;
       line-height: 1.8;
-      margin-bottom: 1.5rem;
+      color: #3a3a3a;
+      margin-bottom: 1.2rem;
+      text-align: justify;
     }
 
-    .clients-list {
-      margin-top: 2.5rem;
-      padding-top: 2.5rem;
-      border-top: 1px solid var(--rule);
+    .about-meta {
+      position: sticky;
+      top: 6rem;
     }
 
-    .clients-list .label {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.15em;
+    .about-meta-item {
+      margin-bottom: 2rem;
+    }
+
+    .about-meta-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--gray);
+      margin-bottom: 0.5rem;
+    }
+
+    .about-meta-value {
+      font-size: 0.9rem;
+      font-weight: 500;
+      line-height: 1.5;
+      color: var(--black);
+    }
+
+    /* ─────────────────────────────────────
+       CLIENTS
+    ───────────────────────────────────── */
+    .clients-section {
+      padding: 0 5vw 5rem;
+    }
+
+    .clients-label {
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray);
       margin-bottom: 1.5rem;
     }
 
     .client-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--rule);
-      border-left: 1px solid var(--rule);
+      border-top: 1px solid var(--border);
+      border-left: 1px solid var(--border);
     }
 
     .client-item {
@@ -310,206 +405,181 @@
       align-items: center;
       justify-content: center;
       gap: 0.85rem;
-      padding: 1.8rem 1rem;
-      border-right: 1px solid var(--rule);
-      border-bottom: 1px solid var(--rule);
+      padding: 2rem 1rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
       transition: background 0.25s;
     }
 
-    .client-item:hover {
-      background: rgba(26, 25, 22, 0.035);
-    }
+    .client-item:hover { background: rgba(0,0,0,0.03); }
 
     .client-item svg {
       height: 34px;
       width: auto;
       max-width: 100px;
-      color: var(--ink);
-      opacity: 0.28;
+      color: var(--black);
+      opacity: 0.25;
       transition: opacity 0.3s;
       display: block;
       overflow: visible;
     }
 
-    .client-item:hover svg {
-      opacity: 0.82;
-    }
+    .client-item:hover svg { opacity: 0.8; }
 
     .client-name {
-      font-size: 0.58rem;
+      font-size: 0.57rem;
       letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: var(--muted);
+      color: var(--gray);
       text-align: center;
       transition: color 0.25s;
     }
 
-    .client-item:hover .client-name {
-      color: var(--ink);
-    }
+    .client-item:hover .client-name { color: var(--black); }
 
-    /* ── CONTACT ── */
+    /* ─────────────────────────────────────
+       CTA / CONTACT
+    ───────────────────────────────────── */
     #contact {
-      padding: 6rem 4vw;
-      border-top: 1px solid var(--rule);
-      max-width: 1100px;
-      margin: 0 auto;
+      background: var(--black);
+      color: var(--white);
+      padding: 6rem 5vw 0;
     }
 
-    .contact-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 5rem;
-      align-items: start;
+    .cta-heading {
+      font-size: clamp(2rem, 4.2vw, 4.2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      margin-bottom: 3.5rem;
     }
 
-    .contact-intro h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.6rem, 3vw, 2.4rem);
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 1.5rem;
-    }
+    .cta-heading .dim { color: #444; }
 
-    .contact-intro p {
-      color: var(--muted);
-      font-size: 1rem;
-      line-height: 1.7;
-    }
-
-    .contact-form {
+    .cta-actions {
       display: flex;
-      flex-direction: column;
-      gap: 1.25rem;
+      align-items: center;
+      gap: 2rem;
+      margin-bottom: 6rem;
     }
 
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .form-group label {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    .form-group input,
-    .form-group textarea {
-      background: transparent;
+    .btn-cta {
+      background: var(--white);
+      color: var(--black);
       border: none;
-      border-bottom: 1px solid var(--rule);
-      padding: 0.7rem 0;
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--fs-base);
-      font-weight: 300;
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.2s;
-      resize: none;
-    }
-
-    .form-group input:focus,
-    .form-group textarea:focus {
-      border-color: var(--ink);
-    }
-
-    .form-group textarea { min-height: 120px; }
-
-    .btn-submit {
-      align-self: flex-start;
-      margin-top: 0.5rem;
-      background: var(--ink);
-      color: var(--bg);
-      border: none;
-      padding: 0.9rem 2.5rem;
-      font-family: 'DM Sans', sans-serif;
-      font-size: var(--fs-xs);
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
+      padding: 0.85rem 2rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+      transition: background 0.2s;
+      display: inline-block;
     }
 
-    .btn-submit:hover {
-      background: var(--accent);
-      color: var(--ink);
+    .btn-cta:hover { background: #e0e0e0; }
+
+    .available-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.85rem;
+      color: #aaa;
     }
 
-    /* ── FOOTER ── */
+    .available-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+    }
+
+    /* ─────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────── */
     footer {
-      border-top: 1px solid var(--rule);
-      padding: 2rem 4vw;
-      max-width: 1100px;
-      margin: 0 auto;
+      background: var(--black);
+      color: var(--white);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 2rem 5vw;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
 
-    footer .copy {
-      font-size: var(--fs-xs);
-      color: var(--muted);
-      letter-spacing: 0.05em;
-    }
+    footer .copy { font-size: 0.78rem; color: #444; }
 
-    footer .socials {
-      display: flex;
-      gap: 1.5rem;
-    }
+    footer .socials { display: flex; gap: 2rem; }
 
     footer .socials a {
-      font-size: var(--fs-xs);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: 0.78rem;
+      color: #444;
       text-decoration: none;
-      color: var(--muted);
       transition: color 0.2s;
     }
 
-    footer .socials a:hover { color: var(--ink); }
+    footer .socials a:hover { color: var(--white); }
 
-    /* ── ANIMATIONS ── */
-    .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+    /* ─────────────────────────────────────
+       ANIMATIONS
+    ───────────────────────────────────── */
+    @keyframes slideUp {
+      to { transform: translateY(0); }
     }
 
-    .fade-up.visible {
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+
+    .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
 
-    /* stagger delays */
-    .fade-up:nth-child(2) { transition-delay: 0.1s; }
-    .fade-up:nth-child(3) { transition-delay: 0.2s; }
-    .fade-up:nth-child(4) { transition-delay: 0.3s; }
-    .fade-up:nth-child(5) { transition-delay: 0.4s; }
-    .fade-up:nth-child(6) { transition-delay: 0.5s; }
-    .fade-up:nth-child(7) { transition-delay: 0.6s; }
-    .fade-up:nth-child(8) { transition-delay: 0.7s; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
 
-    /* ── RESPONSIVE ── */
+    /* CTA text animate in on scroll */
+    #contact .cta-heading,
+    #contact .cta-actions {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    #contact .cta-actions { transition-delay: 0.15s; }
+
+    #contact.visible .cta-heading,
+    #contact.visible .cta-actions {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────── */
     @media (max-width: 768px) {
+      .hero-name { font-size: clamp(3.5rem, 16vw, 5.5rem); }
+      .hero-bottom { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+      .hero-tagline { text-align: left; max-width: 100%; }
       .work-grid { grid-template-columns: 1fr; }
-      .work-item:first-child { grid-column: auto; aspect-ratio: 4/3; }
-      .about-layout { grid-template-columns: 1fr; gap: 2.5rem; }
-      .about-aside { position: static; }
-      .contact-layout { grid-template-columns: 1fr; gap: 3rem; }
-      .hero-meta { flex-wrap: wrap; gap: 1.5rem; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
+      .about-statement { max-width: 100%; }
+      .about-cols { grid-template-columns: 1fr; gap: 3rem; }
+      .about-meta { position: static; }
       .client-grid { grid-template-columns: repeat(2, 1fr); }
-      .nav-links { gap: 1.5rem; }
-      #hero { padding: 10rem 4vw 4rem; }
-      .about-layout, #contact, footer { padding-left: 5vw; padding-right: 5vw; }
+      .cta-heading { font-size: clamp(1.7rem, 6vw, 2.5rem); }
+      footer { flex-direction: column; gap: 1rem; }
+      .menu-nav a { font-size: clamp(2.5rem, 10vw, 4rem); }
     }
 
     @media (max-width: 480px) {
-      .nav-links { gap: 1rem; }
-      .hero-meta span { min-width: 45%; }
       .client-grid { grid-template-columns: repeat(2, 1fr); }
       .client-item { padding: 1.5rem 0.75rem; }
     }
@@ -517,277 +587,271 @@
 </head>
 <body>
 
-  <!-- NAV -->
+  <!-- ── MENU OVERLAY ── -->
+  <div class="menu-overlay" id="menuOverlay">
+    <div class="menu-top">
+      <a href="#hero" class="menu-logo" onclick="closeMenu()">H.Stratev</a>
+      <button class="menu-close-btn" onclick="closeMenu()" aria-label="Close menu">
+        <span class="dot"></span>
+        <div class="grid-icon">
+          <span></span><span></span>
+          <span></span><span></span>
+        </div>
+      </button>
+    </div>
+    <nav class="menu-nav">
+      <a href="#work"    onclick="closeMenu()">Work</a>
+      <a href="#about"   onclick="closeMenu()">About</a>
+      <a href="#contact" onclick="closeMenu()">Contact</a>
+    </nav>
+    <div class="menu-footer">
+      <div class="menu-socials">
+        <a href="https://www.linkedin.com/in/hristiyan-stratev" target="_blank">LinkedIn</a>
+        <a href="https://hstratev.com" target="_blank">Portfolio</a>
+      </div>
+      <span class="menu-hint">ESC to close</span>
+    </div>
+  </div>
+
+  <!-- ── NAV ── -->
   <nav>
-    <a href="#hero" class="nav-logo">Hristiyan Stratev</a>
-    <ul class="nav-links">
-      <li><a href="#work">Work</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
+    <a href="#hero" class="nav-logo">H.Stratev</a>
+    <button class="nav-menu-btn" onclick="toggleMenu()" aria-label="Open menu">
+      <span class="nav-dot"></span>
+      <div class="nav-grid-icon">
+        <span></span><span></span>
+        <span></span><span></span>
+      </div>
+    </button>
   </nav>
 
-  <!-- HERO -->
+  <!-- ── HERO ── -->
   <section id="hero">
-    <p class="hero-label fade-up">Product Design Lead · Sofia, Bulgaria</p>
-    <h1 class="fade-up">Designing <em>interfaces</em><br>that feel inevitable.</h1>
-    <p class="hero-tagline fade-up">A decade of product design across automotive HMI, IoT, and AI — shaping experiences for GM, Daimler, Maserati, and beyond.</p>
-    <hr class="hero-divider fade-up">
-    <div class="hero-meta fade-up">
-      <span>Currently<strong>Lead Product Designer · Living Homes (Genesis)</strong></span>
-      <span>Previously<strong>Design Manager · Visteon — Sofia</strong></span>
-      <span>Featured at<strong>CES · GITEX · Shanghai Auto</strong></span>
+    <div class="hero-name">
+      <div class="word"><span class="word-inner">Hristiyan</span></div>
+      <div class="word"><span class="word-inner">Stratev</span></div>
+    </div>
+    <div class="hero-bottom">
+      <a href="mailto:hristiyan.stratev@gmail.com" class="hero-email">
+        hristiyan.stratev@gmail.com
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="3" y="5" width="18" height="14" rx="2"/>
+          <path d="M3 7l9 6 9-6"/>
+        </svg>
+      </a>
+      <p class="hero-tagline">A decade of product design across automotive HMI, IoT, and AI — shaping experiences for GM, Daimler, Maserati, and beyond.</p>
     </div>
   </section>
 
-  <!-- WORK -->
+  <!-- ── WORK ── -->
   <section id="work">
-    <div class="section-head fade-up">
-      <h2>Selected Work</h2>
+    <div class="section-bar reveal">
+      <span class="section-label">work.</span>
+      <a href="https://hstratev.com" target="_blank" class="view-all">View All</a>
     </div>
     <div class="work-grid">
-
-      <a class="work-item fade-up" href="https://hstratev.com/copy-of-hummer-ev" target="_blank">
+      <a class="work-item reveal" href="https://hstratev.com/copy-of-hummer-ev" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6d4d7edc-8731-47cf-977e-29c3a86a8e4e_rwc_540x0x2762x2160x32.jpg?h=25e61232151d74156d1cff086da22ac6" alt="CognitoAI" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">CognitoAI</div>
-          <div class="proj-year">2025</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/hummer-ev" target="_blank">
+      <a class="work-item reveal reveal-delay-1" href="https://hstratev.com/hummer-ev" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/d21a274f-b317-44dc-b0e1-c6e264f20ce8_rwc_220x0x2558x2000x32.jpg?h=4f90997731169363fb8a167121c1ec87" alt="Hummer EV" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">Hummer EV</div>
-          <div class="proj-year">2024</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/frontier" target="_blank">
+      <a class="work-item reveal" href="https://hstratev.com/frontier" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e082c5bc-b74c-40fd-a5d1-04cb49f18b61_rwc_498x0x920x720x32.png?h=5abc0bf7bf8cd3f3bcabc1580a006c36" alt="Frontier" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">Frontier</div>
-          <div class="proj-year">2023</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/bms" target="_blank">
+      <a class="work-item reveal reveal-delay-1" href="https://hstratev.com/bms" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/40d033ac-72e7-4a8f-9c75-59e534101725_rwc_308x0x1305x1021x32.png?h=da236c52d384ba8f4c6828acc81ed4e7" alt="Battery Management System" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">Battery Management System</div>
-          <div class="proj-year">CES 2023</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/maserati" target="_blank">
+      <a class="work-item reveal" href="https://hstratev.com/maserati" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/34bec495-eab2-4f7e-8943-d8ffc6af838a_rwc_117x0x1363x1066x32.jpg?h=666414c996636fb2e85b183de311ffb9" alt="Maserati" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">Maserati — Next Gen. Experience</div>
-          <div class="proj-year">2022</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/t1xx" target="_blank">
+      <a class="work-item reveal reveal-delay-1" href="https://hstratev.com/t1xx" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f6b6de61-0225-4d29-9ed2-8e1bedf8aadb_rwc_291x0x744x582x32.jpg?h=f672ced26017caa6b40379117809259c" alt="GMC Chevy Trucks" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">GMC / Chevy Trucks — UI/UX</div>
-          <div class="proj-year">2022</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/dark-horizons" target="_blank">
+      <a class="work-item reveal" href="https://hstratev.com/dark-horizons" target="_blank">
         <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0bb4e8a2-7f1d-4982-b3bb-3ef752a874ae_rwc_363x0x671x525x32.jpg?h=8a6b62f42bebe2ffbefd851dc61c646f" alt="Dark Horizons" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">Dark Horizons</div>
-          <div class="proj-year">2022</div>
-        </div>
       </a>
-
-      <a class="work-item fade-up" href="https://hstratev.com/mercedes-benz-user-experience" target="_blank">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/53b66c5e-46a7-4232-b836-a4bf4872690d_rwc_82x0x1208x945x32.jpeg?h=c00cea7fca270b8a3a3b19cbf40f6c50" alt="Mercedes Benz" loading="lazy">
-        <div class="work-overlay"></div>
-        <div class="work-info">
-          <div class="proj-title">Mercedes-Benz — User Experience</div>
-          <div class="proj-year">2022</div>
-        </div>
+      <a class="work-item reveal reveal-delay-1" href="https://hstratev.com/mercedes-benz-user-experience" target="_blank">
+        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/53b66c5e-46a7-4232-b836-a4bf4872690d_rwc_82x0x1208x945x32.jpeg?h=c00cea7fca270b8a3a3b19cbf40f6c50" alt="Mercedes-Benz" loading="lazy">
       </a>
-
     </div>
   </section>
 
-  <!-- ABOUT -->
+  <!-- ── ABOUT ── -->
   <section id="about">
-    <div class="about-layout">
-      <div class="about-aside fade-up">
-        <div class="label">About</div>
-        <h3>Hristiyan<br>Stratev</h3>
-        <div class="current-role">
-          Lead Product Designer<br>
-          Living Homes (Genesis)<br>
-          Sofia, Bulgaria
-        </div>
-      </div>
-      <div class="about-body fade-up">
+    <div class="section-bar reveal">
+      <span class="section-label">about.</span>
+    </div>
+
+    <div class="about-statement reveal">
+      <p>A decade designing the interfaces that move the world — from automotive HMI to AI-powered living spaces.</p>
+    </div>
+
+    <div class="about-cols">
+      <div class="about-text reveal">
         <p>I am a designer based in Sofia, Bulgaria, with a degree from the University of Sheffield and a career that has taken me across Germany and the United States. I currently lead product design at Living Homes Dubai, where the focus is on IoT, smart living solutions, and AI-powered 3D virtual assistants.</p>
         <p>Previously, I led the design team at Visteon – Sofia as Design Manager, working on advanced HMI, UI/UX, motion graphics, and real-time 2D/3D design for the automotive industry. With over a decade of experience, I've contributed to projects across various sectors and platforms.</p>
         <p>My work has been featured at major events including CES, Gitex Global, and Shanghai Auto.</p>
-        <div class="clients-list">
-          <div class="label">Clients & Collaborators</div>
-          <div class="client-grid">
-
-            <div class="client-item">
-              <!-- General Motors -->
-              <svg viewBox="0 0 58 44" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <rect x="1.5" y="1.5" width="55" height="41" stroke="currentColor" stroke-width="2"/>
-                <text x="29" y="30" text-anchor="middle" font-size="22" font-weight="800" font-family="Arial, Helvetica, sans-serif" fill="currentColor">GM</text>
-              </svg>
-              <span class="client-name">General Motors</span>
-            </div>
-
-            <div class="client-item">
-              <!-- Ford -->
-              <svg viewBox="0 0 110 52" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <ellipse cx="55" cy="26" rx="53" ry="23" stroke="currentColor" stroke-width="2.5"/>
-                <text x="55" y="35" text-anchor="middle" font-size="23" font-style="italic" font-family="Georgia, 'Times New Roman', serif" fill="currentColor">Ford</text>
-              </svg>
-              <span class="client-name">Ford</span>
-            </div>
-
-            <div class="client-item">
-              <!-- Daimler / Mercedes Star -->
-              <svg viewBox="0 0 52 52" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="26" cy="26" r="23.5" stroke="currentColor" stroke-width="2"/>
-                <line x1="26" y1="4" x2="26" y2="26" stroke="currentColor" stroke-width="2.5"/>
-                <line x1="26" y1="26" x2="9" y2="40" stroke="currentColor" stroke-width="2.5"/>
-                <line x1="26" y1="26" x2="43" y2="40" stroke="currentColor" stroke-width="2.5"/>
-                <circle cx="26" cy="26" r="2.5" fill="currentColor"/>
-              </svg>
-              <span class="client-name">Daimler</span>
-            </div>
-
-            <div class="client-item">
-              <!-- Maserati -->
-              <svg viewBox="0 0 48 62" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <!-- Center shaft -->
-                <line x1="24" y1="10" x2="24" y2="58" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- Left tine -->
-                <line x1="9"  y1="12" x2="9"  y2="36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- Right tine -->
-                <line x1="39" y1="12" x2="39" y2="36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                <!-- Connecting base arc -->
-                <path d="M9 36 L24 46 L39 36" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
-                <!-- Tips -->
-                <path d="M6 12 Q6 6 9 5 Q12 6 12 12"  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M36 12 Q36 6 39 5 Q42 6 42 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-                <path d="M21 10 Q21 3 24 2 Q27 3 27 10"  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
-              </svg>
-              <span class="client-name">Maserati</span>
-            </div>
-
-            <div class="client-item">
-              <!-- Living Homes -->
-              <svg viewBox="0 0 52 48" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 25 L26 6 L48 25" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
-                <path d="M11 21 L11 44 L41 44 L41 21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                <rect x="18" y="29" width="16" height="15" rx="1" stroke="currentColor" stroke-width="2"/>
-                <circle cx="41" cy="15" r="3" fill="currentColor" opacity="0.5"/>
-              </svg>
-              <span class="client-name">Living Homes</span>
-            </div>
-
-            <div class="client-item">
-              <!-- Visteon — abstract V chevron -->
-              <svg viewBox="0 0 52 38" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 7 L26 34 L48 7" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
-              </svg>
-              <span class="client-name">Visteon</span>
-            </div>
-
-            <div class="client-item">
-              <!-- TEDx -->
-              <svg viewBox="0 0 84 40" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <text x="2" y="34" font-size="34" font-weight="900" font-family="Arial Black, 'Arial Bold', Gadget, sans-serif" fill="currentColor" letter-spacing="-1">TED</text>
-                <text x="66" y="34" font-size="34" font-weight="900" font-family="Arial Black, 'Arial Bold', Gadget, sans-serif" fill="currentColor">x</text>
-              </svg>
-              <span class="client-name">TEDx</span>
-            </div>
-
-            <div class="client-item">
-              <!-- Cannes Lions -->
-              <svg viewBox="0 0 92 46" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
-                <text x="46" y="18" text-anchor="middle" font-size="10" font-weight="700" font-family="Georgia, serif" fill="currentColor" letter-spacing="4">CANNES</text>
-                <line x1="10" y1="25" x2="82" y2="25" stroke="currentColor" stroke-width="0.8"/>
-                <text x="46" y="40" text-anchor="middle" font-size="10" font-weight="700" font-family="Georgia, serif" fill="currentColor" letter-spacing="5">LIONS</text>
-              </svg>
-              <span class="client-name">Cannes Lions</span>
-            </div>
-
-          </div>
+      </div>
+      <div class="about-meta reveal reveal-delay-1">
+        <div class="about-meta-item">
+          <div class="about-meta-label">Currently</div>
+          <div class="about-meta-value">Lead Product Designer<br>Living Homes (Genesis)<br>Sofia, Bulgaria</div>
         </div>
+        <div class="about-meta-item">
+          <div class="about-meta-label">Previously</div>
+          <div class="about-meta-value">Design Manager<br>Visteon — Sofia</div>
+        </div>
+        <div class="about-meta-item">
+          <div class="about-meta-label">Featured at</div>
+          <div class="about-meta-value">CES · GITEX · Shanghai Auto</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="clients-section reveal">
+      <div class="clients-label">Clients &amp; Collaborators</div>
+      <div class="client-grid">
+
+        <div class="client-item">
+          <svg viewBox="0 0 58 44" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1.5" y="1.5" width="55" height="41" stroke="currentColor" stroke-width="2"/>
+            <text x="29" y="30" text-anchor="middle" font-size="22" font-weight="800" font-family="Inter, Arial, sans-serif" fill="currentColor">GM</text>
+          </svg>
+          <span class="client-name">General Motors</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 110 52" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <ellipse cx="55" cy="26" rx="53" ry="23" stroke="currentColor" stroke-width="2.5"/>
+            <text x="55" y="35" text-anchor="middle" font-size="23" font-style="italic" font-family="Georgia, 'Times New Roman', serif" fill="currentColor">Ford</text>
+          </svg>
+          <span class="client-name">Ford</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 52 52" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="26" cy="26" r="23.5" stroke="currentColor" stroke-width="2"/>
+            <line x1="26" y1="4" x2="26" y2="26" stroke="currentColor" stroke-width="2.5"/>
+            <line x1="26" y1="26" x2="9"  y2="40" stroke="currentColor" stroke-width="2.5"/>
+            <line x1="26" y1="26" x2="43" y2="40" stroke="currentColor" stroke-width="2.5"/>
+            <circle cx="26" cy="26" r="2.5" fill="currentColor"/>
+          </svg>
+          <span class="client-name">Daimler</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 48 62" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <line x1="24" y1="10" x2="24" y2="58" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="9"  y1="12" x2="9"  y2="36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <line x1="39" y1="12" x2="39" y2="36" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M9 36 L24 46 L39 36" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+            <path d="M6 12 Q6 6 9 5 Q12 6 12 12"  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M36 12 Q36 6 39 5 Q42 6 42 12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M21 10 Q21 3 24 2 Q27 3 27 10"  stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+          <span class="client-name">Maserati</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 52 48" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 25 L26 6 L48 25" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M11 21 L11 44 L41 44 L41 21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="18" y="29" width="16" height="15" rx="1" stroke="currentColor" stroke-width="2"/>
+            <circle cx="41" cy="15" r="3" fill="currentColor" opacity="0.5"/>
+          </svg>
+          <span class="client-name">Living Homes</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 52 38" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 7 L26 34 L48 7" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+          </svg>
+          <span class="client-name">Visteon</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 84 40" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <text x="2" y="34" font-size="34" font-weight="900" font-family="Arial Black, 'Arial Bold', sans-serif" fill="currentColor" letter-spacing="-1">TED</text>
+            <text x="66" y="34" font-size="34" font-weight="900" font-family="Arial Black, 'Arial Bold', sans-serif" fill="currentColor">x</text>
+          </svg>
+          <span class="client-name">TEDx</span>
+        </div>
+
+        <div class="client-item">
+          <svg viewBox="0 0 92 46" fill="none" overflow="visible" xmlns="http://www.w3.org/2000/svg">
+            <text x="46" y="18" text-anchor="middle" font-size="10" font-weight="700" font-family="Georgia, serif" fill="currentColor" letter-spacing="4">CANNES</text>
+            <line x1="10" y1="25" x2="82" y2="25" stroke="currentColor" stroke-width="0.8"/>
+            <text x="46" y="40" text-anchor="middle" font-size="10" font-weight="700" font-family="Georgia, serif" fill="currentColor" letter-spacing="5">LIONS</text>
+          </svg>
+          <span class="client-name">Cannes Lions</span>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- CONTACT -->
+  <!-- ── CTA / CONTACT ── -->
   <section id="contact">
-    <div class="contact-layout">
-      <div class="contact-intro fade-up">
-        <h2>Let's talk<br><em style="font-family:'Playfair Display',serif; color:var(--muted);">about design.</em></h2>
-        <p>Always happy to chat about UI/UX, motion, cars, basketball, dogs, or games.<br>Drop me a note below.</p>
+    <div class="cta-heading">
+      Curious about what we can <span class="dim">create together?</span><br>
+      Let's bring something <span class="dim">extraordinary</span> to life.
+    </div>
+    <div class="cta-actions">
+      <a href="mailto:hristiyan.stratev@gmail.com" class="btn-cta">Get in Touch</a>
+      <div class="available-badge">
+        <span class="available-dot"></span>
+        Available For Work
       </div>
-      <form class="contact-form fade-up" onsubmit="handleSubmit(event)">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" required></textarea>
-        </div>
-        <button type="submit" class="btn-submit">Send Message</button>
-        <p id="form-thanks" style="display:none; font-size:0.9rem; color:var(--muted); margin-top:0.5rem;">Thank you! I'll be in touch.</p>
-      </form>
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ── FOOTER ── -->
   <footer>
     <span class="copy">© 2025 Hristiyan Stratev</span>
     <div class="socials">
       <a href="https://www.linkedin.com/in/hristiyan-stratev" target="_blank">LinkedIn</a>
+      <a href="https://hstratev.com" target="_blank">Portfolio</a>
     </div>
   </footer>
 
   <script>
-    // Intersection Observer for fade-up animations
+    /* ── Menu ── */
+    function toggleMenu() {
+      const open = document.body.classList.toggle('no-scroll');
+      document.getElementById('menuOverlay').classList.toggle('open', open);
+    }
+
+    function closeMenu() {
+      document.body.classList.remove('no-scroll');
+      document.getElementById('menuOverlay').classList.remove('open');
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+
+    /* ── Scroll reveal ── */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(el => {
         if (el.isIntersecting) {
           el.target.classList.add('visible');
+          observer.unobserve(el.target);
         }
       });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-    // Simple form handler
-    function handleSubmit(e) {
-      e.preventDefault();
-      e.target.querySelector('.btn-submit').textContent = 'Sent ✓';
-      document.getElementById('form-thanks').style.display = 'block';
-      e.target.querySelectorAll('input, textarea').forEach(f => f.value = '');
-    }
+    /* ── CTA section reveal ── */
+    const ctaObserver = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+          ctaObserver.unobserve(el.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    ctaObserver.observe(document.getElementById('contact'));
   </script>
 
 </body>
