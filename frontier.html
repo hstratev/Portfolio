@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Frontier — Hristiyan Stratev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { -webkit-font-smoothing: antialiased; font-size: 16px; }
+    body { background: #ffffff; color: #000000; font-family: 'Inter', sans-serif; font-weight: 400; overflow-x: hidden; cursor: none; }
+    body.no-scroll { overflow: hidden; }
+    body, body * { cursor: none; }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; object-fit: cover; }
+
+    /* Cursor */
+    #cursor { position: fixed; width: 28px; height: 28px; border-radius: 50%; background: #888888; pointer-events: none; z-index: 9999; top: 0; left: 0; transform: translate(-50%, -50%); transition: width 0.2s ease, height 0.2s ease; will-change: transform; }
+    #cursor.hover { width: 40px; height: 40px; }
+
+    /* Menu overlay */
+    #menuOverlay { position: fixed; inset: 0; background: #000000; z-index: 500; display: flex; flex-direction: column; padding: 0 80px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
+    #menuOverlay.open { opacity: 1; pointer-events: all; }
+    .mo-top { height: 93px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .mo-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #ffffff; font-family: 'Inter', sans-serif; }
+    .mo-close { font-size: 20px; font-weight: 400; color: #ffffff; background: none; border: none; font-family: 'Inter', sans-serif; }
+    .mo-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .mo-nav a { font-size: 48px; font-weight: 600; letter-spacing: -2px; line-height: 1.15; color: #ffffff; display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), color 0.2s ease; }
+    .mo-nav a:first-child { border-top: 1px solid rgba(255,255,255,0.08); }
+    #menuOverlay.open .mo-nav a:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.05s; }
+    #menuOverlay.open .mo-nav a:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.10s; }
+    #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
+    .mo-nav a:hover { color: #888888; }
+
+    /* Nav */
+    #mainNav { position: fixed; top: 0; left: 0; right: 0; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 80px; background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.06); }
+    .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #000000; font-family: 'Inter', sans-serif; }
+    .nav-dot { position: absolute; left: 50%; transform: translateX(-50%); width: 28px; height: 28px; border-radius: 50%; background: #888888; pointer-events: none; }
+    .nav-trigger { font-size: 18px; font-weight: 500; color: #000000; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: 2px; padding: 4px; }
+
+    /* Hero */
+    .proj-hero { padding: 93px 80px 80px; display: grid; grid-template-columns: 55fr 45fr; gap: 80px; min-height: 100vh; align-items: end; }
+    .proj-hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
+    .proj-hero-right { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding-top: 80px; }
+    .proj-meta { display: flex; flex-direction: column; gap: 0; }
+    .meta-row { display: grid; grid-template-columns: 110px 1fr; gap: 8px; margin-bottom: 14px; align-items: baseline; }
+    .meta-label { font-size: 14px; font-weight: 400; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; color: #888888; }
+    .meta-value { font-size: 14px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; }
+    .proj-title { font-size: 80px; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: -4px; line-height: 80px; color: #000000; }
+
+    /* Body section */
+    .proj-body { padding: 0 80px 80px; }
+    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; padding: 60px 0 40px; }
+    .sec-label-row { display: flex; align-items: center; gap: 12px; }
+    .sec-label { font-size: 30px; font-weight: 500; font-family: 'Inter', sans-serif; letter-spacing: -1.5px; color: #000000; }
+    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
+    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
+    .pill-btn:hover { background: #e0e0e0; }
+    .proj-description { font-size: 22px; font-weight: 400; font-family: 'Inter', sans-serif; letter-spacing: -0.5px; line-height: 33px; text-align: justify; color: #000000; max-width: 800px; margin-left: auto; margin-bottom: 60px; }
+    .proj-full-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+
+    /* Next project */
+    .next-project { padding: 40px 80px 80px; border-top: 1px solid rgba(0,0,0,0.08); display: flex; justify-content: flex-end; }
+    .next-link { font-size: 24px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.5px; transition: opacity 0.2s ease; }
+    .next-link:hover { opacity: 0.5; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 768px) {
+      body, body * { cursor: auto; }
+      #cursor { display: none; }
+      #mainNav, .mo-top, #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .proj-hero { grid-template-columns: 1fr; padding: 93px 24px 48px; gap: 32px; min-height: auto; align-items: start; }
+      .proj-hero-right { padding-top: 0; height: auto; gap: 32px; }
+      .proj-title { font-size: 48px; letter-spacing: -2px; line-height: 52px; }
+      .proj-body { padding: 0 24px 48px; }
+      .proj-description { font-size: 18px; line-height: 26px; margin-left: 0; max-width: 100%; }
+      .next-project { padding: 32px 24px 48px; }
+      .next-link { font-size: 18px; }
+      .sec-label { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- Menu Overlay -->
+<div id="menuOverlay">
+  <div class="mo-top">
+    <a href="index.html" class="mo-logo">H.Stratev</a>
+    <button class="mo-close" onclick="closeMenu()">✕</button>
+  </div>
+  <nav class="mo-nav">
+    <a href="index.html">Work</a>
+    <a href="index.html#about">About</a>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+</div>
+
+<!-- Nav -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">H.Stratev</a>
+  <span class="nav-dot"></span>
+  <button class="nav-trigger" onclick="toggleMenu()">::</button>
+</nav>
+
+<!-- Hero -->
+<section class="proj-hero">
+  <img
+    class="proj-hero-img reveal"
+    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e082c5bc-b74c-40fd-a5d1-04cb49f18b61_rwc_498x0x920x720x32.png?h=5abc0bf7bf8cd3f3bcabc1580a006c36"
+    alt="Frontier"
+  />
+  <div class="proj-hero-right reveal">
+    <div class="proj-meta">
+      <div class="meta-row">
+        <span class="meta-label">Industry</span>
+        <span class="meta-value">Automotive HMI</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Client</span>
+        <span class="meta-value">Nissan / Visteon</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Year</span>
+        <span class="meta-value">2023</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Role</span>
+        <span class="meta-value">UI/UX Designer</span>
+      </div>
+    </div>
+    <h1 class="proj-title">Frontier</h1>
+  </div>
+</section>
+
+<!-- Body -->
+<section class="proj-body">
+  <div class="proj-sec-head reveal">
+    <div class="sec-label-row">
+      <span class="sec-dot"></span>
+      <span class="sec-label">about.</span>
+    </div>
+    <a href="https://hstratev.com/frontier" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
+  </div>
+  <p class="proj-description reveal">
+    Frontier's HMI system called for a rugged yet modern interface language that speaks to adventure-focused drivers. I developed the visual system, iconography, and interaction model for the cluster and centre-stack displays.
+  </p>
+  <img
+    class="proj-full-img reveal"
+    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e082c5bc-b74c-40fd-a5d1-04cb49f18b61_rwc_498x0x920x720x32.png?h=5abc0bf7bf8cd3f3bcabc1580a006c36"
+    alt="Frontier full"
+  />
+</section>
+
+<!-- Next Project -->
+<div class="next-project reveal">
+  <a href="battery-management.html" class="next-link">Battery Management System &nbsp;→</a>
+</div>
+
+<script>
+  const cur = document.getElementById('cursor');
+  let mx=0,my=0,cx=0,cy=0;
+  window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  (function loop(){cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('hover'));el.addEventListener('mouseleave',()=>cur.classList.remove('hover'));});
+  function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
+  function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');}
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
