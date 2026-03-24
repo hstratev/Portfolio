@@ -37,6 +37,60 @@
     /* Nav */
     #mainNav { position: fixed; top: 0; left: 0; right: 0; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 80px; background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.06); }
     .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #000000; font-family: 'Inter', sans-serif; }
+    .nav-trigger { font-size: 18px; font-weight: 500; color: #000000; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: 2px; padding: 4px; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Project hero */
+    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
+    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
+    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
+    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
+    .meta-row { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
+    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
+    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+
+    /* Project body */
+    .proj-body { padding: 80px 80px 60px; }
+    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .sec-label-row { display: flex; align-items: center; gap: 12px; }
+    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
+    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
+    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
+    .pill-btn:hover { background: #e0e0e0; }
+    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
+
+    /* Gallery grid */
+    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
+    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
+    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
+
+    /* Next project */
+    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
+    .next-link:hover { opacity: 0.5; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      body, body * { cursor: auto; }
+      #cursor { display: none; }
+      #mainNav { padding: 0 24px; }
+      #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .mo-top { padding-left: 0; padding-right: 0; }
+      .mo-nav a { font-size: 32px; }
+      .proj-hero { flex-direction: column; min-height: auto; }
+      .proj-hero-img { width: 100%; height: 60vw; }
+      .proj-hero-right { padding: 32px 24px; }
+      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
+      .proj-body { padding: 48px 24px 40px; }
+      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .sec-label { font-size: 22px; }
+      .next-project { padding: 48px 24px; }
+      .next-link { font-size: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -59,7 +113,6 @@
 <!-- Nav -->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">H.Stratev</a>
-  <span class="nav-dot"></span>
   <button class="nav-trigger" onclick="toggleMenu()">::</button>
 </nav>
 
@@ -67,7 +120,7 @@
 <section class="proj-hero">
   <img
     class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/d21a274f-b317-44dc-b0e1-c6e264f20ce8_rwc_220x0x2558x2000x32.jpg?h=4f90997731169363fb8a167121c1ec87"
+    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3d41b163-2b01-4846-83ed-f055e0b03567_rw_1920.jpg?h=289d52c4c33c4469fd71f21f359c86dc"
     alt="Hummer EV"
   />
   <div class="proj-hero-right reveal">
@@ -86,7 +139,11 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Role</span>
-        <span class="meta-value">Senior UX Designer</span>
+        <span class="meta-value">Project Lead — UI/UX, Motion Graphics</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Award</span>
+        <span class="meta-value">Wards 2023 Best EV UX Design</span>
       </div>
     </div>
     <h1 class="proj-title">Hummer EV</h1>
@@ -103,13 +160,18 @@
     <a href="https://hstratev.com/hummer-ev" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
   </div>
   <p class="proj-description reveal">
-    The Hummer EV required a completely new HMI paradigm — a truck that is both a brutalist off-road machine and a technology showcase. I designed the infotainment system architecture, cluster UI, and the signature CrabWalk mode experience.
+    For this project we partnered with the New York based design firm Perception and General Motors to create the complete user experience and interface for the first all-electric super truck — Hummer EV. My responsibilities as Design Project Lead stretched across all areas of the program: UI, UX, Motion design, Real Time graphics integration, customer reviews, and internal planning. Due to NDA, I am not able to show all details.
   </p>
-  <img
-    class="proj-full-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/d21a274f-b317-44dc-b0e1-c6e264f20ce8_rwc_220x0x2558x2000x32.jpg?h=4f90997731169363fb8a167121c1ec87"
-    alt="Hummer EV full"
-  />
+  <div class="proj-gallery reveal">
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/dabe3156-c040-4849-ac05-df5bb3dfe3f8_rw_3840.png?h=8faaf17032c6b4b799d0b0a9b5131b19" alt="Hummer EV 1" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a3f6ddae-002e-4f0c-b782-7082758ee3d5_rw_1920.PNG?h=aa6cde2d22573fe52731c6f0fbbbac12" alt="Hummer EV 2" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/72a7838c-dc29-4001-9a14-43dcbfb90eba_rw_1920.png?h=cbbde91dd0b0e574382294e5be31d0a3" alt="Hummer EV 3" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/5fdc2be8-720d-4bb3-bcc9-4b685f1e895e.png?h=e08d95d047f2ec94afdc360c87bb0b1e" alt="Hummer EV 4" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a705a359-e1a4-4f68-97a5-d4912a88a4e2_rw_1920.jpg?h=6bf181849142fb4cef8f426b3dd0a20a" alt="Hummer EV 5" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/24a60542-4c63-4dc4-a077-184099b3d047_rw_1920.png?h=1b4ebe985fe5bf1e94a6c426541a040b" alt="Hummer EV 6" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/087c94dd-4a04-4765-b5b5-c129ff90b765_rw_1920.jpg?h=bfc92c67e10735bc7e66a3b807158dff" alt="Hummer EV 7" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/eec7eac1-4ef6-407d-8054-51b81b595cff_rw_1920.jpg?h=3d5c302a9a345b8346a7aec4c3d759a6" alt="Hummer EV 8" />
+  </div>
 </section>
 
 <!-- Next Project -->

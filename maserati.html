@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Maserati — Next Gen Experience — Hristiyan Stratev</title>
+  <title>Maserati — Hristiyan Stratev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -37,6 +37,60 @@
     /* Nav */
     #mainNav { position: fixed; top: 0; left: 0; right: 0; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 80px; background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.06); }
     .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #000000; font-family: 'Inter', sans-serif; }
+    .nav-trigger { font-size: 18px; font-weight: 500; color: #000000; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: 2px; padding: 4px; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Project hero */
+    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
+    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
+    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
+    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
+    .meta-row { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
+    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
+    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+
+    /* Project body */
+    .proj-body { padding: 80px 80px 60px; }
+    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .sec-label-row { display: flex; align-items: center; gap: 12px; }
+    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
+    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
+    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
+    .pill-btn:hover { background: #e0e0e0; }
+    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
+
+    /* Gallery grid */
+    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
+    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
+    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
+
+    /* Next project */
+    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
+    .next-link:hover { opacity: 0.5; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      body, body * { cursor: auto; }
+      #cursor { display: none; }
+      #mainNav { padding: 0 24px; }
+      #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .mo-top { padding-left: 0; padding-right: 0; }
+      .mo-nav a { font-size: 32px; }
+      .proj-hero { flex-direction: column; min-height: auto; }
+      .proj-hero-img { width: 100%; height: 60vw; }
+      .proj-hero-right { padding: 32px 24px; }
+      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
+      .proj-body { padding: 48px 24px 40px; }
+      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .sec-label { font-size: 22px; }
+      .next-project { padding: 48px 24px; }
+      .next-link { font-size: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -59,7 +113,6 @@
 <!-- Nav -->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">H.Stratev</a>
-  <span class="nav-dot"></span>
   <button class="nav-trigger" onclick="toggleMenu()">::</button>
 </nav>
 
@@ -67,8 +120,8 @@
 <section class="proj-hero">
   <img
     class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/34bec495-eab2-4f7e-8943-d8ffc6af838a_rwc_117x0x1363x1066x32.jpg?h=666414c996636fb2e85b183de311ffb9"
-    alt="Maserati Next Gen Experience"
+    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/693ef549-4253-4245-a211-d04bb34ae9ae_rw_1920.jpg?h=380fe477003d980851d5d45bec27f443"
+    alt="Maserati"
   />
   <div class="proj-hero-right reveal">
     <div class="proj-meta">
@@ -78,7 +131,7 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Client</span>
-        <span class="meta-value">Maserati / Visteon</span>
+        <span class="meta-value">Maserati</span>
       </div>
       <div class="meta-row">
         <span class="meta-label">Year</span>
@@ -86,10 +139,10 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Role</span>
-        <span class="meta-value">Design Manager</span>
+        <span class="meta-value">Project Lead — UI/UX, Motion Graphics</span>
       </div>
     </div>
-    <h1 class="proj-title">Maserati — Next Gen Experience</h1>
+    <h1 class="proj-title">Maserati</h1>
   </div>
 </section>
 
@@ -103,18 +156,24 @@
     <a href="https://hstratev.com/maserati" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
   </div>
   <p class="proj-description reveal">
-    The next-generation Maserati experience demanded a luxury-grade HMI language — refined, precise, and emotionally resonant. I led the design team in crafting the instrument cluster, infotainment UI, and bespoke animation system that defines the in-car luxury experience.
+    As a huge fan of the brand, I was very honoured to be part of the design team responsible for the creation of the User Experience for the new generation Maserati vehicles. Our task was to craft the UX for the Infotainment screen — aligning with the latest design trends while accommodating a large number of applications. The project spanned 24 months, from concept to production across three vehicle models including the Maserati Grecale. Due to NDA, I am not able to show all details.
   </p>
-  <img
-    class="proj-full-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/34bec495-eab2-4f7e-8943-d8ffc6af838a_rwc_117x0x1363x1066x32.jpg?h=666414c996636fb2e85b183de311ffb9"
-    alt="Maserati Next Gen Experience full"
-  />
+  <div class="proj-gallery reveal">
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/27dbc26b-9a4a-4b4b-b5d3-6ef8069886e7_rw_1920.png?h=58de0f070926e381a0b6d40ca14f0a38" alt="Maserati 1" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/1ca247d6-edd4-4c2c-b060-c41404ebaa70_rw_1920.png?h=b6638a3f587465b19684aff28fa3aec5" alt="Maserati 2" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/ce1431fb-d345-4a30-9a7f-fda80b8bd383_rw_1920.png?h=5125ca9ecdedc83121590e3f0d4c9e26" alt="Maserati 3" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6f38de84-7903-4507-9bf1-c6e34a8a9026.png?h=8a84e27eaf9cedca75bfd71bae96660a" alt="Maserati 4" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/64660ce8-6126-4084-a2b1-5a7f26aa1dfb_rw_1920.png?h=3a63373af1d287facc4c37dc8874f930" alt="Maserati 5" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/9a959af1-062d-4930-9ce6-e88ef2a5be7c_rw_1920.png?h=54f353ef6dc9f5ff9a2fdb0a7e9d12a3" alt="Maserati 6" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f085d388-f091-48bb-83a2-1b6da3792c0f.jpg?h=53c4c1cb766ec789ec5bf9992547e313" alt="Maserati 7" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/70787762-55cc-47e4-b38b-39efd100baae_rw_1920.png?h=ad8aee9dd6d1c2ea64873aecc841487c" alt="Maserati 8" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/9c70e8fc-143e-45d9-b875-0d4b2df67517_rw_1920.jpg?h=0f073b7da318257eacaa08d7ef542c01" alt="Maserati 9" />
+  </div>
 </section>
 
 <!-- Next Project -->
 <div class="next-project reveal">
-  <a href="gmc-chevy.html" class="next-link">GMC / Chevy &nbsp;→</a>
+  <a href="gmc-chevy.html" class="next-link">GMC / Chevy Trucks &nbsp;→</a>
 </div>
 
 <script>

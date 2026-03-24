@@ -37,6 +37,60 @@
     /* Nav */
     #mainNav { position: fixed; top: 0; left: 0; right: 0; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 80px; background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.06); }
     .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #000000; font-family: 'Inter', sans-serif; }
+    .nav-trigger { font-size: 18px; font-weight: 500; color: #000000; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: 2px; padding: 4px; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Project hero */
+    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
+    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
+    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
+    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
+    .meta-row { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
+    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
+    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+
+    /* Project body */
+    .proj-body { padding: 80px 80px 60px; }
+    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .sec-label-row { display: flex; align-items: center; gap: 12px; }
+    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
+    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
+    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
+    .pill-btn:hover { background: #e0e0e0; }
+    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
+
+    /* Gallery grid */
+    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
+    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
+    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
+
+    /* Next project */
+    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
+    .next-link:hover { opacity: 0.5; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      body, body * { cursor: auto; }
+      #cursor { display: none; }
+      #mainNav { padding: 0 24px; }
+      #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .mo-top { padding-left: 0; padding-right: 0; }
+      .mo-nav a { font-size: 32px; }
+      .proj-hero { flex-direction: column; min-height: auto; }
+      .proj-hero-img { width: 100%; height: 60vw; }
+      .proj-hero-right { padding: 32px 24px; }
+      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
+      .proj-body { padding: 48px 24px 40px; }
+      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .sec-label { font-size: 22px; }
+      .next-project { padding: 48px 24px; }
+      .next-link { font-size: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -59,7 +113,6 @@
 <!-- Nav -->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">H.Stratev</a>
-  <span class="nav-dot"></span>
   <button class="nav-trigger" onclick="toggleMenu()">::</button>
 </nav>
 
@@ -67,7 +120,7 @@
 <section class="proj-hero">
   <img
     class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6d4d7edc-8731-47cf-977e-29c3a86a8e4e_rwc_540x0x2762x2160x32.jpg?h=25e61232151d74156d1cff086da22ac6"
+    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/098260ce-4cc6-4888-8c72-f07eceb123fa_rw_3840.jpg?h=ca7179c20b21abc18684a1f49b647b77"
     alt="CognitoAI"
   />
   <div class="proj-hero-right reveal">
@@ -78,7 +131,7 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Client</span>
-        <span class="meta-value">Living Homes (Genesis)</span>
+        <span class="meta-value">CES / Qualcomm</span>
       </div>
       <div class="meta-row">
         <span class="meta-label">Year</span>
@@ -86,7 +139,7 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Role</span>
-        <span class="meta-value">Lead Product Designer</span>
+        <span class="meta-value">Product Design Lead</span>
       </div>
     </div>
     <h1 class="proj-title">CognitoAI</h1>
@@ -100,16 +153,20 @@
       <span class="sec-dot"></span>
       <span class="sec-label">about.</span>
     </div>
-    <a href="https://hstratev.com" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
+    <a href="https://hstratev.com/copy-of-hummer-ev" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
   </div>
   <p class="proj-description reveal">
-    CognitoAI is an AI-powered 3D virtual assistant platform for smart living environments. I led the end-to-end product design — from research and ideation through to final UI and motion system — creating an experience that feels genuinely intelligent and human-centred.
+    Cognito AI is the first comprehensive intelligent vehicle assistant on device integration, featuring dynamic visuals and responsive 3D avatars. It integrates Llama v3.2 and Qwen2.5 as foundation models, along with an Avatar Framework, speech models, voice-to-text, reasoning, and planning. This enables smart diagnostics, seamless navigation, and task planning, making this product a proactive and intelligent partner that anticipates needs and adapts in real-time.
   </p>
-  <img
-    class="proj-full-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6d4d7edc-8731-47cf-977e-29c3a86a8e4e_rwc_540x0x2762x2160x32.jpg?h=25e61232151d74156d1cff086da22ac6"
-    alt="CognitoAI full"
-  />
+  <div class="proj-gallery reveal">
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/9149e196-e52e-4922-b205-b7fe764b7729_rw_3840.png?h=818bec7cdd76d05bbb994bcc5c909d69" alt="CognitoAI 1" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0b0af909-2f11-4acc-b1ef-6bc82e902e41_rw_3840.png?h=999ac8c864f4560c25a0603c07c08f1a" alt="CognitoAI 2" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/ab0000ca-d2cc-45b7-a675-4367a63df3b7_rw_3840.png?h=c1fb127cc8964e242b57e2951ef08f82" alt="CognitoAI 3" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/14849525-b42e-477b-902e-027d073f64f9.png?h=0882f854aa7069c794ea43be40d6adfb" alt="CognitoAI 4" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e6f36a34-947a-4014-988d-aa44c004c84a_rw_3840.png?h=20928ba50a402ecd1a70fdd70ecf9bdf" alt="CognitoAI 5" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/2bf55d5d-6b03-4bc1-97fd-bd458a1a1535_rw_3840.png?h=5e214281a2518127dca8f27824552ae2" alt="CognitoAI 6" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3b019bc2-d076-46cf-9e5d-498750a5c65e.JPG?h=a1d03ae9fd928e79d30c1e5b89f1f6de" alt="CognitoAI 7" />
+  </div>
 </section>
 
 <!-- Next Project -->

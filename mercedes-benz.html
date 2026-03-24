@@ -37,6 +37,60 @@
     /* Nav */
     #mainNav { position: fixed; top: 0; left: 0; right: 0; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 80px; background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.06); }
     .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #000000; font-family: 'Inter', sans-serif; }
+    .nav-trigger { font-size: 18px; font-weight: 500; color: #000000; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: 2px; padding: 4px; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Project hero */
+    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
+    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
+    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
+    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
+    .meta-row { display: flex; flex-direction: column; gap: 2px; }
+    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
+    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
+    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+
+    /* Project body */
+    .proj-body { padding: 80px 80px 60px; }
+    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .sec-label-row { display: flex; align-items: center; gap: 12px; }
+    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
+    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
+    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
+    .pill-btn:hover { background: #e0e0e0; }
+    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
+
+    /* Gallery grid */
+    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
+    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
+    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
+
+    /* Next project */
+    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
+    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
+    .next-link:hover { opacity: 0.5; }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      body, body * { cursor: auto; }
+      #cursor { display: none; }
+      #mainNav { padding: 0 24px; }
+      #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .mo-top { padding-left: 0; padding-right: 0; }
+      .mo-nav a { font-size: 32px; }
+      .proj-hero { flex-direction: column; min-height: auto; }
+      .proj-hero-img { width: 100%; height: 60vw; }
+      .proj-hero-right { padding: 32px 24px; }
+      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
+      .proj-body { padding: 48px 24px 40px; }
+      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .sec-label { font-size: 22px; }
+      .next-project { padding: 48px 24px; }
+      .next-link { font-size: 28px; }
+    }
   </style>
 </head>
 <body>
@@ -59,7 +113,6 @@
 <!-- Nav -->
 <nav id="mainNav">
   <a href="index.html" class="nav-logo">H.Stratev</a>
-  <span class="nav-dot"></span>
   <button class="nav-trigger" onclick="toggleMenu()">::</button>
 </nav>
 
@@ -67,8 +120,8 @@
 <section class="proj-hero">
   <img
     class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/53b66c5e-46a7-4232-b836-a4bf4872690d_rwc_82x0x1208x945x32.jpeg?h=c00cea7fca270b8a3a3b19cbf40f6c50"
-    alt="Mercedes-Benz User Experience"
+    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/92b02c06-7e2a-461f-9f4f-6b1cd8f98a0a_rw_1920.jpeg?h=3170dc517dd31880b7d2d5076f66a1be"
+    alt="Mercedes-Benz"
   />
   <div class="proj-hero-right reveal">
     <div class="proj-meta">
@@ -78,7 +131,7 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Client</span>
-        <span class="meta-value">Daimler / Mercedes-Benz</span>
+        <span class="meta-value">Daimler</span>
       </div>
       <div class="meta-row">
         <span class="meta-label">Year</span>
@@ -86,10 +139,14 @@
       </div>
       <div class="meta-row">
         <span class="meta-label">Role</span>
-        <span class="meta-value">UX Lead</span>
+        <span class="meta-value">UI / Motion Designer</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-label">Award</span>
+        <span class="meta-value">Wards 2020 Best UX Design — CLA MBUX</span>
       </div>
     </div>
-    <h1 class="proj-title">Mercedes-Benz User Experience</h1>
+    <h1 class="proj-title">Mercedes-Benz</h1>
   </div>
 </section>
 
@@ -103,13 +160,14 @@
     <a href="https://hstratev.com/mercedes-benz-user-experience" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
   </div>
   <p class="proj-description reveal">
-    The Mercedes-Benz user experience project encompassed a comprehensive redesign of in-car digital touchpoints — from the MBUX evolution to bespoke ambient light interactions. Every detail was crafted to reflect the brand's ethos: the best or nothing.
+    This was my first exposure to a large-scale design project. We collaborated with Daimler on the development of the acclaimed Mercedes-Benz User Experience Platform (MBUX), where my role as UI/Motion Designer involved crafting the overall layout, graphics, interaction design, real-time animations, and micro-interactions. The project spanned nearly 24 months and began with relocation to Germany to work directly with Daimler's UX team. MBUX won the Wards 2020 Best UX Design Award for CLA MBUX.
   </p>
-  <img
-    class="proj-full-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/53b66c5e-46a7-4232-b836-a4bf4872690d_rwc_82x0x1208x945x32.jpeg?h=c00cea7fca270b8a3a3b19cbf40f6c50"
-    alt="Mercedes-Benz User Experience full"
-  />
+  <div class="proj-gallery reveal">
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/ad8238f8-ab7d-4602-8591-bde1db60af8b_rw_1920.jpg?h=644d8f3c3aa0d16c4ae8f9e79bf94c21" alt="Mercedes-Benz 1" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/1ea91de6-6bf8-4d94-9767-35bee2d32c3e_rw_1920.jpg?h=1185fa6686c5ebebc909c2e61b482d41" alt="Mercedes-Benz 2" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/8c3515e4-aa9c-48a1-bb5f-4e4174e4c454_rw_1920.jpg?h=1df9ee6f7f7ea1f1328f4fef3cc7261e" alt="Mercedes-Benz 3" />
+    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/5cce7619-2f2f-480e-b587-1b3ae7012952.jpg?h=5def44f2ebfcdde6843c94af4a43b3e2" alt="Mercedes-Benz 4" />
+  </div>
 </section>
 
 <!-- Next Project -->
