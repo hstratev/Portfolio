@@ -37,52 +37,6 @@
     /* Nav */
     #mainNav { position: fixed; top: 0; left: 0; right: 0; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 80px; background: #ffffff; border-bottom: 1px solid rgba(0,0,0,0.06); }
     .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #000000; font-family: 'Inter', sans-serif; }
-    .nav-dot { position: absolute; left: 50%; transform: translateX(-50%); width: 28px; height: 28px; border-radius: 50%; background: #888888; pointer-events: none; }
-    .nav-trigger { font-size: 18px; font-weight: 500; color: #000000; background: none; border: none; font-family: 'Inter', sans-serif; letter-spacing: 2px; padding: 4px; }
-
-    /* Hero */
-    .proj-hero { padding: 93px 80px 80px; display: grid; grid-template-columns: 55fr 45fr; gap: 80px; min-height: 100vh; align-items: end; }
-    .proj-hero-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block; }
-    .proj-hero-right { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding-top: 80px; }
-    .proj-meta { display: flex; flex-direction: column; gap: 0; }
-    .meta-row { display: grid; grid-template-columns: 110px 1fr; gap: 8px; margin-bottom: 14px; align-items: baseline; }
-    .meta-label { font-size: 14px; font-weight: 400; font-family: 'Inter', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; color: #888888; }
-    .meta-value { font-size: 14px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; }
-    .proj-title { font-size: 80px; font-weight: 600; font-family: 'Inter', sans-serif; letter-spacing: -4px; line-height: 80px; color: #000000; }
-
-    /* Body section */
-    .proj-body { padding: 0 80px 80px; }
-    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; padding: 60px 0 40px; }
-    .sec-label-row { display: flex; align-items: center; gap: 12px; }
-    .sec-label { font-size: 30px; font-weight: 500; font-family: 'Inter', sans-serif; letter-spacing: -1.5px; color: #000000; }
-    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
-    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
-    .pill-btn:hover { background: #e0e0e0; }
-    .proj-description { font-size: 22px; font-weight: 400; font-family: 'Inter', sans-serif; letter-spacing: -0.5px; line-height: 33px; text-align: justify; color: #000000; max-width: 800px; margin-left: auto; margin-bottom: 60px; }
-    .proj-full-img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
-
-    /* Next project */
-    .next-project { padding: 40px 80px 80px; border-top: 1px solid rgba(0,0,0,0.08); display: flex; justify-content: flex-end; }
-    .next-link { font-size: 24px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.5px; transition: opacity 0.2s ease; }
-    .next-link:hover { opacity: 0.5; }
-
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
-
-    @media (max-width: 768px) {
-      body, body * { cursor: auto; }
-      #cursor { display: none; }
-      #mainNav, .mo-top, #menuOverlay { padding-left: 24px; padding-right: 24px; }
-      .proj-hero { grid-template-columns: 1fr; padding: 93px 24px 48px; gap: 32px; min-height: auto; align-items: start; }
-      .proj-hero-right { padding-top: 0; height: auto; gap: 32px; }
-      .proj-title { font-size: 48px; letter-spacing: -2px; line-height: 52px; }
-      .proj-body { padding: 0 24px 48px; }
-      .proj-description { font-size: 18px; line-height: 26px; margin-left: 0; max-width: 100%; }
-      .next-project { padding: 32px 24px 48px; }
-      .next-link { font-size: 18px; }
-      .sec-label { font-size: 22px; }
-    }
   </style>
 </head>
 <body>
