@@ -100,9 +100,118 @@
       .next-project { padding: 48px 24px; }
       .next-link { font-size: 28px; }
     }
+
+    /* ── PASSWORD GATE ── */
+    #pwGate {
+      position: fixed;
+      inset: 0;
+      background: #ffffff;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+    }
+    .pw-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+      max-width: 480px;
+      width: 100%;
+      padding: 0 40px;
+    }
+    .pw-logo {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #000000;
+      margin: 0 0 48px;
+    }
+    .pw-title {
+      font-size: 48px;
+      font-weight: 600;
+      letter-spacing: -2.4px;
+      line-height: 1;
+      color: #000000;
+      margin: 0 0 12px;
+    }
+    .pw-subtitle {
+      font-size: 16px;
+      font-weight: 400;
+      color: #888888;
+      margin: 0 0 40px;
+    }
+    .pw-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .pw-form input {
+      width: 100%;
+      font-size: 16px;
+      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #000000;
+      padding: 12px 0;
+      outline: none;
+      letter-spacing: -0.3px;
+      box-sizing: border-box;
+    }
+    .pw-form input::placeholder { color: #aaaaaa; }
+    .pw-form input.shake {
+      animation: shake 0.4s ease;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20% { transform: translateX(-8px); }
+      40% { transform: translateX(8px); }
+      60% { transform: translateX(-6px); }
+      80% { transform: translateX(6px); }
+    }
+    .pw-form button {
+      align-self: flex-start;
+      margin-top: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      color: #ffffff;
+      background: #000000;
+      border: none;
+      border-radius: 100px;
+      padding: 14px 32px;
+      cursor: none;
+      transition: opacity 0.2s ease;
+      letter-spacing: -0.3px;
+    }
+    .pw-form button:hover { opacity: 0.75; }
+    .pw-error {
+      font-size: 14px;
+      color: #cc0000;
+      margin: 8px 0 0;
+      display: none;
+    }
   </style>
 </head>
 <body>
+
+<!-- Password Gate -->
+<div id="pwGate">
+  <div class="pw-box">
+    <p class="pw-logo">H.Stratev</p>
+    <h2 class="pw-title">Maserati</h2>
+    <p class="pw-subtitle">This project is password protected.</p>
+    <form class="pw-form" onsubmit="checkPw(event)">
+      <input id="pwInput" type="password" placeholder="Enter password" autocomplete="current-password">
+      <button type="submit">Enter →</button>
+    </form>
+    <p class="pw-error" id="pwError">Incorrect password. Try again.</p>
+  </div>
+</div>
 
 <div id="cursor"></div>
 
@@ -225,6 +334,33 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
   const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // ── PASSWORD GATE ──
+  (function() {
+    if (sessionStorage.getItem('projAuth') === '1') {
+      const gate = document.getElementById('pwGate');
+      if (gate) gate.style.display = 'none';
+    }
+  })();
+
+  function checkPw(e) {
+    e.preventDefault();
+    const input = document.getElementById('pwInput');
+    const error = document.getElementById('pwError');
+    if (input.value === 'visitor1') {
+      sessionStorage.setItem('projAuth', '1');
+      const gate = document.getElementById('pwGate');
+      gate.style.transition = 'opacity 0.4s ease';
+      gate.style.opacity = '0';
+      setTimeout(() => gate.style.display = 'none', 400);
+    } else {
+      input.classList.remove('shake');
+      void input.offsetWidth; // reflow
+      input.classList.add('shake');
+      input.value = '';
+      error.style.display = 'block';
+    }
+  }
 </script>
 </body>
 </html>
