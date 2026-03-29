@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
-  <title>Hristiyan Stratev — Product Design Lead</title>
+  <title>Contact — Hristiyan Stratev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -120,7 +120,6 @@
     /* ── NAV ── */
     #mainNav {
       position: static;
-      
       z-index: 400;
       height: 93px;
       display: flex;
@@ -161,25 +160,8 @@
     /* ── HERO ── */
     #hero {
       background: #ffffff;
-      padding-top: 80px;
-      padding-left: 80px;
-      padding-right: 80px;
-      padding-bottom: 80px;
-      position: relative;
+      padding: 80px;
     }
-
-    .hero-avatar {
-      position: absolute;
-      top: 80px;
-      right: 80px;
-      width: 168px;
-      height: 168px;
-      border-radius: 140px;
-      overflow: hidden;
-      background: #d2d2d2;
-      flex-shrink: 0;
-    }
-    .hero-avatar svg { width: 100%; height: 100%; }
 
     .hero-names { margin-bottom: 64px; }
 
@@ -190,7 +172,7 @@
     .hero-name-inner {
       display: block;
       font-size: 174px;
-      font-weight: 600;
+      font-weight: 700;
       font-family: 'Inter', sans-serif;
       letter-spacing: -8.7px;
       line-height: 174px;
@@ -199,7 +181,6 @@
       opacity: 0;
       animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
-    /* second line delay */
     .hero-name:nth-child(2) .hero-name-inner { animation-delay: 0.1s; }
 
     @keyframes slideUp {
@@ -244,13 +225,6 @@
     }
     .hero-email:hover .icon-copy { opacity: 0.75; }
 
-    .hero-grey-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #888888;
-    }
-
     .hero-bio {
       font-size: 40px;
       font-weight: 500;
@@ -264,191 +238,34 @@
       min-width: 0;
     }
 
-    /* ── SECTION HEADER ── */
-    .sec-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 80px 80px 40px;
-    }
-    .sec-label-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .sec-label {
-      font-size: 30px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -1.5px;
-      color: #000000;
-    }
-    .sec-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #888888;
-      flex-shrink: 0;
-    }
-    .pill-btn {
-      font-size: 16px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      background: #f0f0f0;
-      color: #000000;
-      border: none;
-      border-radius: 100px;
-      padding: 12px 24px;
-      transition: background 0.2s ease;
-    }
-    .pill-btn:hover { background: #e0e0e0; }
-
-    /* ── WORK ── */
-    #work { background: #ffffff; }
-
-    .work-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      padding: 0 80px 80px;
-    }
-
-    .work-item {
-      position: relative;
-      overflow: hidden;
-      display: block;
-      background: #e0e0e0;
-    }
-    .work-item img {
-      width: 100%;
-      aspect-ratio: 4/3;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.4s ease;
-    }
-    .work-item:hover img { transform: scale(1.03); }
-
-    .work-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.62) 0%, transparent 55%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      display: flex;
-      align-items: flex-end;
-      padding: 24px;
-    }
-    .work-item:hover .work-overlay { opacity: 1; }
-    .work-title {
-      font-size: 20px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      color: #ffffff;
-      letter-spacing: -0.5px;
-    }
-
-    /* ── ABOUT ── */
-    #about { background: #ffffff; }
-
-    .about-statement {
-      font-size: 50px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -3px;
-      line-height: 55px;
-      text-align: justify;
-      color: #000000;
-      padding: 0 80px 60px;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      padding: 0 80px 80px;
-      align-items: start;
-    }
-    .about-portrait {
-      display: flex;
-      justify-content: center;
-    }
-    .portrait-circle {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #d2d2d2;
-    }
-    .portrait-circle svg { width: 100%; height: 100%; }
-
-    .about-bio {
-      font-size: 18px;
-      font-weight: 400;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -0.5px;
-      line-height: 28px;
-      text-align: justify;
-      color: #000000;
-    }
-
-    /* ── CONTACT / FOOTER ── */
-    #contact {
-      background: #000000;
+    /* ── CONTACT ACTIONS SECTION ── */
+    #contact-actions-section {
+      background: #ffffff;
       padding: 80px;
     }
 
-    .contact-top-row {
-      display: flex;
-      justify-content: flex-end;
-      margin-bottom: 64px;
-    }
-    .contact-links {
-      display: flex;
-      gap: 32px;
-    }
-    .contact-links a {
-      font-size: 16px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      color: #ffffff;
-      transition: opacity 0.2s;
-    }
-    .contact-links a:hover { opacity: 0.55; }
-
-    .contact-heading {
-      font-size: 48px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -2.4px;
-      line-height: 57.6px;
-      color: #ffffff;
-      max-width: 900px;
-      margin-bottom: 48px;
-    }
-
-    .contact-actions {
+    .contact-actions-row {
       display: flex;
       gap: 32px;
       align-items: center;
-      margin-bottom: 80px;
+      margin-bottom: 48px;
     }
     .cta-btn {
       font-size: 16px;
       font-weight: 500;
       font-family: 'Inter', sans-serif;
-      background: #ffffff;
-      color: #000000;
+      background: #000000;
+      color: #ffffff;
       border: none;
       border-radius: 100px;
       padding: 20px 36px;
-      width: 161px;
       height: 59px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       transition: background 0.2s ease;
     }
-    .cta-btn:hover { background: #e0e0e0; }
+    .cta-btn:hover { background: #333333; }
 
     .avail-badge {
       display: flex;
@@ -457,7 +274,7 @@
       font-size: 14px;
       font-weight: 400;
       font-family: 'Inter', sans-serif;
-      color: #ffffff;
+      color: #000000;
     }
     .pulse-dot {
       width: 8px;
@@ -472,12 +289,30 @@
       50%       { opacity: 0.3; }
     }
 
+    .social-links-row {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    .social-links-row a {
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+      transition: opacity 0.2s;
+    }
+    .social-links-row a:hover { opacity: 0.55; }
+
+    /* ── FOOTER ── */
+    #footer {
+      background: #000000;
+      padding: 80px;
+    }
+
     .footer-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 32px;
     }
     .footer-left {
       display: flex;
@@ -520,12 +355,8 @@
       .mo-nav a { font-size: 32px; }
 
       #hero {
-        padding-top: 40px;
-        padding-left: 24px;
-        padding-right: 24px;
-        padding-bottom: 48px;
+        padding: 40px 24px 48px;
       }
-      .hero-avatar { top: 110px; right: 24px; width: 90px; height: 90px; }
       .hero-name { line-height: 1.0; }
       .hero-name-inner {
         font-size: clamp(2.8rem, 14vw, 6rem);
@@ -534,19 +365,11 @@
       }
       .hero-bottom { flex-direction: column; gap: 28px; padding-top: 32px; }
       .hero-bio { font-size: 22px; letter-spacing: -1px; line-height: 28px; max-width: 100%; }
+      .hero-names { margin-bottom: 32px; }
 
-      .sec-head { padding: 48px 24px 28px; }
-      .sec-label { font-size: 22px; }
-      .sec-dot { width: 18px; height: 18px; }
+      #contact-actions-section { padding: 48px 24px; }
 
-      .work-grid { grid-template-columns: 1fr; gap: 12px; padding: 0 24px 48px; }
-
-      .about-statement { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; padding: 0 24px 40px; }
-      .about-grid { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 48px; }
-      .portrait-circle { width: 200px; height: 200px; }
-
-      #contact { padding: 48px 24px; }
-      .contact-heading { font-size: 28px; letter-spacing: -1.4px; line-height: 36px; }
+      #footer { padding: 48px 24px; }
       .footer-row { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
 
@@ -560,7 +383,7 @@
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay">
     <div class="mo-top">
-      <span class="mo-logo">H.Stratev</span>
+      <a href="index.html" class="mo-logo">H.Stratev</a>
       <button class="mo-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
     </div>
     <nav class="mo-nav">
@@ -572,7 +395,7 @@
 
   <!-- ── NAV ── -->
   <nav id="mainNav">
-    <a href="#" class="nav-logo">H.Stratev</a>
+    <a href="index.html" class="nav-logo">H.Stratev</a>
     <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
       <span class="dots-grid">
         <span class="dot"></span><span class="dot"></span>
@@ -583,14 +406,9 @@
 
   <!-- ── HERO ── -->
   <section id="hero">
-
-    <div class="hero-avatar">
-      <img src="Photo.png" alt="Hristiyan Stratev">
-    </div>
-
     <div class="hero-names">
-      <div class="hero-name"><span class="hero-name-inner">Hristiyan</span></div>
-      <div class="hero-name"><span class="hero-name-inner">Stratev</span></div>
+      <div class="hero-name"><span class="hero-name-inner">GET IN</span></div>
+      <div class="hero-name"><span class="hero-name-inner">TOUCH</span></div>
     </div>
 
     <div class="hero-bottom">
@@ -603,106 +421,28 @@
           </svg>
         </a>
       </div>
-      <p class="hero-bio">I'm a Product Design Lead with 10+ years of experience in automotive HMI, IoT, and AI — based in Sofia, working globally.</p>
-    </div>
-
-  </section>
-
-  <!-- ── WORK ── -->
-  <section id="work">
-    <div class="sec-head reveal">
-      <div class="sec-label-row">
-        <span class="sec-label">work.</span>
-      </div>
-      <button class="pill-btn" onclick="window.open('https://hstratev.com','_blank')">Show More</button>
-    </div>
-
-    <div class="work-grid">
-
-      <a class="work-item reveal" href="cognito-ai.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6d4d7edc-8731-47cf-977e-29c3a86a8e4e_rwc_540x0x2762x2160x2762.jpg?h=48f18f38d6317edeb5c483771bf9529b" alt="CognitoAI" loading="lazy">
-        <div class="work-overlay"><span class="work-title">CognitoAI — 2025</span></div>
-      </a>
-
-      <a class="work-item reveal" href="hummer-ev.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/d21a274f-b317-44dc-b0e1-c6e264f20ce8_rwc_220x0x2558x2000x2560.jpg?h=0ec6e418f7d63e6cf39e4972009e624d" alt="Hummer EV" loading="lazy">
-        <div class="work-overlay"><span class="work-title">Hummer EV — 2024</span></div>
-      </a>
-
-      <a class="work-item reveal" href="frontier.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e082c5bc-b74c-40fd-a5d1-04cb49f18b61_rwc_498x0x920x720x920.png?h=c74e30f3a59636089926900a78623749" alt="Frontier" loading="lazy">
-        <div class="work-overlay"><span class="work-title">Frontier — 2023</span></div>
-      </a>
-
-      <a class="work-item reveal" href="battery-management.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/40d033ac-72e7-4a8f-9c75-59e534101725_rwc_308x0x1305x1021x1305.png?h=15b715b08356a9d4d02cf732aa5ec278" alt="Battery Management System" loading="lazy">
-        <div class="work-overlay"><span class="work-title">Battery Management System — CES 2023</span></div>
-      </a>
-
-      <a class="work-item reveal" href="maserati.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/34bec495-eab2-4f7e-8943-d8ffc6af838a_rwc_117x0x1363x1066x1363.jpg?h=756d44a77e3c1b5d8650a9c49165a60c" alt="Maserati" loading="lazy">
-        <div class="work-overlay"><span class="work-title">Maserati — Next Gen Experience — 2022</span></div>
-      </a>
-
-      <a class="work-item reveal" href="gmc-chevy.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f6b6de61-0225-4d29-9ed2-8e1bedf8aadb_rwc_291x0x744x582x1366.jpg?h=d2a83b8bb0f199ff8cd0eb23f0872c2c" alt="GMC Chevy Trucks" loading="lazy">
-        <div class="work-overlay"><span class="work-title">GMC / Chevy Trucks UI/UX — 2022</span></div>
-      </a>
-
-      <a class="work-item reveal" href="dark-horizons.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0bb4e8a2-7f1d-4982-b3bb-3ef752a874ae_rwc_363x0x671x525x671.jpg?h=30e168ef0234095de5d1661c873a379d" alt="Dark Horizons" loading="lazy">
-        <div class="work-overlay"><span class="work-title">Dark Horizons — 2022</span></div>
-      </a>
-
-      <a class="work-item reveal" href="mercedes-benz.html">
-        <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/53b66c5e-46a7-4232-b836-a4bf4872690d_rwc_82x0x1208x945x1208.jpeg?h=682cd969ae6bf3318625b68bd4a3f707" alt="Mercedes-Benz" loading="lazy">
-        <div class="work-overlay"><span class="work-title">Mercedes-Benz User Experience — 2022</span></div>
-      </a>
-
+      <p class="hero-bio">Have a project in mind? Let's collaborate and build something extraordinary together.</p>
     </div>
   </section>
 
-  <!-- ── ABOUT ── -->
-  <section id="about">
-    <div class="sec-head reveal">
-      <div class="sec-label-row">
-        <span class="sec-label">about.</span>
-      </div>
-      <button class="pill-btn">Show More</button>
-    </div>
-
-    <p class="about-statement reveal">I collaborate with brands and studios across automotive, IoT, and AI — using the latest technologies. My designs have been featured at CES, GITEX, and Shanghai Auto.</p>
-
-    <div class="about-grid">
-      <div class="about-portrait reveal">
-        <div class="portrait-circle">
-          <img src="Photo.png" alt="Hristiyan Stratev">
-        </div>
-      </div>
-      <p class="about-bio reveal">I hold a degree from the University of Sheffield, and my career has taken me across Germany and the U.S. Currently, I'm the Lead Product Designer at Living Homes Dubai, where we focus on IoT, smart living solutions and AI-powered 3D virtual assistants. Previously, I led the design team at Visteon – Sofia as Design Manager, working on advanced HMI, UI/UX, motion graphics, and real-time 2D/3D design for the automotive industry. With over a decade of experience, I've contributed to projects across various sectors and platforms. My work has been featured at major events like CES, Gitex Global, and Shanghai Auto, and I've collaborated with clients including General Motors, Ford, Daimler, TEDx, Cannes Lions, Living Homes, and Maserati.</p>
-    </div>
-  </section>
-
-  <!-- ── CONTACT ── -->
-  <section id="contact">
-    <div class="contact-top-row">
-      <div class="contact-links">
-        <a href="http://www.linkedin.com/in/hstratev" target="_blank">LinkedIn</a>
-        <a href="https://twitter.com" target="_blank">Twitter</a>
-        <a href="mailto:hstratev@gmail.com">Contact</a>
-      </div>
-    </div>
-
-    <p class="contact-heading reveal">Curious about what we can create together? Let's bring something extraordinary to life!</p>
-
-    <div class="contact-actions reveal">
-      <a href="mailto:hstratev@gmail.com" class="cta-btn">Get in Touch</a>
+  <!-- ── CONTACT ACTIONS ── -->
+  <section id="contact-actions-section" class="reveal">
+    <div class="contact-actions-row">
+      <a href="mailto:H.Stratev@gmail.com" class="cta-btn">Get in Touch</a>
       <div class="avail-badge">
         <div class="pulse-dot"></div>
         Available For Work
       </div>
     </div>
 
+    <div class="social-links-row">
+      <a href="http://www.linkedin.com/in/hstratev" target="_blank">LinkedIn</a>
+      <a href="https://twitter.com" target="_blank">Twitter</a>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <section id="footer">
     <div class="footer-row">
       <div class="footer-left">
         <span>+359 XX XXX XXXX</span>
@@ -750,7 +490,7 @@
     /* ── EMAIL COPY ── */
     document.getElementById('emailCopy').addEventListener('click', e => {
       e.preventDefault();
-      navigator.clipboard.writeText('hstratev@gmail.com').then(() => {
+      navigator.clipboard.writeText('H.Stratev@gmail.com').then(() => {
         const el = document.getElementById('emailCopy');
         const original = el.childNodes[0].textContent;
         el.childNodes[0].textContent = 'Copied! ';

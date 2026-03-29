@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
-  <title>Hristiyan Stratev — Product Design Lead</title>
+  <title>Work — Hristiyan Stratev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -120,7 +120,6 @@
     /* ── NAV ── */
     #mainNav {
       position: static;
-      
       z-index: 400;
       height: 93px;
       display: flex;
@@ -161,27 +160,8 @@
     /* ── HERO ── */
     #hero {
       background: #ffffff;
-      padding-top: 80px;
-      padding-left: 80px;
-      padding-right: 80px;
-      padding-bottom: 80px;
-      position: relative;
+      padding: 80px;
     }
-
-    .hero-avatar {
-      position: absolute;
-      top: 80px;
-      right: 80px;
-      width: 168px;
-      height: 168px;
-      border-radius: 140px;
-      overflow: hidden;
-      background: #d2d2d2;
-      flex-shrink: 0;
-    }
-    .hero-avatar svg { width: 100%; height: 100%; }
-
-    .hero-names { margin-bottom: 64px; }
 
     .hero-name {
       display: block;
@@ -199,69 +179,9 @@
       opacity: 0;
       animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
-    /* second line delay */
-    .hero-name:nth-child(2) .hero-name-inner { animation-delay: 0.1s; }
 
     @keyframes slideUp {
       to { transform: translateY(0); opacity: 1; }
-    }
-
-    .hero-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-left-col {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .hero-email {
-      font-size: 26px;
-      font-weight: 500;
-      letter-spacing: -1.56px;
-      font-family: 'Inter', sans-serif;
-      color: #000000;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: opacity 0.2s;
-    }
-    .hero-email:hover { opacity: 0.6; }
-    .icon-copy {
-      width: 13px; height: 13px;
-      opacity: 0.35;
-      flex-shrink: 0;
-      transition: opacity 0.2s;
-    }
-    .hero-email:hover .icon-copy { opacity: 0.75; }
-
-    .hero-grey-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #888888;
-    }
-
-    .hero-bio {
-      font-size: 40px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -2.4px;
-      line-height: 44px;
-      text-align: justify;
-      color: #000000;
-      max-width: 643px;
-      flex: 1;
-      min-width: 0;
     }
 
     /* ── SECTION HEADER ── */
@@ -271,11 +191,6 @@
       align-items: center;
       padding: 80px 80px 40px;
     }
-    .sec-label-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
     .sec-label {
       font-size: 30px;
       font-weight: 500;
@@ -283,25 +198,12 @@
       letter-spacing: -1.5px;
       color: #000000;
     }
-    .sec-dot {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: #888888;
-      flex-shrink: 0;
-    }
-    .pill-btn {
-      font-size: 16px;
+    .sec-sublabel {
+      font-size: 18px;
       font-weight: 500;
       font-family: 'Inter', sans-serif;
-      background: #f0f0f0;
       color: #000000;
-      border: none;
-      border-radius: 100px;
-      padding: 12px 24px;
-      transition: background 0.2s ease;
     }
-    .pill-btn:hover { background: #e0e0e0; }
 
     /* ── WORK ── */
     #work { background: #ffffff; }
@@ -345,50 +247,6 @@
       font-family: 'Inter', sans-serif;
       color: #ffffff;
       letter-spacing: -0.5px;
-    }
-
-    /* ── ABOUT ── */
-    #about { background: #ffffff; }
-
-    .about-statement {
-      font-size: 50px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -3px;
-      line-height: 55px;
-      text-align: justify;
-      color: #000000;
-      padding: 0 80px 60px;
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 80px;
-      padding: 0 80px 80px;
-      align-items: start;
-    }
-    .about-portrait {
-      display: flex;
-      justify-content: center;
-    }
-    .portrait-circle {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      overflow: hidden;
-      background: #d2d2d2;
-    }
-    .portrait-circle svg { width: 100%; height: 100%; }
-
-    .about-bio {
-      font-size: 18px;
-      font-weight: 400;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -0.5px;
-      line-height: 28px;
-      text-align: justify;
-      color: #000000;
     }
 
     /* ── CONTACT / FOOTER ── */
@@ -520,30 +378,19 @@
       .mo-nav a { font-size: 32px; }
 
       #hero {
-        padding-top: 40px;
-        padding-left: 24px;
-        padding-right: 24px;
-        padding-bottom: 48px;
+        padding: 40px 24px 48px;
       }
-      .hero-avatar { top: 110px; right: 24px; width: 90px; height: 90px; }
       .hero-name { line-height: 1.0; }
       .hero-name-inner {
         font-size: clamp(2.8rem, 14vw, 6rem);
         letter-spacing: -4px;
         line-height: 1.0;
       }
-      .hero-bottom { flex-direction: column; gap: 28px; padding-top: 32px; }
-      .hero-bio { font-size: 22px; letter-spacing: -1px; line-height: 28px; max-width: 100%; }
 
       .sec-head { padding: 48px 24px 28px; }
       .sec-label { font-size: 22px; }
-      .sec-dot { width: 18px; height: 18px; }
 
       .work-grid { grid-template-columns: 1fr; gap: 12px; padding: 0 24px 48px; }
-
-      .about-statement { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; padding: 0 24px 40px; }
-      .about-grid { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 48px; }
-      .portrait-circle { width: 200px; height: 200px; }
 
       #contact { padding: 48px 24px; }
       .contact-heading { font-size: 28px; letter-spacing: -1.4px; line-height: 36px; }
@@ -560,7 +407,7 @@
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay">
     <div class="mo-top">
-      <span class="mo-logo">H.Stratev</span>
+      <a href="index.html" class="mo-logo">H.Stratev</a>
       <button class="mo-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
     </div>
     <nav class="mo-nav">
@@ -572,7 +419,7 @@
 
   <!-- ── NAV ── -->
   <nav id="mainNav">
-    <a href="#" class="nav-logo">H.Stratev</a>
+    <a href="index.html" class="nav-logo">H.Stratev</a>
     <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
       <span class="dots-grid">
         <span class="dot"></span><span class="dot"></span>
@@ -583,38 +430,14 @@
 
   <!-- ── HERO ── -->
   <section id="hero">
-
-    <div class="hero-avatar">
-      <img src="Photo.png" alt="Hristiyan Stratev">
-    </div>
-
-    <div class="hero-names">
-      <div class="hero-name"><span class="hero-name-inner">Hristiyan</span></div>
-      <div class="hero-name"><span class="hero-name-inner">Stratev</span></div>
-    </div>
-
-    <div class="hero-bottom">
-      <div class="hero-left-col">
-        <a class="hero-email" id="emailCopy" href="mailto:H.Stratev@gmail.com">
-          H.Stratev@gmail.com
-          <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2"/>
-            <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
-          </svg>
-        </a>
-      </div>
-      <p class="hero-bio">I'm a Product Design Lead with 10+ years of experience in automotive HMI, IoT, and AI — based in Sofia, working globally.</p>
-    </div>
-
+    <div class="hero-name"><span class="hero-name-inner">WORK</span></div>
   </section>
 
   <!-- ── WORK ── -->
   <section id="work">
     <div class="sec-head reveal">
-      <div class="sec-label-row">
-        <span class="sec-label">work.</span>
-      </div>
-      <button class="pill-btn" onclick="window.open('https://hstratev.com','_blank')">Show More</button>
+      <span class="sec-label">work.</span>
+      <span class="sec-sublabel">2020 — 2024</span>
     </div>
 
     <div class="work-grid">
@@ -659,27 +482,6 @@
         <div class="work-overlay"><span class="work-title">Mercedes-Benz User Experience — 2022</span></div>
       </a>
 
-    </div>
-  </section>
-
-  <!-- ── ABOUT ── -->
-  <section id="about">
-    <div class="sec-head reveal">
-      <div class="sec-label-row">
-        <span class="sec-label">about.</span>
-      </div>
-      <button class="pill-btn">Show More</button>
-    </div>
-
-    <p class="about-statement reveal">I collaborate with brands and studios across automotive, IoT, and AI — using the latest technologies. My designs have been featured at CES, GITEX, and Shanghai Auto.</p>
-
-    <div class="about-grid">
-      <div class="about-portrait reveal">
-        <div class="portrait-circle">
-          <img src="Photo.png" alt="Hristiyan Stratev">
-        </div>
-      </div>
-      <p class="about-bio reveal">I hold a degree from the University of Sheffield, and my career has taken me across Germany and the U.S. Currently, I'm the Lead Product Designer at Living Homes Dubai, where we focus on IoT, smart living solutions and AI-powered 3D virtual assistants. Previously, I led the design team at Visteon – Sofia as Design Manager, working on advanced HMI, UI/UX, motion graphics, and real-time 2D/3D design for the automotive industry. With over a decade of experience, I've contributed to projects across various sectors and platforms. My work has been featured at major events like CES, Gitex Global, and Shanghai Auto, and I've collaborated with clients including General Motors, Ford, Daimler, TEDx, Cannes Lions, Living Homes, and Maserati.</p>
     </div>
   </section>
 
@@ -746,17 +548,6 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-    /* ── EMAIL COPY ── */
-    document.getElementById('emailCopy').addEventListener('click', e => {
-      e.preventDefault();
-      navigator.clipboard.writeText('hstratev@gmail.com').then(() => {
-        const el = document.getElementById('emailCopy');
-        const original = el.childNodes[0].textContent;
-        el.childNodes[0].textContent = 'Copied! ';
-        setTimeout(() => { el.childNodes[0].textContent = original; }, 1800);
-      });
-    });
   </script>
 
 </body>
