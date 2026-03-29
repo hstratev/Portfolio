@@ -9,7 +9,7 @@
   <title>Hristiyan Stratev — Product Design Lead</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
 
     /* ── RESET ── */
@@ -136,36 +136,14 @@
       color: #000000;
       font-family: 'Inter', sans-serif;
     }
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 48px;
-    }
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 40px;
-    }
-    .nav-links a {
-      font-size: 18px;
-      font-weight: 500;
-      color: #000000;
-      font-family: 'Inter', sans-serif;
-      letter-spacing: -0.3px;
-      transition: opacity 0.2s;
-    }
-    .nav-links a:hover { opacity: 0.5; }
     .nav-trigger {
       background: none;
       border: none;
-      padding: 10px;
-      border-radius: 6px;
+      padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.2s ease;
     }
-    .nav-trigger:hover { background: #000000; }
     .dots-grid {
       display: grid;
       grid-template-columns: 5px 5px;
@@ -178,9 +156,7 @@
       width: 5px;
       height: 5px;
       background: #000000;
-      transition: background 0.2s ease;
     }
-    .nav-trigger:hover .dots-grid .dot { background: #ffffff; }
 
     /* ── HERO ── */
     #hero {
@@ -598,19 +574,12 @@
   <!-- ── NAV ── -->
   <nav id="mainNav">
     <a href="#" class="nav-logo">H.Stratev</a>
-    <div class="nav-right">
-      <div class="nav-links">
-        <a href="#work">Works</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </div>
-      <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
-        <span class="dots-grid">
-          <span class="dot"></span><span class="dot"></span>
-          <span class="dot"></span><span class="dot"></span>
-        </span>
-      </button>
-    </div>
+    <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
+      <span class="dots-grid">
+        <span class="dot"></span><span class="dot"></span>
+        <span class="dot"></span><span class="dot"></span>
+      </span>
+    </button>
   </nav>
 
   <!-- ── HERO ── -->
