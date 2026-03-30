@@ -14,7 +14,6 @@
     body.no-scroll { overflow: hidden; }
     body, body * { cursor: none; }
     a { color: inherit; text-decoration: none; }
-    img { display: block; width: 100%; object-fit: cover; }
 
     /* Cursor */
     #cursor { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; mix-blend-mode: difference; pointer-events: none; z-index: 10000; top: 0; left: 0; transform: translate(-50%,-50%); will-change: transform; }
@@ -35,52 +34,102 @@
     .mo-nav a:hover { color: #888888; }
 
     /* Nav */
-    #mainNav { position: static;  z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
+    #mainNav { position: static; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
     .nav-logo { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; color: #000000; font-family: 'Inter', sans-serif; }
     .nav-trigger { background: none; border: none; padding: 0; display: flex; align-items: center; justify-content: center; }
     .dots-grid { display: grid; grid-template-columns: 5px 5px; grid-template-rows: 5px 5px; gap: 9px; width: 19px; height: 19px; }
     .dots-grid .dot { width: 5px; height: 5px; background: #000000; }
 
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
+    /* Project content — new layout */
+    .proj-wrap {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0;
+    }
 
-    /* Project hero */
-    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
-    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
-    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
-    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
-    .meta-row { display: flex; flex-direction: column; gap: 2px; }
-    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
-    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
-    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+    .proj-sec-title {
+      font-size: 30px;
+      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+      letter-spacing: -0.5px;
+      margin: 0 0 20px;
+    }
 
-    /* Project body */
-    .proj-body { padding: 80px 80px 60px; }
-    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .sec-label-row { display: flex; align-items: center; gap: 12px; }
-    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
-    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
-    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
-    .pill-btn:hover { background: #e0e0e0; }
-    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
+    .proj-body {
+      font-size: 20px;
+      font-weight: 400;
+      font-family: 'Inter', sans-serif;
+      color: #999999;
+      line-height: 1.7;
+      margin: 0 0 24px;
+    }
 
-    /* Gallery grid */
-    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
-    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
-    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
+    .proj-img-full {
+      width: 100%;
+      display: block;
+      margin: 60px 0;
+    }
+    .proj-img-full img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
 
-    /* Video embeds */
-    .proj-videos { display: flex; flex-direction: column; gap: 16px; margin-bottom: 60px; }
-    .video-item { width: 100%; }
-    .video-label { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.8px; color: #888888; margin-bottom: 10px; }
-    .video-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #111; border-radius: 4px; overflow: hidden; }
-    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+    .proj-video {
+      width: 100%;
+      aspect-ratio: 16/9;
+      margin: 40px 0;
+    }
+    .proj-video iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
 
-    /* Next project */
-    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
-    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
-    .next-link:hover { opacity: 0.5; }
+    .proj-video-caption {
+      font-size: 13px;
+      font-weight: 400;
+      color: #999999;
+      margin: 8px 0 0;
+    }
+
+    .proj-meta {
+      display: flex;
+      gap: 80px;
+      margin: 40px 0 60px;
+    }
+    .proj-meta-item label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999999;
+      margin-bottom: 6px;
+    }
+    .proj-meta-item span {
+      font-size: 16px;
+      font-weight: 400;
+      color: #000000;
+    }
+
+    .proj-section {
+      margin: 80px 0;
+    }
+
+    .back-top {
+      text-align: center;
+      padding: 60px 0;
+      font-size: 16px;
+      font-weight: 400;
+      color: #999999;
+    }
+    .back-top a {
+      color: #999999;
+      text-decoration: none;
+    }
 
     /* Mobile */
     @media (max-width: 768px) {
@@ -90,15 +139,7 @@
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-top { padding-left: 0; padding-right: 0; }
       .mo-nav a { font-size: 32px; }
-      .proj-hero { flex-direction: column; min-height: auto; }
-      .proj-hero-img { width: 100%; height: 60vw; }
-      .proj-hero-right { padding: 32px 24px; }
-      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
-      .proj-body { padding: 48px 24px 40px; }
-      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .sec-label { font-size: 22px; }
-      .next-project { padding: 48px 24px; }
-      .next-link { font-size: 28px; }
+      .proj-meta { flex-wrap: wrap; gap: 32px; }
     }
   </style>
 </head>
@@ -130,102 +171,104 @@
   </button>
 </nav>
 
-<!-- Hero -->
-<section class="proj-hero">
-  <img
-    class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3d41b163-2b01-4846-83ed-f055e0b03567_rw_1920.jpg?h=289d52c4c33c4469fd71f21f359c86dc"
-    alt="Hummer EV"
-  />
-  <div class="proj-hero-right reveal">
-    <div class="proj-meta">
-      <div class="meta-row">
-        <span class="meta-label">Industry</span>
-        <span class="meta-value">Automotive HMI</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Client</span>
-        <span class="meta-value">General Motors</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">2024</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Project Lead — UI/UX, Motion Graphics</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Award</span>
-        <span class="meta-value">Wards 2023 Best EV UX Design</span>
-      </div>
-    </div>
-    <h1 class="proj-title">Hummer EV</h1>
+<!-- HERO -->
+<section class="proj-hero-section" style="padding: 80px 36px 0; max-width: 800px; margin: 0 auto;">
+  <h1 style="font-size:60px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:-3px;line-height:1;color:#000;margin:0 0 32px;">Hummer EV</h1>
+  <p class="proj-body">For this project we have partnered with the New York based design firm Perception and General Motors to create the complete user experience and interface for the First all electric super truck - Hummer EV. My responsibilities as a Design Project Lead stretched across all areas of the program development lifecycle - UI, UX, Motion design, Real Time graphics integration, Customer reviews, Internal program planning and coordination with all stakeholders. Due to Non Disclosure Agreement, I am not able to show all details related to the project.</p>
+  <div class="proj-meta">
+    <div class="proj-meta-item"><label>Role</label><span>UI/UX Lead</span></div>
+    <div class="proj-meta-item"><label>Client</label><span>General Motors</span></div>
+    <div class="proj-meta-item"><label>Year</label><span>2024</span></div>
+    <div class="proj-meta-item"><label>Industry</label><span>Automotive</span></div>
   </div>
 </section>
 
-<!-- Body -->
-<section class="proj-body">
-  <div class="proj-sec-head reveal">
-    <div class="sec-label-row">
-      <span class="sec-dot"></span>
-      <span class="sec-label">about.</span>
-    </div>
-    <a href="https://hstratev.com/hummer-ev" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
-  </div>
-  <p class="proj-description reveal">
-    For this project we partnered with the New York based design firm Perception and General Motors to create the complete user experience and interface for the first all-electric super truck — Hummer EV. My responsibilities as Design Project Lead stretched across all areas of the program: UI, UX, Motion design, Real Time graphics integration, customer reviews, and internal planning. Due to NDA, I am not able to show all details.
-  </p>
-  <div class="proj-gallery reveal">
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/dabe3156-c040-4849-ac05-df5bb3dfe3f8_rw_3840.png?h=8faaf17032c6b4b799d0b0a9b5131b19" alt="Hummer EV 1" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a3f6ddae-002e-4f0c-b782-7082758ee3d5_rw_1920.PNG?h=aa6cde2d22573fe52731c6f0fbbbac12" alt="Hummer EV 2" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/72a7838c-dc29-4001-9a14-43dcbfb90eba_rw_1920.png?h=cbbde91dd0b0e574382294e5be31d0a3" alt="Hummer EV 3" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/5fdc2be8-720d-4bb3-bcc9-4b685f1e895e.png?h=e08d95d047f2ec94afdc360c87bb0b1e" alt="Hummer EV 4" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a705a359-e1a4-4f68-97a5-d4912a88a4e2_rw_1920.jpg?h=6bf181849142fb4cef8f426b3dd0a20a" alt="Hummer EV 5" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/24a60542-4c63-4dc4-a077-184099b3d047_rw_1920.png?h=1b4ebe985fe5bf1e94a6c426541a040b" alt="Hummer EV 6" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/087c94dd-4a04-4765-b5b5-c129ff90b765_rw_1920.jpg?h=bfc92c67e10735bc7e66a3b807158dff" alt="Hummer EV 7" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/eec7eac1-4ef6-407d-8054-51b81b595cff_rw_1920.jpg?h=3d5c302a9a345b8346a7aec4c3d759a6" alt="Hummer EV 8" />
-  </div>
-  <div class="proj-videos">
-    <div class="video-item reveal">
-      <div class="video-wrap">
-        <iframe src="https://www-ccv.adobe.io/v1/player/ccv/VsckutjyAqe/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
-      </div>
-    </div>
-    <div class="video-item reveal">
-      <div class="video-wrap">
-        <iframe src="https://www-ccv.adobe.io/v1/player/ccv/8QZStRzy6eR/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
-      </div>
-    </div>
-    <div class="video-item reveal">
-      <div class="video-wrap">
-        <iframe src="https://www-ccv.adobe.io/v1/player/ccv/PGYT_I3T4xt/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
-      </div>
-    </div>
-    <div class="video-item reveal">
-      <div class="video-wrap">
-        <iframe src="https://www-ccv.adobe.io/v1/player/ccv/MEisI78bXTz/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
-      </div>
-    </div>
-    <div class="video-item reveal">
-      <p class="video-label">General Motors — Hummer EV Trailer</p>
-      <div class="video-wrap">
-        <iframe src="https://www-ccv.adobe.io/v1/player/ccv/3wIAkQEQzFA/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
-      </div>
-    </div>
-    <div class="video-item reveal">
-      <p class="video-label">Hummer EV — LeBron Commercial</p>
-      <div class="video-wrap">
-        <iframe src="https://www-ccv.adobe.io/v1/player/ccv/P96AGiYKeAV/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Next Project -->
-<div class="next-project reveal">
-  <a href="frontier.html" class="next-link">Frontier &nbsp;→</a>
+<!-- FULL-WIDTH HERO IMAGE -->
+<div class="proj-img-full">
+  <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3d41b163-2b01-4846-83ed-f055e0b03567_rw_1920.jpg?h=289d52c4c33c4469fd71f21f359c86dc" alt="Hummer EV">
 </div>
+
+<!-- SECTION: Target Groups & UX Challenge -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Target Groups & UX Challenge</h2>
+    <p class="proj-body">Designing the user experience (UX) for the Hummer EV posed a unique challenge: marrying a sci-fi, futuristic feel with addressing the specific concerns of General Motors' existing user base. This required a delicate balance between catering to the expectations of two distinct groups.</p>
+    <p class="proj-body">Firstly, there were the new Hummer EV users and buyers, who were seeking a futuristic, almost sci-fi-like driving experience. For this group, the focus was on infusing the UX with elements of luxury and excitement, transforming the act of driving into a captivating, high-tech adventure.</p>
+    <p class="proj-body">On the flip side, there were the loyal, existing Hummer users, typically from an older generation, who cherished the rugged, military-like aura of the traditional Hummer. These users held a preference for the robust off-road capabilities that defined the Hummer brand.</p>
+    <p class="proj-body">In essence, the task was to create a seamless UX that bridged the gap between these two disparate user groups, incorporating futuristic, sci-fi elements for the new enthusiasts while retaining the rugged, off-road appeal for the traditionalists.</p>
+  </div>
+</div>
+
+<!-- SECTION: Wireframes and User Flow -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Wireframes and User Flow</h2>
+    <p class="proj-body">These use cases were intricately designed to cover every conceivable interaction a user might have with the system. They served as a comprehensive guide, mapping out various functionalities and user journeys within the project.</p>
+  </div>
+</div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/dabe3156-c040-4849-ac05-df5bb3dfe3f8_rw_3840.png?h=8faaf17032c6b4b799d0b0a9b5131b19" alt="Wireframes"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a3f6ddae-002e-4f0c-b782-7082758ee3d5_rw_1920.PNG?h=aa6cde2d22573fe52731c6f0fbbbac12" alt="User Flow"></div>
+
+<!-- SECTION: Key Features - Day/Night -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Key Features - Day/Night</h2>
+    <p class="proj-body">In the Hummer EV, the instrument cluster takes center stage, offering the driver an unparalleled experience characterized by cinematic-quality graphics and capabilities that have redefined the automotive industry.</p>
+    <p class="proj-body">A pivotal aspect of this project is the incorporation of a Day and Night mode, a feature that extends across all graphics and animations within the instrument cluster.</p>
+  </div>
+</div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/72a7838c-dc29-4001-9a14-43dcbfb90eba_rw_1920.png?h=cbbde91dd0b0e574382294e5be31d0a3" alt="Day Mode"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/5fdc2be8-720d-4bb3-bcc9-4b685f1e895e.png?h=e08d95d047f2ec94afdc360c87bb0b1e" alt="Night Mode"></div>
+
+<!-- SECTION: Motion and Interaction Design -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Motion and Interaction Design</h2>
+    <div class="proj-video">
+      <iframe src="https://www-ccv.adobe.io/v1/player/ccv/VsckutjyAqe/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
+    </div>
+    <div class="proj-video">
+      <iframe src="https://www-ccv.adobe.io/v1/player/ccv/8QZStRzy6eR/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
+    </div>
+    <div class="proj-video">
+      <iframe src="https://www-ccv.adobe.io/v1/player/ccv/PGYT_I3T4xt/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
+    </div>
+    <div class="proj-video">
+      <iframe src="https://www-ccv.adobe.io/v1/player/ccv/MEisI78bXTz/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
+    </div>
+    <div class="proj-video">
+      <iframe src="https://www-ccv.adobe.io/v1/player/ccv/3wIAkQEQzFA/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
+      <p class="proj-video-caption">General Motors — Hummer EV Trailer</p>
+    </div>
+    <div class="proj-video">
+      <iframe src="https://www-ccv.adobe.io/v1/player/ccv/P96AGiYKeAV/embed?bgcolor=%23191919&lazyLoading=true" allowfullscreen></iframe>
+      <p class="proj-video-caption">Hummer EV — LeBron Commercial</p>
+    </div>
+  </div>
+</div>
+
+<!-- SECTION: Final Design -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Final Design</h2>
+    <p class="proj-body">Selecting just a few screenshots from the extensive array of over 600 unique use cases and functionalities within the Hummer EV's user experience posed a considerable challenge.</p>
+    <p class="proj-body">Notably, the Hummer EV's UX boasted six distinct theme layouts, each designed to cater to different user preferences and moods. The seamless transition between day and night versions elevated the experience further.</p>
+  </div>
+</div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a705a359-e1a4-4f68-97a5-d4912a88a4e2_rw_1920.jpg?h=6bf181849142fb4cef8f426b3dd0a20a" alt="Final Design 1"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/24a60542-4c63-4dc4-a077-184099b3d047_rw_1920.png?h=1b4ebe985fe5bf1e94a6c426541a040b" alt="Final Design 2"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/087c94dd-4a04-4765-b5b5-c129ff90b765_rw_1920.jpg?h=bfc92c67e10735bc7e66a3b807158dff" alt="Final Design 3"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/eec7eac1-4ef6-407d-8054-51b81b595cff_rw_1920.jpg?h=3d5c302a9a345b8346a7aec4c3d759a6" alt="Final Design 4"></div>
+
+<!-- SECTION: Conclusion -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Conclusion</h2>
+    <p class="proj-body">The project spanned an impressive 16-month duration, from the initial stages of concept development to the final implementation and commencement of production.</p>
+  </div>
+</div>
+
+<div class="back-top"><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Back to Top</a></div>
 
 <script>
   const cur = document.getElementById('cursor');
@@ -236,9 +279,6 @@
   function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
-  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
 </script>
 </body>
 </html>

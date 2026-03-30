@@ -14,13 +14,10 @@
     body.no-scroll { overflow: hidden; }
     body, body * { cursor: none; }
     a { color: inherit; text-decoration: none; }
-    img { display: block; width: 100%; object-fit: cover; }
 
-    /* Cursor */
     #cursor { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; mix-blend-mode: difference; pointer-events: none; z-index: 10000; top: 0; left: 0; transform: translate(-50%,-50%); will-change: transform; }
     #cursor.hover { width: 40px; height: 40px; }
 
-    /* Menu overlay */
     #menuOverlay { position: static; inset: 0; background: #000000; z-index: 500; display: flex; flex-direction: column; padding: 0 36px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
     #menuOverlay.open { opacity: 1; pointer-events: all; }
     .mo-top { height: 93px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -28,54 +25,43 @@
     .mo-close { font-size: 20px; font-weight: 400; color: #ffffff; background: none; border: none; font-family: 'Inter', sans-serif; }
     .mo-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .mo-nav a { font-size: 96px; font-weight: 600; letter-spacing: -2px; line-height: 1.15; color: #ffffff; display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), color 0.2s ease; }
-    .mo-nav a:first-child { }
     #menuOverlay.open .mo-nav a:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.05s; }
     #menuOverlay.open .mo-nav a:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.10s; }
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    /* Nav */
-    #mainNav { position: static;  z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
+    #mainNav { position: static; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
     .nav-logo { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; color: #000000; font-family: 'Inter', sans-serif; }
     .nav-trigger { background: none; border: none; padding: 0; display: flex; align-items: center; justify-content: center; }
     .dots-grid { display: grid; grid-template-columns: 5px 5px; grid-template-rows: 5px 5px; gap: 9px; width: 19px; height: 19px; }
     .dots-grid .dot { width: 5px; height: 5px; background: #000000; }
 
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
+    .proj-wrap { max-width: 800px; margin: 0 auto; padding: 0; }
+    .proj-sec-title { font-size: 30px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.5px; margin: 0 0 20px; }
+    .proj-body-text { font-size: 20px; font-weight: 400; font-family: 'Inter', sans-serif; color: #999999; line-height: 1.7; margin: 0 0 24px; }
+    .proj-img-full { width: 100%; display: block; margin: 60px 0; }
+    .proj-img-full img { width: 100%; display: block; object-fit: cover; }
+    .proj-meta { display: flex; gap: 80px; margin: 40px 0 60px; flex-wrap: wrap; }
+    .proj-meta-item label { display: block; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: #999999; margin-bottom: 6px; }
+    .proj-meta-item span { font-size: 16px; font-weight: 400; color: #000000; }
+    .proj-section { margin: 80px 0; }
+    .back-top { text-align: center; padding: 60px 0; font-size: 16px; font-weight: 400; color: #999999; }
+    .back-top a { color: #999999; text-decoration: none; }
 
-    /* Project hero */
-    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
-    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
-    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
-    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
-    .meta-row { display: flex; flex-direction: column; gap: 2px; }
-    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
-    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
-    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+    #pwGate { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+    .pw-box { display: flex; flex-direction: column; align-items: flex-start; gap: 0; max-width: 480px; width: 100%; padding: 0 40px; }
+    .pw-logo { font-size: 16px; font-weight: 700; letter-spacing: -0.5px; color: #000000; margin: 0 0 48px; }
+    .pw-title { font-size: 48px; font-weight: 600; letter-spacing: -2.4px; line-height: 1; color: #000000; margin: 0 0 12px; }
+    .pw-subtitle { font-size: 16px; font-weight: 400; color: #888888; margin: 0 0 40px; }
+    .pw-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+    .pw-form input { width: 100%; font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; background: transparent; border: none; border-bottom: 1px solid #000000; padding: 12px 0; outline: none; letter-spacing: -0.3px; box-sizing: border-box; }
+    .pw-form input::placeholder { color: #aaaaaa; }
+    .pw-form input.shake { animation: shake 0.4s ease; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+    .pw-form button { align-self: flex-start; margin-top: 8px; font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #ffffff; background: #000000; border: none; border-radius: 100px; padding: 14px 32px; cursor: none; transition: opacity 0.2s ease; letter-spacing: -0.3px; }
+    .pw-form button:hover { opacity: 0.75; }
+    .pw-error { font-size: 14px; color: #cc0000; margin: 8px 0 0; display: none; }
 
-    /* Project body */
-    .proj-body { padding: 80px 80px 60px; }
-    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .sec-label-row { display: flex; align-items: center; gap: 12px; }
-    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
-    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
-    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
-    .pill-btn:hover { background: #e0e0e0; }
-    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
-
-    /* Gallery grid */
-    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
-    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
-    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
-
-    /* Next project */
-    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
-    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
-    .next-link:hover { opacity: 0.5; }
-
-    /* Mobile */
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
       #cursor { display: none; }
@@ -83,110 +69,7 @@
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-top { padding-left: 0; padding-right: 0; }
       .mo-nav a { font-size: 32px; }
-      .proj-hero { flex-direction: column; min-height: auto; }
-      .proj-hero-img { width: 100%; height: 60vw; }
-      .proj-hero-right { padding: 32px 24px; }
-      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
-      .proj-body { padding: 48px 24px 40px; }
-      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .sec-label { font-size: 22px; }
-      .next-project { padding: 48px 24px; }
-      .next-link { font-size: 28px; }
-    }
-
-    /* ── PASSWORD GATE ── */
-    #pwGate {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-    }
-    .pw-box {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-      max-width: 480px;
-      width: 100%;
-      padding: 0 40px;
-    }
-    .pw-logo {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #000000;
-      margin: 0 0 48px;
-    }
-    .pw-title {
-      font-size: 48px;
-      font-weight: 600;
-      letter-spacing: -2.4px;
-      line-height: 1;
-      color: #000000;
-      margin: 0 0 12px;
-    }
-    .pw-subtitle {
-      font-size: 16px;
-      font-weight: 400;
-      color: #888888;
-      margin: 0 0 40px;
-    }
-    .pw-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-    }
-    .pw-form input {
-      width: 100%;
-      font-size: 16px;
-      font-weight: 400;
-      font-family: 'Inter', sans-serif;
-      color: #000000;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #000000;
-      padding: 12px 0;
-      outline: none;
-      letter-spacing: -0.3px;
-      box-sizing: border-box;
-    }
-    .pw-form input::placeholder { color: #aaaaaa; }
-    .pw-form input.shake {
-      animation: shake 0.4s ease;
-    }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      20% { transform: translateX(-8px); }
-      40% { transform: translateX(8px); }
-      60% { transform: translateX(-6px); }
-      80% { transform: translateX(6px); }
-    }
-    .pw-form button {
-      align-self: flex-start;
-      margin-top: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      color: #ffffff;
-      background: #000000;
-      border: none;
-      border-radius: 100px;
-      padding: 14px 32px;
-      cursor: none;
-      transition: opacity 0.2s ease;
-      letter-spacing: -0.3px;
-    }
-    .pw-form button:hover { opacity: 0.75; }
-    .pw-error {
-      font-size: 14px;
-      color: #cc0000;
-      margin: 8px 0 0;
-      display: none;
+      .proj-meta { gap: 32px; }
     }
   </style>
 </head>
@@ -233,62 +116,38 @@
 </nav>
 
 <!-- Hero -->
-<section class="proj-hero">
-  <img
-    class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/098260ce-4cc6-4888-8c72-f07eceb123fa_rw_3840.jpg?h=ca7179c20b21abc18684a1f49b647b77"
-    alt="CognitoAI"
-  />
-  <div class="proj-hero-right reveal">
-    <div class="proj-meta">
-      <div class="meta-row">
-        <span class="meta-label">Industry</span>
-        <span class="meta-value">Artificial Intelligence</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Client</span>
-        <span class="meta-value">CES / Qualcomm</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">2025</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Product Design Lead</span>
-      </div>
-    </div>
-    <h1 class="proj-title">CognitoAI</h1>
+<section style="padding: 80px 36px 0; max-width: 800px; margin: 0 auto;">
+  <h1 style="font-size:60px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:-3px;line-height:1;color:#000;margin:0 0 32px;">CognitoAI</h1>
+  <p class="proj-body-text">Cognito AI is the first comprehensive intelligent vehicle assistant on device integration, featuring dynamic visuals and responsive 3D avatars. It integrates Llama v3.2 and Qwen2.5 as foundation models, along with an Avatar Framework, speech models, voice-to-text, reasoning, and planning. This enables smart diagnostics, seamless navigation, and task planning, making this product a proactive and intelligent partner that anticipates needs and adapts in real-time. Due to Non Disclosure Agreement, I am not able to show all details related to the project.</p>
+  <div class="proj-meta">
+    <div class="proj-meta-item"><label>Role</label><span>Product Design Lead</span></div>
+    <div class="proj-meta-item"><label>Client</label><span>CES / Qualcomm</span></div>
+    <div class="proj-meta-item"><label>Year</label><span>2025</span></div>
+    <div class="proj-meta-item"><label>Industry</label><span>Artificial Intelligence</span></div>
   </div>
 </section>
 
-<!-- Body -->
-<section class="proj-body">
-  <div class="proj-sec-head reveal">
-    <div class="sec-label-row">
-      <span class="sec-dot"></span>
-      <span class="sec-label">about.</span>
-    </div>
-    <a href="https://hstratev.com/copy-of-hummer-ev" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
-  </div>
-  <p class="proj-description reveal">
-    Cognito AI is the first comprehensive intelligent vehicle assistant on device integration, featuring dynamic visuals and responsive 3D avatars. It integrates Llama v3.2 and Qwen2.5 as foundation models, along with an Avatar Framework, speech models, voice-to-text, reasoning, and planning. This enables smart diagnostics, seamless navigation, and task planning, making this product a proactive and intelligent partner that anticipates needs and adapts in real-time.
-  </p>
-  <div class="proj-gallery reveal">
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/9149e196-e52e-4922-b205-b7fe764b7729_rw_3840.png?h=818bec7cdd76d05bbb994bcc5c909d69" alt="CognitoAI 1" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0b0af909-2f11-4acc-b1ef-6bc82e902e41_rw_3840.png?h=999ac8c864f4560c25a0603c07c08f1a" alt="CognitoAI 2" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/ab0000ca-d2cc-45b7-a675-4367a63df3b7_rw_3840.png?h=c1fb127cc8964e242b57e2951ef08f82" alt="CognitoAI 3" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/14849525-b42e-477b-902e-027d073f64f9.png?h=0882f854aa7069c794ea43be40d6adfb" alt="CognitoAI 4" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e6f36a34-947a-4014-988d-aa44c004c84a_rw_3840.png?h=20928ba50a402ecd1a70fdd70ecf9bdf" alt="CognitoAI 5" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/2bf55d5d-6b03-4bc1-97fd-bd458a1a1535_rw_3840.png?h=5e214281a2518127dca8f27824552ae2" alt="CognitoAI 6" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3b019bc2-d076-46cf-9e5d-498750a5c65e.JPG?h=a1d03ae9fd928e79d30c1e5b89f1f6de" alt="CognitoAI 7" />
-  </div>
-</section>
-
-<!-- Next Project -->
-<div class="next-project reveal">
-  <a href="hummer-ev.html" class="next-link">Hummer EV &nbsp;→</a>
+<!-- Hero Image -->
+<div class="proj-img-full">
+  <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/098260ce-4cc6-4888-8c72-f07eceb123fa_rw_3840.jpg?h=ca7179c20b21abc18684a1f49b647b77" alt="CognitoAI Hero">
 </div>
+
+<!-- Section: Design Gallery -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Design Gallery</h2>
+  </div>
+</div>
+
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/9149e196-e52e-4922-b205-b7fe764b7729_rw_3840.png?h=818bec7cdd76d05bbb994bcc5c909d69" alt="CognitoAI 1"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0b0af909-2f11-4acc-b1ef-6bc82e902e41_rw_3840.png?h=999ac8c864f4560c25a0603c07c08f1a" alt="CognitoAI 2"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/ab0000ca-d2cc-45b7-a675-4367a63df3b7_rw_3840.png?h=c1fb127cc8964e242b57e2951ef08f82" alt="CognitoAI 3"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/14849525-b42e-477b-902e-027d073f64f9.png?h=0882f854aa7069c794ea43be40d6adfb" alt="CognitoAI 4"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e6f36a34-947a-4014-988d-aa44c004c84a_rw_3840.png?h=20928ba50a402ecd1a70fdd70ecf9bdf" alt="CognitoAI 5"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/2bf55d5d-6b03-4bc1-97fd-bd458a1a1535_rw_3840.png?h=5e214281a2518127dca8f27824552ae2" alt="CognitoAI 6"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3b019bc2-d076-46cf-9e5d-498750a5c65e.JPG?h=a1d03ae9fd928e79d30c1e5b89f1f6de" alt="CognitoAI 7"></div>
+
+<div class="back-top"><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Back to Top</a></div>
 
 <script>
   const cur = document.getElementById('cursor');
@@ -299,10 +158,7 @@
   function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
-  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // ── PASSWORD GATE ──
   (function() {
     if (sessionStorage.getItem('projAuth') === '1') {
       const gate = document.getElementById('pwGate');
@@ -322,7 +178,7 @@
       setTimeout(() => gate.style.display = 'none', 400);
     } else {
       input.classList.remove('shake');
-      void input.offsetWidth; // reflow
+      void input.offsetWidth;
       input.classList.add('shake');
       input.value = '';
       error.style.display = 'block';

@@ -14,13 +14,10 @@
     body.no-scroll { overflow: hidden; }
     body, body * { cursor: none; }
     a { color: inherit; text-decoration: none; }
-    img { display: block; width: 100%; object-fit: cover; }
 
-    /* Cursor */
     #cursor { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; mix-blend-mode: difference; pointer-events: none; z-index: 10000; top: 0; left: 0; transform: translate(-50%,-50%); will-change: transform; }
     #cursor.hover { width: 40px; height: 40px; }
 
-    /* Menu overlay */
     #menuOverlay { position: static; inset: 0; background: #000000; z-index: 500; display: flex; flex-direction: column; padding: 0 36px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
     #menuOverlay.open { opacity: 1; pointer-events: all; }
     .mo-top { height: 93px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -28,54 +25,43 @@
     .mo-close { font-size: 20px; font-weight: 400; color: #ffffff; background: none; border: none; font-family: 'Inter', sans-serif; }
     .mo-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .mo-nav a { font-size: 96px; font-weight: 600; letter-spacing: -2px; line-height: 1.15; color: #ffffff; display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), color 0.2s ease; }
-    .mo-nav a:first-child { }
     #menuOverlay.open .mo-nav a:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.05s; }
     #menuOverlay.open .mo-nav a:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.10s; }
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    /* Nav */
-    #mainNav { position: static;  z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
+    #mainNav { position: static; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
     .nav-logo { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; color: #000000; font-family: 'Inter', sans-serif; }
     .nav-trigger { background: none; border: none; padding: 0; display: flex; align-items: center; justify-content: center; }
     .dots-grid { display: grid; grid-template-columns: 5px 5px; grid-template-rows: 5px 5px; gap: 9px; width: 19px; height: 19px; }
     .dots-grid .dot { width: 5px; height: 5px; background: #000000; }
 
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
+    .proj-wrap { max-width: 800px; margin: 0 auto; padding: 0; }
+    .proj-sec-title { font-size: 30px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.5px; margin: 0 0 20px; }
+    .proj-body-text { font-size: 20px; font-weight: 400; font-family: 'Inter', sans-serif; color: #999999; line-height: 1.7; margin: 0 0 24px; }
+    .proj-img-full { width: 100%; display: block; margin: 60px 0; }
+    .proj-img-full img { width: 100%; display: block; object-fit: cover; }
+    .proj-meta { display: flex; gap: 80px; margin: 40px 0 60px; flex-wrap: wrap; }
+    .proj-meta-item label { display: block; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: #999999; margin-bottom: 6px; }
+    .proj-meta-item span { font-size: 16px; font-weight: 400; color: #000000; }
+    .proj-section { margin: 80px 0; }
+    .back-top { text-align: center; padding: 60px 0; font-size: 16px; font-weight: 400; color: #999999; }
+    .back-top a { color: #999999; text-decoration: none; }
 
-    /* Project hero */
-    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
-    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
-    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
-    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
-    .meta-row { display: flex; flex-direction: column; gap: 2px; }
-    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
-    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
-    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+    #pwGate { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+    .pw-box { display: flex; flex-direction: column; align-items: flex-start; gap: 0; max-width: 480px; width: 100%; padding: 0 40px; }
+    .pw-logo { font-size: 16px; font-weight: 700; letter-spacing: -0.5px; color: #000000; margin: 0 0 48px; }
+    .pw-title { font-size: 48px; font-weight: 600; letter-spacing: -2.4px; line-height: 1; color: #000000; margin: 0 0 12px; }
+    .pw-subtitle { font-size: 16px; font-weight: 400; color: #888888; margin: 0 0 40px; }
+    .pw-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+    .pw-form input { width: 100%; font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; background: transparent; border: none; border-bottom: 1px solid #000000; padding: 12px 0; outline: none; letter-spacing: -0.3px; box-sizing: border-box; }
+    .pw-form input::placeholder { color: #aaaaaa; }
+    .pw-form input.shake { animation: shake 0.4s ease; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+    .pw-form button { align-self: flex-start; margin-top: 8px; font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #ffffff; background: #000000; border: none; border-radius: 100px; padding: 14px 32px; cursor: none; transition: opacity 0.2s ease; letter-spacing: -0.3px; }
+    .pw-form button:hover { opacity: 0.75; }
+    .pw-error { font-size: 14px; color: #cc0000; margin: 8px 0 0; display: none; }
 
-    /* Project body */
-    .proj-body { padding: 80px 80px 60px; }
-    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .sec-label-row { display: flex; align-items: center; gap: 12px; }
-    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
-    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
-    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
-    .pill-btn:hover { background: #e0e0e0; }
-    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
-
-    /* Gallery grid */
-    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
-    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
-    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
-
-    /* Next project */
-    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
-    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
-    .next-link:hover { opacity: 0.5; }
-
-    /* Mobile */
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
       #cursor { display: none; }
@@ -83,110 +69,7 @@
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-top { padding-left: 0; padding-right: 0; }
       .mo-nav a { font-size: 32px; }
-      .proj-hero { flex-direction: column; min-height: auto; }
-      .proj-hero-img { width: 100%; height: 60vw; }
-      .proj-hero-right { padding: 32px 24px; }
-      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
-      .proj-body { padding: 48px 24px 40px; }
-      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .sec-label { font-size: 22px; }
-      .next-project { padding: 48px 24px; }
-      .next-link { font-size: 28px; }
-    }
-
-    /* ── PASSWORD GATE ── */
-    #pwGate {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-    }
-    .pw-box {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-      max-width: 480px;
-      width: 100%;
-      padding: 0 40px;
-    }
-    .pw-logo {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #000000;
-      margin: 0 0 48px;
-    }
-    .pw-title {
-      font-size: 48px;
-      font-weight: 600;
-      letter-spacing: -2.4px;
-      line-height: 1;
-      color: #000000;
-      margin: 0 0 12px;
-    }
-    .pw-subtitle {
-      font-size: 16px;
-      font-weight: 400;
-      color: #888888;
-      margin: 0 0 40px;
-    }
-    .pw-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-    }
-    .pw-form input {
-      width: 100%;
-      font-size: 16px;
-      font-weight: 400;
-      font-family: 'Inter', sans-serif;
-      color: #000000;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #000000;
-      padding: 12px 0;
-      outline: none;
-      letter-spacing: -0.3px;
-      box-sizing: border-box;
-    }
-    .pw-form input::placeholder { color: #aaaaaa; }
-    .pw-form input.shake {
-      animation: shake 0.4s ease;
-    }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      20% { transform: translateX(-8px); }
-      40% { transform: translateX(8px); }
-      60% { transform: translateX(-6px); }
-      80% { transform: translateX(6px); }
-    }
-    .pw-form button {
-      align-self: flex-start;
-      margin-top: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      color: #ffffff;
-      background: #000000;
-      border: none;
-      border-radius: 100px;
-      padding: 14px 32px;
-      cursor: none;
-      transition: opacity 0.2s ease;
-      letter-spacing: -0.3px;
-    }
-    .pw-form button:hover { opacity: 0.75; }
-    .pw-error {
-      font-size: 14px;
-      color: #cc0000;
-      margin: 8px 0 0;
-      display: none;
+      .proj-meta { gap: 32px; }
     }
   </style>
 </head>
@@ -233,63 +116,39 @@
 </nav>
 
 <!-- Hero -->
-<section class="proj-hero">
-  <img
-    class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f33a92c8-fc81-4846-89de-fc97e901a2d9_rw_1920.png?h=e36e766188482aa3caf313af234811cb"
-    alt="Frontier"
-  />
-  <div class="proj-hero-right reveal">
-    <div class="proj-meta">
-      <div class="meta-row">
-        <span class="meta-label">Industry</span>
-        <span class="meta-value">Software / App Store</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Client</span>
-        <span class="meta-value">Internal</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">2023</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Project Lead — UI/UX</span>
-      </div>
-    </div>
-    <h1 class="proj-title">Frontier</h1>
+<section style="padding: 80px 36px 0; max-width: 800px; margin: 0 auto;">
+  <h1 style="font-size:60px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:-3px;line-height:1;color:#000;margin:0 0 32px;">Frontier</h1>
+  <p class="proj-body-text">Frontier is a versatile multi-device App designed to streamline the installation, removal, and personalisation of software applications across various platforms. It guarantees a secure and consistent user experience while automating these processes. Due to NDA, I am not able to show all details related to the project.</p>
+  <div class="proj-meta">
+    <div class="proj-meta-item"><label>Role</label><span>Project Lead — UI/UX</span></div>
+    <div class="proj-meta-item"><label>Client</label><span>Internal</span></div>
+    <div class="proj-meta-item"><label>Year</label><span>2023</span></div>
+    <div class="proj-meta-item"><label>Industry</label><span>Software / App Store</span></div>
   </div>
 </section>
 
-<!-- Body -->
-<section class="proj-body">
-  <div class="proj-sec-head reveal">
-    <div class="sec-label-row">
-      <span class="sec-dot"></span>
-      <span class="sec-label">about.</span>
-    </div>
-    <a href="https://hstratev.com/frontier" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
-  </div>
-  <p class="proj-description reveal">
-    Frontier is a versatile multi-device App designed to streamline the installation, removal, and personalisation of software applications across various platforms. It guarantees a secure and consistent user experience while automating these processes. Due to NDA, I am not able to show all details related to the project.
-  </p>
-  <div class="proj-gallery reveal">
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e77d2c40-ea14-4ef3-a676-07faa437db1a_rw_1920.PNG?h=c4aaf81434744a6447ffad272938b208" alt="Frontier 1" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e66f6067-76fd-4083-a3b8-b918060eb60a_rw_1920.PNG?h=93241476dcba6a70a2a81dac6335f374" alt="Frontier 2" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/94be3041-e99d-4cc4-9cb4-fae9825f372e_rw_3840.png?h=f5069d44f91377e0d3f56e37c79f9f70" alt="Frontier 3" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/10ff26b8-95f7-4b0e-9c31-77aaa4836856.png?h=afebbfefb3edf0536f0d3d2762d03e46" alt="Frontier 4" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/8f3f8899-e5ea-4948-85ac-3c99c4365f18_rw_1920.gif?h=906173725e59da8cb65828b61cf99c41" alt="Frontier 5" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/98b2d235-6fea-4c9b-8916-cee3bd54d4b1_rw_1920.gif?h=94a274404f404aedfd8a9c7029e76f08" alt="Frontier 6" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/191017b0-740e-4970-8948-3c1b36fcbf37_rw_1920.PNG?h=ee6a51a79e33ab6d9f057ce677dc35e5" alt="Frontier 7" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f4f4cdbb-2bd5-42d1-87dc-362ecb7b5570_rw_1920.gif?h=12b5ad32bd14d9d844fa91f6ff93c82e" alt="Frontier 8" />
-  </div>
-</section>
-
-<!-- Next Project -->
-<div class="next-project reveal">
-  <a href="battery-management.html" class="next-link">Battery Management System &nbsp;→</a>
+<!-- Hero Image -->
+<div class="proj-img-full">
+  <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f33a92c8-fc81-4846-89de-fc97e901a2d9_rw_1920.png?h=e36e766188482aa3caf313af234811cb" alt="Frontier Hero">
 </div>
+
+<!-- Section: Design Gallery -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Design Gallery</h2>
+  </div>
+</div>
+
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e77d2c40-ea14-4ef3-a676-07faa437db1a_rw_1920.PNG?h=c4aaf81434744a6447ffad272938b208" alt="Frontier 1"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/e66f6067-76fd-4083-a3b8-b918060eb60a_rw_1920.PNG?h=93241476dcba6a70a2a81dac6335f374" alt="Frontier 2"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/94be3041-e99d-4cc4-9cb4-fae9825f372e_rw_3840.png?h=f5069d44f91377e0d3f56e37c79f9f70" alt="Frontier 3"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/10ff26b8-95f7-4b0e-9c31-77aaa4836856.png?h=afebbfefb3edf0536f0d3d2762d03e46" alt="Frontier 4"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/8f3f8899-e5ea-4948-85ac-3c99c4365f18_rw_1920.gif?h=906173725e59da8cb65828b61cf99c41" alt="Frontier 5"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/98b2d235-6fea-4c9b-8916-cee3bd54d4b1_rw_1920.gif?h=94a274404f404aedfd8a9c7029e76f08" alt="Frontier 6"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/191017b0-740e-4970-8948-3c1b36fcbf37_rw_1920.PNG?h=ee6a51a79e33ab6d9f057ce677dc35e5" alt="Frontier 7"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f4f4cdbb-2bd5-42d1-87dc-362ecb7b5570_rw_1920.gif?h=12b5ad32bd14d9d844fa91f6ff93c82e" alt="Frontier 8"></div>
+
+<div class="back-top"><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Back to Top</a></div>
 
 <script>
   const cur = document.getElementById('cursor');
@@ -300,10 +159,7 @@
   function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
-  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // ── PASSWORD GATE ──
   (function() {
     if (sessionStorage.getItem('projAuth') === '1') {
       const gate = document.getElementById('pwGate');
@@ -323,7 +179,7 @@
       setTimeout(() => gate.style.display = 'none', 400);
     } else {
       input.classList.remove('shake');
-      void input.offsetWidth; // reflow
+      void input.offsetWidth;
       input.classList.add('shake');
       input.value = '';
       error.style.display = 'block';

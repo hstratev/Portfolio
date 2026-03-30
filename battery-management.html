@@ -14,13 +14,10 @@
     body.no-scroll { overflow: hidden; }
     body, body * { cursor: none; }
     a { color: inherit; text-decoration: none; }
-    img { display: block; width: 100%; object-fit: cover; }
 
-    /* Cursor */
     #cursor { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; mix-blend-mode: difference; pointer-events: none; z-index: 10000; top: 0; left: 0; transform: translate(-50%,-50%); will-change: transform; }
     #cursor.hover { width: 40px; height: 40px; }
 
-    /* Menu overlay */
     #menuOverlay { position: static; inset: 0; background: #000000; z-index: 500; display: flex; flex-direction: column; padding: 0 36px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
     #menuOverlay.open { opacity: 1; pointer-events: all; }
     .mo-top { height: 93px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
@@ -28,54 +25,43 @@
     .mo-close { font-size: 20px; font-weight: 400; color: #ffffff; background: none; border: none; font-family: 'Inter', sans-serif; }
     .mo-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; }
     .mo-nav a { font-size: 96px; font-weight: 600; letter-spacing: -2px; line-height: 1.15; color: #ffffff; display: block; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); opacity: 0; transform: translateY(18px); transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), color 0.2s ease; }
-    .mo-nav a:first-child { }
     #menuOverlay.open .mo-nav a:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0.05s; }
     #menuOverlay.open .mo-nav a:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.10s; }
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    /* Nav */
-    #mainNav { position: static;  z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
+    #mainNav { position: static; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 36px; background: #ffffff; border-bottom: 1px solid #f5f5f5; }
     .nav-logo { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; color: #000000; font-family: 'Inter', sans-serif; }
     .nav-trigger { background: none; border: none; padding: 0; display: flex; align-items: center; justify-content: center; }
     .dots-grid { display: grid; grid-template-columns: 5px 5px; grid-template-rows: 5px 5px; gap: 9px; width: 19px; height: 19px; }
     .dots-grid .dot { width: 5px; height: 5px; background: #000000; }
 
-    /* Scroll reveal */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.in { opacity: 1; transform: translateY(0); }
+    .proj-wrap { max-width: 800px; margin: 0 auto; padding: 0; }
+    .proj-sec-title { font-size: 30px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.5px; margin: 0 0 20px; }
+    .proj-body-text { font-size: 20px; font-weight: 400; font-family: 'Inter', sans-serif; color: #999999; line-height: 1.7; margin: 0 0 24px; }
+    .proj-img-full { width: 100%; display: block; margin: 60px 0; }
+    .proj-img-full img { width: 100%; display: block; object-fit: cover; }
+    .proj-meta { display: flex; gap: 80px; margin: 40px 0 60px; flex-wrap: wrap; }
+    .proj-meta-item label { display: block; font-size: 12px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: #999999; margin-bottom: 6px; }
+    .proj-meta-item span { font-size: 16px; font-weight: 400; color: #000000; }
+    .proj-section { margin: 80px 0; }
+    .back-top { text-align: center; padding: 60px 0; font-size: 16px; font-weight: 400; color: #999999; }
+    .back-top a { color: #999999; text-decoration: none; }
 
-    /* Project hero */
-    .proj-hero { display: flex; align-items: stretch; min-height: 100vh; padding-top: 93px; }
-    .proj-hero-img { width: 55%; height: calc(100vh - 93px); object-fit: cover; flex-shrink: 0; }
-    .proj-hero-right { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 60px 60px 60px 60px; gap: 40px; }
-    .proj-meta { display: flex; flex-direction: column; gap: 16px; }
-    .meta-row { display: flex; flex-direction: column; gap: 2px; }
-    .meta-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #888888; }
-    .meta-value { font-size: 15px; font-weight: 400; color: #000000; }
-    .proj-title { font-size: 56px; font-weight: 600; letter-spacing: -2.5px; line-height: 1.05; color: #000000; }
+    #pwGate { position: fixed; inset: 0; background: #ffffff; z-index: 9999; display: flex; align-items: center; justify-content: center; font-family: 'Inter', sans-serif; }
+    .pw-box { display: flex; flex-direction: column; align-items: flex-start; gap: 0; max-width: 480px; width: 100%; padding: 0 40px; }
+    .pw-logo { font-size: 16px; font-weight: 700; letter-spacing: -0.5px; color: #000000; margin: 0 0 48px; }
+    .pw-title { font-size: 48px; font-weight: 600; letter-spacing: -2.4px; line-height: 1; color: #000000; margin: 0 0 12px; }
+    .pw-subtitle { font-size: 16px; font-weight: 400; color: #888888; margin: 0 0 40px; }
+    .pw-form { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+    .pw-form input { width: 100%; font-size: 16px; font-weight: 400; font-family: 'Inter', sans-serif; color: #000000; background: transparent; border: none; border-bottom: 1px solid #000000; padding: 12px 0; outline: none; letter-spacing: -0.3px; box-sizing: border-box; }
+    .pw-form input::placeholder { color: #aaaaaa; }
+    .pw-form input.shake { animation: shake 0.4s ease; }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20% { transform: translateX(-8px); } 40% { transform: translateX(8px); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+    .pw-form button { align-self: flex-start; margin-top: 8px; font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #ffffff; background: #000000; border: none; border-radius: 100px; padding: 14px 32px; cursor: none; transition: opacity 0.2s ease; letter-spacing: -0.3px; }
+    .pw-form button:hover { opacity: 0.75; }
+    .pw-error { font-size: 14px; color: #cc0000; margin: 8px 0 0; display: none; }
 
-    /* Project body */
-    .proj-body { padding: 80px 80px 60px; }
-    .proj-sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
-    .sec-label-row { display: flex; align-items: center; gap: 12px; }
-    .sec-dot { width: 28px; height: 28px; border-radius: 50%; background: #888888; flex-shrink: 0; }
-    .sec-label { font-size: 30px; font-weight: 500; letter-spacing: -1.5px; color: #000000; }
-    .pill-btn { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; background: #f0f0f0; color: #000000; border: none; border-radius: 100px; padding: 12px 24px; transition: background 0.2s ease; }
-    .pill-btn:hover { background: #e0e0e0; }
-    .proj-description { font-size: 18px; font-weight: 400; line-height: 1.7; letter-spacing: -0.3px; color: #000000; max-width: 800px; }
-
-    /* Gallery grid */
-    .proj-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; margin-bottom: 60px; }
-    .proj-gallery img { width: 100%; display: block; object-fit: cover; }
-    @media (max-width: 768px) { .proj-gallery { grid-template-columns: 1fr; } }
-
-    /* Next project */
-    .next-project { padding: 80px; border-top: 1px solid rgba(0,0,0,0.08); }
-    .next-link { font-size: 40px; font-weight: 600; letter-spacing: -1.5px; color: #000000; transition: opacity 0.2s ease; }
-    .next-link:hover { opacity: 0.5; }
-
-    /* Mobile */
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
       #cursor { display: none; }
@@ -83,110 +69,7 @@
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-top { padding-left: 0; padding-right: 0; }
       .mo-nav a { font-size: 32px; }
-      .proj-hero { flex-direction: column; min-height: auto; }
-      .proj-hero-img { width: 100%; height: 60vw; }
-      .proj-hero-right { padding: 32px 24px; }
-      .proj-title { font-size: 36px; letter-spacing: -1.5px; }
-      .proj-body { padding: 48px 24px 40px; }
-      .proj-sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .sec-label { font-size: 22px; }
-      .next-project { padding: 48px 24px; }
-      .next-link { font-size: 28px; }
-    }
-
-    /* ── PASSWORD GATE ── */
-    #pwGate {
-      position: fixed;
-      inset: 0;
-      background: #ffffff;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Inter', sans-serif;
-    }
-    .pw-box {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0;
-      max-width: 480px;
-      width: 100%;
-      padding: 0 40px;
-    }
-    .pw-logo {
-      font-size: 16px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #000000;
-      margin: 0 0 48px;
-    }
-    .pw-title {
-      font-size: 48px;
-      font-weight: 600;
-      letter-spacing: -2.4px;
-      line-height: 1;
-      color: #000000;
-      margin: 0 0 12px;
-    }
-    .pw-subtitle {
-      font-size: 16px;
-      font-weight: 400;
-      color: #888888;
-      margin: 0 0 40px;
-    }
-    .pw-form {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-    }
-    .pw-form input {
-      width: 100%;
-      font-size: 16px;
-      font-weight: 400;
-      font-family: 'Inter', sans-serif;
-      color: #000000;
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid #000000;
-      padding: 12px 0;
-      outline: none;
-      letter-spacing: -0.3px;
-      box-sizing: border-box;
-    }
-    .pw-form input::placeholder { color: #aaaaaa; }
-    .pw-form input.shake {
-      animation: shake 0.4s ease;
-    }
-    @keyframes shake {
-      0%,100% { transform: translateX(0); }
-      20% { transform: translateX(-8px); }
-      40% { transform: translateX(8px); }
-      60% { transform: translateX(-6px); }
-      80% { transform: translateX(6px); }
-    }
-    .pw-form button {
-      align-self: flex-start;
-      margin-top: 8px;
-      font-size: 16px;
-      font-weight: 500;
-      font-family: 'Inter', sans-serif;
-      color: #ffffff;
-      background: #000000;
-      border: none;
-      border-radius: 100px;
-      padding: 14px 32px;
-      cursor: none;
-      transition: opacity 0.2s ease;
-      letter-spacing: -0.3px;
-    }
-    .pw-form button:hover { opacity: 0.75; }
-    .pw-error {
-      font-size: 14px;
-      color: #cc0000;
-      margin: 8px 0 0;
-      display: none;
+      .proj-meta { gap: 32px; }
     }
   </style>
 </head>
@@ -233,65 +116,41 @@
 </nav>
 
 <!-- Hero -->
-<section class="proj-hero">
-  <img
-    class="proj-hero-img reveal"
-    src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f2a7f0fd-f2c9-4324-ab3c-2f1cd3fb55c6_rw_1920.png?h=c7464d390eae13a4c038978563d32dac"
-    alt="Battery Management System"
-  />
-  <div class="proj-hero-right reveal">
-    <div class="proj-meta">
-      <div class="meta-row">
-        <span class="meta-label">Industry</span>
-        <span class="meta-value">Automotive / EV</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Client</span>
-        <span class="meta-value">Internal — Visteon</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Year</span>
-        <span class="meta-value">2023 — CES</span>
-      </div>
-      <div class="meta-row">
-        <span class="meta-label">Role</span>
-        <span class="meta-value">Project Lead — UI, UX</span>
-      </div>
-    </div>
-    <h1 class="proj-title">Battery Management System</h1>
+<section style="padding: 80px 36px 0; max-width: 800px; margin: 0 auto;">
+  <h1 style="font-size:60px;font-weight:700;font-family:'Inter',sans-serif;letter-spacing:-3px;line-height:1;color:#000;margin:0 0 32px;">Battery Management System</h1>
+  <p class="proj-body-text">The project started with an internal company request to create the UX for a platform showing the properties of the battery set in electric vehicles. From iconography and basic battery function display, the project evolved into a complex system displaying battery status, overall charge and faults, module statistics, connectivity status, and BMC sleep/wake cycles. Total project duration was three months from start to final CES showcase.</p>
+  <div class="proj-meta">
+    <div class="proj-meta-item"><label>Role</label><span>Project Lead — UI, UX</span></div>
+    <div class="proj-meta-item"><label>Client</label><span>Internal — Visteon</span></div>
+    <div class="proj-meta-item"><label>Year</label><span>2023 — CES</span></div>
+    <div class="proj-meta-item"><label>Industry</label><span>Automotive / EV</span></div>
   </div>
 </section>
 
-<!-- Body -->
-<section class="proj-body">
-  <div class="proj-sec-head reveal">
-    <div class="sec-label-row">
-      <span class="sec-dot"></span>
-      <span class="sec-label">about.</span>
-    </div>
-    <a href="https://hstratev.com/bms" class="pill-btn" target="_blank" rel="noopener">See It Live</a>
-  </div>
-  <p class="proj-description reveal">
-    The project started with an internal company request to create the UX for a platform showing the properties of the battery set in electric vehicles. From iconography and basic battery function display, the project evolved into a complex system displaying battery status, overall charge and faults, module statistics, connectivity status, and BMC sleep/wake cycles. Total project duration was three months from start to final CES showcase.
-  </p>
-  <div class="proj-gallery reveal">
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/65a5cdad-989b-40ce-a8f0-3fbfdef8815a_rw_1920.png?h=bd3f8ffff969d652e5059e24defb671a" alt="Battery Management System 1" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/4a724e6a-b595-4fde-833c-947282b4eee1_rw_1920.png?h=dfb0207ded29e6ac8487efb81c0a01d8" alt="Battery Management System 2" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3f6b9b9f-fff9-460d-9cad-de7113f7cae5_rw_1920.png?h=11fe4ed992432cd5e0bd0e984938eb37" alt="Battery Management System 3" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/49f60caf-5c98-40b6-91a7-826fc7006de9.png?h=602ef10bc2a8bc3c49c06a67410ca5b5" alt="Battery Management System 4" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/7002737b-cff5-4877-80b0-fcfcf1c4b09d_rw_1920.png?h=cdd9c9b7366c30b4a621b108682634c6" alt="Battery Management System 5" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a0a6fbb3-0fb7-496b-bee9-0563aec8154f_rw_1920.png?h=c9e98092c9bcdbc1864a0e838eb5f1f4" alt="Battery Management System 6" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/b244b952-f810-4f9f-b0b7-1dabf92801f5.png?h=365eb24f8a1a60921344d8df3afc9b8a" alt="Battery Management System 7" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0f275631-f625-40f3-886f-1762a641dd04_rw_1920.png?h=1b293eb46580bc16844b84b7ea358917" alt="Battery Management System 8" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/c6e4fd34-7105-493e-9527-113665247f6a_rw_1920.png?h=0713344d34f36b2f7c16fc1271e2c278" alt="Battery Management System 9" />
-    <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/78a649f4-ce8c-42b7-a419-f4178281b966.png?h=318b06a48f088e45f8bb13dc2e46993f" alt="Battery Management System 10" />
-  </div>
-</section>
-
-<!-- Next Project -->
-<div class="next-project reveal">
-  <a href="maserati.html" class="next-link">Maserati &nbsp;→</a>
+<!-- Hero Image -->
+<div class="proj-img-full">
+  <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/f2a7f0fd-f2c9-4324-ab3c-2f1cd3fb55c6_rw_1920.png?h=c7464d390eae13a4c038978563d32dac" alt="Battery Management System Hero">
 </div>
+
+<!-- Section: Design Gallery -->
+<div class="proj-wrap" style="padding: 0 36px;">
+  <div class="proj-section">
+    <h2 class="proj-sec-title">Design Gallery</h2>
+  </div>
+</div>
+
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/65a5cdad-989b-40ce-a8f0-3fbfdef8815a_rw_1920.png?h=bd3f8ffff969d652e5059e24defb671a" alt="Battery Management 1"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/4a724e6a-b595-4fde-833c-947282b4eee1_rw_1920.png?h=dfb0207ded29e6ac8487efb81c0a01d8" alt="Battery Management 2"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3f6b9b9f-fff9-460d-9cad-de7113f7cae5_rw_1920.png?h=11fe4ed992432cd5e0bd0e984938eb37" alt="Battery Management 3"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/49f60caf-5c98-40b6-91a7-826fc7006de9.png?h=602ef10bc2a8bc3c49c06a67410ca5b5" alt="Battery Management 4"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/7002737b-cff5-4877-80b0-fcfcf1c4b09d_rw_1920.png?h=cdd9c9b7366c30b4a621b108682634c6" alt="Battery Management 5"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/a0a6fbb3-0fb7-496b-bee9-0563aec8154f_rw_1920.png?h=c9e98092c9bcdbc1864a0e838eb5f1f4" alt="Battery Management 6"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/b244b952-f810-4f9f-b0b7-1dabf92801f5.png?h=365eb24f8a1a60921344d8df3afc9b8a" alt="Battery Management 7"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/0f275631-f625-40f3-886f-1762a641dd04_rw_1920.png?h=1b293eb46580bc16844b84b7ea358917" alt="Battery Management 8"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/c6e4fd34-7105-493e-9527-113665247f6a_rw_1920.png?h=0713344d34f36b2f7c16fc1271e2c278" alt="Battery Management 9"></div>
+<div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/78a649f4-ce8c-42b7-a419-f4178281b966.png?h=318b06a48f088e45f8bb13dc2e46993f" alt="Battery Management 10"></div>
+
+<div class="back-top"><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Back to Top</a></div>
 
 <script>
   const cur = document.getElementById('cursor');
@@ -302,10 +161,7 @@
   function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
-  const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-  // ── PASSWORD GATE ──
   (function() {
     if (sessionStorage.getItem('projAuth') === '1') {
       const gate = document.getElementById('pwGate');
@@ -325,7 +181,7 @@
       setTimeout(() => gate.style.display = 'none', 400);
     } else {
       input.classList.remove('shake');
-      void input.offsetWidth; // reflow
+      void input.offsetWidth;
       input.classList.add('shake');
       input.value = '';
       error.style.display = 'block';
