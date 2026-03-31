@@ -60,23 +60,36 @@
 
     /* ── PAGE LOAD ANIMATIONS ── */
     @keyframes enterFromTop {
-      from { opacity: 0; transform: translateY(-40px); }
+      from { opacity: 0; transform: translateY(-100px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes enterFromBottom {
-      from { opacity: 0; transform: translateY(60px); }
+    @keyframes enterHeroName {
+      from { opacity: 0; transform: translateY(175px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes enterContent {
+      from { opacity: 0; transform: translateY(80px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes enterBio {
+      from { opacity: 0; transform: translateY(265px); }
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0.5); }
+      from { opacity: 0; transform: scale(0); }
       to   { opacity: 1; transform: scale(1); }
     }
     #mainNav {
-      animation: enterFromTop 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+      animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
-
     .proj-hero-section h1, section > h1 {
-      animation: enterFromBottom 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+      animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
+    }
+    .proj-meta {
+      animation: enterContent 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
+    }
+    .proj-img-full:first-of-type {
+      animation: enterBio 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
     .proj-meta {
       animation: enterFromBottom 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
