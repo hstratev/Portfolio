@@ -49,7 +49,7 @@
       top: 0; left: 0;
       transform: translate(-50%, -50%);
       transition: width 0.2s ease, height 0.2s ease;
-      will-change: transform;
+      will-change: left, top;
     }
     #cursor.hover { width: 40px; height: 40px; }
 
@@ -352,7 +352,6 @@
       #cursor { display: none; }
 
       #mainNav { padding: 0 24px; }
-      .mo-top,
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-nav a { font-size: 32px; }
 
@@ -385,29 +384,18 @@
       from { opacity: 0; transform: translateY(175px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes enterContent {
-      from { opacity: 0; transform: translateY(80px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
     @keyframes enterBio {
       from { opacity: 0; transform: translateY(265px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0); }
-      to   { opacity: 1; transform: scale(1); }
-    }
     #mainNav {
-      animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
+      animation: enterFromTop 0.3s cubic-bezier(0.44, 0, 0.56, 1) both;
     }
-    .hero-names .hero-name:first-child, section h1 {
+    .hero-names .hero-name {
       animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
-    .hero-names .hero-name:last-child {
-      animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
-    }
-    .contact-hero h1 + *, .contact-hero .hero-names .hero-name:last-child {
-      animation: enterFromBottom 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+    .hero-bottom {
+      animation: enterBio 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
 
   </style>

@@ -49,7 +49,7 @@
       top: 0; left: 0;
       transform: translate(-50%, -50%);
       transition: width 0.2s ease, height 0.2s ease;
-      will-change: transform;
+      will-change: left, top;
     }
     #cursor.hover { width: 40px; height: 40px; }
 
@@ -177,13 +177,6 @@
       letter-spacing: -8.7px;
       line-height: 174px;
       color: #000000;
-      transform: translateY(40px);
-      opacity: 0;
-      animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-    }
-
-    @keyframes slideUp {
-      to { transform: translateY(0); opacity: 1; }
     }
 
     /* ── SECTION HEADER ── */
@@ -375,7 +368,6 @@
       #cursor { display: none; }
 
       #mainNav { padding: 0 24px; }
-      .mo-top,
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-nav a { font-size: 32px; }
 
@@ -409,29 +401,18 @@
       from { opacity: 0; transform: translateY(175px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-    @keyframes enterContent {
-      from { opacity: 0; transform: translateY(80px); }
+    @keyframes enterGrid {
+      from { opacity: 0; transform: translateY(485px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes enterBio {
-      from { opacity: 0; transform: translateY(265px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes scaleIn {
-      from { opacity: 0; transform: scale(0); }
-      to   { opacity: 1; transform: scale(1); }
     }
     #mainNav {
-      animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
+      animation: enterFromTop 0.3s cubic-bezier(0.44, 0, 0.56, 1) both;
     }
-    .works-hero h1 {
+    #hero .hero-name-inner {
       animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
-    .works-hero .works-date {
-      animation: enterBio 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
-    }
-    .works-hero .works-date {
-      animation: enterFromBottom 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
+    .work-grid {
+      animation: enterGrid 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
 
   </style>
