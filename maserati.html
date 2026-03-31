@@ -209,8 +209,8 @@
   window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
   (function loop(){cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
   document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('hover'));el.addEventListener('mouseleave',()=>cur.classList.remove('hover'));});
-  function toggleMenu(){const sw=window.innerWidth-document.documentElement.clientWidth;document.body.style.paddingRight=sw+'px';document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
-  function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');document.body.style.paddingRight='';}
+  function toggleMenu(){const sw=window.innerWidth-document.documentElement.clientWidth;document.body.style.paddingRight=sw+'px';document.getElementById('menuOverlay').style.paddingRight=(24+sw)+'px';document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
+  function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');document.body.style.paddingRight='';document.getElementById('menuOverlay').style.paddingRight='';}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
 
   (function() {
