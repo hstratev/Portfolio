@@ -42,16 +42,16 @@
       width: 26px;
       height: 26px;
       border-radius: 50%;
-      background: #ffffff;
-      mix-blend-mode: difference;
+      background: #000000;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 10000;
       top: 0; left: 0;
       transform: translate(-50%, -50%);
       transition: width 0.2s ease, height 0.2s ease;
       will-change: transform;
     }
     #cursor.hover { width: 40px; height: 40px; }
+    #cursor.on-dark { background: #ffffff; }
 
     /* ── MENU OVERLAY ── */
     #menuOverlay {
@@ -744,10 +744,12 @@
       document.getElementById('menuOverlay').style.paddingRight = (parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight) + sw) + 'px';
       document.getElementById('menuOverlay').classList.add('open');
       document.body.classList.add('no-scroll');
+      document.getElementById('cursor').classList.add('on-dark');
     }
     function closeMenu() {
       document.getElementById('menuOverlay').classList.remove('open');
       document.body.classList.remove('no-scroll');
+      document.getElementById('cursor').classList.remove('on-dark');
       document.body.style.paddingRight = '';
       document.getElementById('menuOverlay').style.paddingRight = '';
     }
