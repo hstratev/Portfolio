@@ -741,7 +741,7 @@
     function toggleMenu() {
       const sw = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.paddingRight = sw + 'px';
-      document.getElementById('menuOverlay').style.paddingRight = (24 + sw) + 'px';
+      document.getElementById('menuOverlay').style.paddingRight = (parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight) + sw) + 'px';
       document.getElementById('menuOverlay').classList.add('open');
       document.body.classList.add('no-scroll');
     }
