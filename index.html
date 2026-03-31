@@ -740,12 +740,15 @@
 
     /* ── MENU ── */
     function toggleMenu() {
+      const sw = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = sw + 'px';
       document.getElementById('menuOverlay').classList.add('open');
       document.body.classList.add('no-scroll');
     }
     function closeMenu() {
       document.getElementById('menuOverlay').classList.remove('open');
       document.body.classList.remove('no-scroll');
+      document.body.style.paddingRight = '';
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
