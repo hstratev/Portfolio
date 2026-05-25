@@ -164,6 +164,27 @@
     .proj-meta, .proj-body-text:first-of-type {
       animation: fadeInContent 0.8s cubic-bezier(0.44, 0, 0.56, 1) 0.6s both;
     }
+    .proj-img-full:first-of-type {
+      animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
+    }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal-text {
+      opacity: 0;
+      transform: translateY(100px);
+      transition: opacity 1.4s cubic-bezier(0, 0.56, 0.26, 0.97),
+                  transform 1.4s cubic-bezier(0, 0.56, 0.26, 0.97);
+    }
+    .reveal-image {
+      opacity: 0;
+      transform: translateY(160px);
+      transition: opacity 1.4s cubic-bezier(0, 0.56, 0.26, 0.97),
+                  transform 1.4s cubic-bezier(0, 0.56, 0.26, 0.97);
+    }
+    .reveal-text.in, .reveal-image.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
   </style>
 </head>
@@ -303,6 +324,24 @@
   function toggleMenu(){const sw=window.innerWidth-document.documentElement.clientWidth;document.body.style.paddingRight=sw+'px';document.getElementById('menuOverlay').style.paddingRight=(parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight)+sw)+'px';document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');document.body.style.paddingRight='';document.getElementById('menuOverlay').style.paddingRight='';}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+  // ── SCROLL REVEAL ──
+  document.querySelectorAll('.proj-img-full').forEach(function(el, i) {
+    if (i > 0) el.classList.add('reveal-image');
+  });
+  document.querySelectorAll('.proj-section').forEach(function(el) {
+    el.classList.add('reveal-text');
+  });
+  (function() {
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal-text, .reveal-image').forEach(function(el) {
+      io.observe(el);
+    });
+  })();
+
 </script>
 </body>
 </html>
