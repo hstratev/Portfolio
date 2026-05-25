@@ -406,7 +406,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     #mainNav {
-      animation: enterFromTop 0.3s cubic-bezier(0.44, 0, 0.56, 1) both;
+      animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
     #hero .hero-name-inner {
       animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
@@ -414,6 +414,8 @@
     .work-grid {
       animation: enterGrid 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
+    /* Items inside animated grid should not double-animate via .reveal */
+    .work-grid .work-item { opacity: 1; transform: none; transition: transform 0.4s ease; }
 
   </style>
 </head>
