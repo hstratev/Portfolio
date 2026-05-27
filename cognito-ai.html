@@ -116,6 +116,14 @@
       transform: translateY(0);
     }
 
+    /* ── VIDEO PLAY OVERLAY ── */
+    .video-wrapper { position: relative; }
+    .play-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; transition: opacity 0.25s ease; }
+    .play-overlay.hidden { opacity: 0; pointer-events: none; }
+    .play-circle { width: 80px; height: 80px; background: rgba(255,255,255,0.92); border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 24px rgba(0,0,0,0.3); transition: transform 0.2s ease, background 0.2s ease; }
+    .play-overlay:hover .play-circle { transform: scale(1.1); background: #fff; }
+    .play-triangle { width: 0; height: 0; border-top: 13px solid transparent; border-bottom: 13px solid transparent; border-left: 22px solid #000; margin-left: 5px; }
+
   </style>
 </head>
 <body>
@@ -224,6 +232,12 @@
     <p class="proj-body-text">You can find below a more detailed examples, covering some areas of motion design and animation in CognitoAI:</p>
   </div>
 </div>
+<div class="proj-img-full">
+  <video src="Videos/Cognito/Vehicle.mp4" controls playsinline loop style="width:100%;display:block;background:#000;"></video>
+</div>
+<div class="proj-img-full">
+  <video src="Videos/Cognito/dog anim.mp4" controls playsinline loop style="width:100%;display:block;background:#000;"></video>
+</div>
 
 <div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/2bf55d5d-6b03-4bc1-97fd-bd458a1a1535_rw_3840.png?h=5e214281a2518127dca8f27824552ae2" alt="CognitoAI 6"></div>
 
@@ -266,6 +280,21 @@
     });
   })();
 
+
+  // ── VIDEO PLAY OVERLAYS ──
+  document.querySelectorAll('.proj-img-full video').forEach(function(video) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'video-wrapper';
+    video.parentNode.insertBefore(wrapper, video);
+    wrapper.appendChild(video);
+    var overlay = document.createElement('div');
+    overlay.className = 'play-overlay';
+    overlay.innerHTML = '<div class="play-circle"><div class="play-triangle"></div></div>';
+    wrapper.appendChild(overlay);
+    overlay.addEventListener('click', function() { video.play(); overlay.classList.add('hidden'); });
+    video.addEventListener('pause', function() { overlay.classList.remove('hidden'); });
+    video.addEventListener('ended', function() { overlay.classList.remove('hidden'); });
+  });
 
   (function() {
     if (sessionStorage.getItem('projAuth') === '1') {
