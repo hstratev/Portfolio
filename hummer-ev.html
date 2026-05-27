@@ -190,6 +190,46 @@
       transform: translateY(0);
     }
 
+    /* ── VIDEO PLAY OVERLAY ── */
+    .video-wrapper {
+      position: relative;
+    }
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.25s ease;
+    }
+    .play-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .play-circle {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .play-overlay:hover .play-circle {
+      transform: scale(1.1);
+      background: #fff;
+    }
+    .play-triangle {
+      width: 0;
+      height: 0;
+      border-top: 13px solid transparent;
+      border-bottom: 13px solid transparent;
+      border-left: 22px solid #000;
+      margin-left: 5px;
+    }
+
   </style>
 </head>
 <body>
@@ -335,6 +375,24 @@
   function toggleMenu(){const sw=window.innerWidth-document.documentElement.clientWidth;document.body.style.paddingRight=sw+'px';document.getElementById('menuOverlay').style.paddingRight=(parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight)+sw)+'px';document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');document.body.style.paddingRight='';document.getElementById('menuOverlay').style.paddingRight='';}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+  // ── VIDEO PLAY OVERLAYS ──
+  document.querySelectorAll('.proj-img-full video').forEach(function(video) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'video-wrapper';
+    video.parentNode.insertBefore(wrapper, video);
+    wrapper.appendChild(video);
+    var overlay = document.createElement('div');
+    overlay.className = 'play-overlay';
+    overlay.innerHTML = '<div class="play-circle"><div class="play-triangle"></div></div>';
+    wrapper.appendChild(overlay);
+    overlay.addEventListener('click', function() {
+      video.play();
+      overlay.classList.add('hidden');
+    });
+    video.addEventListener('pause', function() { overlay.classList.remove('hidden'); });
+    video.addEventListener('ended', function() { overlay.classList.remove('hidden'); });
+  });
+
   // ── SCROLL REVEAL ──
   document.querySelectorAll('.proj-img-full').forEach(function(el, i) {
     if (i > 0) el.classList.add('reveal-image');
