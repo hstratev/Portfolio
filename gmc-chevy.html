@@ -90,6 +90,46 @@
       animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
 
+    /* ── VIDEO PLAY OVERLAY ── */
+    .video-wrapper {
+      position: relative;
+    }
+    .play-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.25s ease;
+    }
+    .play-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    .play-circle {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+    .play-overlay:hover .play-circle {
+      transform: scale(1.1);
+      background: #fff;
+    }
+    .play-triangle {
+      width: 0;
+      height: 0;
+      border-top: 13px solid transparent;
+      border-bottom: 13px solid transparent;
+      border-left: 22px solid #000;
+      margin-left: 5px;
+    }
+
     /* ── SCROLL REVEAL ── */
     .reveal-text {
       opacity: 0;
@@ -187,6 +227,17 @@
     <p class="proj-body-text">With a total of 8 customizable themes, the role of motion design proved to be pivotal in delivering a unique and engaging user experience. Motion design played a central role by infusing life into the user interface elements through seamless transitions, interactive animations, and visually appealing effects - ensuring each theme felt cohesive and intentional.</p>
   </div>
 </div>
+
+<div class="proj-img-full">
+  <video src="Videos/T1xx/1.mp4" controls playsinline loop style="width:100%;aspect-ratio:8/3;display:block;background:#000;"></video>
+</div>
+<div class="proj-img-full">
+  <video src="Videos/T1xx/2.mp4" controls playsinline loop style="width:100%;aspect-ratio:8/3;display:block;background:#000;"></video>
+</div>
+<div class="proj-img-full">
+  <video src="Videos/T1xx/3.mp4" controls playsinline loop style="width:100%;aspect-ratio:8/3;display:block;background:#000;"></video>
+</div>
+
 <div class="proj-img-full"><img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/922b7335-f566-412d-9bc3-284571d823c8_rw_1920.png?h=e0d2da221c574db294450d328160c7bf" alt="GMC / Chevy 5"></div>
 
 <!-- Section: Final Layout -->
@@ -219,6 +270,24 @@
   function toggleMenu(){const sw=window.innerWidth-document.documentElement.clientWidth;document.body.style.paddingRight=sw+'px';document.getElementById('menuOverlay').style.paddingRight=(parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight)+sw)+'px';document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');document.body.style.paddingRight='';document.getElementById('menuOverlay').style.paddingRight='';}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
+  // ── VIDEO PLAY OVERLAYS ──
+  document.querySelectorAll('.proj-img-full video').forEach(function(video) {
+    var wrapper = document.createElement('div');
+    wrapper.className = 'video-wrapper';
+    video.parentNode.insertBefore(wrapper, video);
+    wrapper.appendChild(video);
+    var overlay = document.createElement('div');
+    overlay.className = 'play-overlay';
+    overlay.innerHTML = '<div class="play-circle"><div class="play-triangle"></div></div>';
+    wrapper.appendChild(overlay);
+    overlay.addEventListener('click', function() {
+      video.play();
+      overlay.classList.add('hidden');
+    });
+    video.addEventListener('pause', function() { overlay.classList.remove('hidden'); });
+    video.addEventListener('ended', function() { overlay.classList.remove('hidden'); });
+  });
+
   // ── SCROLL REVEAL ──
   document.querySelectorAll('.proj-img-full').forEach(function(el, i) {
     if (i > 0) el.classList.add('reveal-image');
