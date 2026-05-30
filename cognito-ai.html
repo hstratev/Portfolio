@@ -306,9 +306,10 @@
   });
 
   (function() {
-    var ref = document.referrer;
-    var fromSameSite = ref && ref.startsWith(location.origin) && ref !== location.href;
-    if (!fromSameSite) sessionStorage.removeItem('projAuth');
+    if (sessionStorage.getItem('projLastPage') === location.href) {
+      sessionStorage.removeItem('projAuth');
+    }
+    sessionStorage.setItem('projLastPage', location.href);
     if (sessionStorage.getItem('projAuth') === '1') {
       const gate = document.getElementById('pwGate');
       if (gate) gate.style.display = 'none';
