@@ -354,6 +354,8 @@
 
 
   (function() {
+    var nav = performance.getEntriesByType('navigation')[0];
+    if (nav && nav.type === 'reload') sessionStorage.removeItem('projAuth');
     if (sessionStorage.getItem('projAuth') === '1') {
       const gate = document.getElementById('pwGate');
       if (gate) gate.style.display = 'none';
