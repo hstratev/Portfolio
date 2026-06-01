@@ -46,7 +46,7 @@
       padding: 0 30px;
       box-sizing: border-box;
     }
-    .proj-img-full img, .proj-img-full video { width: 100%; display: block; border-radius: 20px; }
+    .proj-img-full img, .proj-img-full video { width: 100%; display: block; border-radius: 20px; box-shadow: 0 4px 28px rgba(0,0,0,0.08); }
     .proj-video { width: 100%; aspect-ratio: 16/9; margin: 40px 0; }
     .proj-video iframe { width: 100%; height: 100%; border: none; display: block; }
     .proj-video-caption { font-size: 13px; font-weight: 400; color: #999999; margin: 8px 0 0; }
@@ -108,9 +108,7 @@
     }
 
     /* ── VIDEO PLAY OVERLAY ── */
-    .video-wrapper {
-      position: relative;
-    }
+    .video-wrapper { position: relative; border-radius: 20px; overflow: hidden; }
     .play-overlay {
       position: absolute;
       inset: 0;
