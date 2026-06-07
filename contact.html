@@ -118,7 +118,7 @@
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    /* ── NAV ── */
+        /* ── NAV ── */
     #mainNav {
       position: static;
       z-index: 400;
@@ -128,7 +128,6 @@
       align-items: center;
       padding: 0 150px;
       background: transparent;
-      
     }
     .nav-logo {
       font-size: 30px;
@@ -137,6 +136,20 @@
       color: #000000;
       font-family: 'Inter', sans-serif;
     }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+      letter-spacing: -0.3px;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 0.5; }
     .nav-trigger {
       background: none;
       border: none;
@@ -145,10 +158,6 @@
       align-items: center;
       justify-content: center;
     }
-    .nav-links { display: flex; gap: 40px; align-items: center; }
-    .nav-links a { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.3px; transition: opacity 0.2s; }
-    .nav-links a:hover { opacity: 0.5; }
-
     .dots-grid {
       display: grid;
       grid-template-columns: 5px 5px;
@@ -412,19 +421,19 @@
 
   <!-- ── NAV ── -->
   <nav id="mainNav">
-  <a href="index.html" class="nav-logo">H.S.</a>
-  <div class="nav-links">
-    <a href="works.html">Work</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-  </div>
-  <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
+    <a href="index.html" class="nav-logo">H.S.</a>
+    <div class="nav-links">
+      <a href="works.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
       <span class="dots-grid">
         <span class="dot"></span><span class="dot"></span>
         <span class="dot"></span><span class="dot"></span>
       </span>
     </button>
-</nav>
+  </nav>
 
   <!-- ── HERO ── -->
   <section id="hero">

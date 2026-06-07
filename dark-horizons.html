@@ -30,14 +30,59 @@
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    #mainNav { position: static; z-index: 400; height: 93px; display: flex; justify-content: space-between; align-items: center; padding: 0 150px; background: #ffffff;  }
-    .nav-logo { font-size: 30px; font-weight: 700; letter-spacing: -0.5px; color: #000000; font-family: 'Inter', sans-serif; }
-    .nav-trigger { background: none; border: none; padding: 0; display: none; align-items: center; justify-content: center; }
-    .nav-links { display: flex; gap: 40px; align-items: center; }
-    .nav-links a { font-size: 16px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.3px; transition: opacity 0.2s; }
+    /* ── NAV ── */
+    #mainNav {
+      position: static;
+      z-index: 400;
+      height: 93px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 150px;
+      background: #ffffff;
+    }
+    .nav-logo {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #000000;
+      font-family: 'Inter', sans-serif;
+    }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+      letter-spacing: -0.3px;
+      transition: opacity 0.2s;
+    }
     .nav-links a:hover { opacity: 0.5; }
-    .dots-grid { display: grid; grid-template-columns: 5px 5px; grid-template-rows: 5px 5px; gap: 9px; width: 19px; height: 19px; }
-    .dots-grid .dot { width: 5px; height: 5px; background: #000000; }
+    .nav-trigger {
+      background: none;
+      border: none;
+      padding: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .dots-grid {
+      display: grid;
+      grid-template-columns: 5px 5px;
+      grid-template-rows: 5px 5px;
+      gap: 9px;
+      width: 19px;
+      height: 19px;
+    }
+    .dots-grid .dot {
+      width: 5px;
+      height: 5px;
+      background: #000000;
+    }
 
     .proj-wrap { max-width: 1200px; margin: 0 auto; padding: 0; }
     .proj-sec-title { font-size: 32px; font-weight: 500; font-family: 'Inter', sans-serif; color: #000000; letter-spacing: -0.05em; line-height: 1.2em; margin: 0 0 24px; }
