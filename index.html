@@ -143,6 +143,20 @@
       color: #000000;
       font-family: 'Inter', sans-serif;
     }
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 500;
+      font-family: 'Inter', sans-serif;
+      color: #000000;
+      letter-spacing: -0.3px;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { opacity: 0.5; }
     .nav-trigger {
       background: none;
       border: none;
@@ -641,12 +655,11 @@
   <!-- ── NAV ── -->
   <nav id="mainNav">
     <a href="#" class="nav-logo">H.S.</a>
-    <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
-      <span class="dots-grid">
-        <span class="dot"></span><span class="dot"></span>
-        <span class="dot"></span><span class="dot"></span>
-      </span>
-    </button>
+    <div class="nav-links">
+      <a href="works.html">Work</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
   </nav>
 
   <!-- ── HERO ── -->
