@@ -391,6 +391,8 @@
       #cursor { display: none; }
 
       #mainNav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .nav-trigger { display: flex; }
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-nav a { font-size: 32px; }
 
@@ -465,6 +467,12 @@
     <a href="about.html">About</a>
     <a href="contact.html">Contact</a>
   </div>
+  <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
+      <span class="dots-grid">
+        <span class="dot"></span><span class="dot"></span>
+        <span class="dot"></span><span class="dot"></span>
+      </span>
+    </button>
 </nav>
 
   <!-- ── HERO ── -->
