@@ -394,26 +394,32 @@
       align-items: start;
     }
     .about-portrait {
-      display: flex;
-      justify-content: center;
+      display: block;
     }
     .portrait-circle {
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
+      width: 100%;
+      border-radius: 20px;
       overflow: hidden;
       background: #d2d2d2;
+      aspect-ratio: 3/4;
     }
-    .portrait-circle svg { width: 100%; height: 100%; }
+    .portrait-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
 
     .about-bio {
       font-size: 18px;
       font-weight: 400;
       font-family: 'Inter Display', sans-serif;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.4px;
       line-height: 28px;
-      text-align: justify;
       color: #000000;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
 
     /* ── CONTACT / FOOTER ── */
@@ -617,7 +623,7 @@
 
       .about-statement { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; padding: 0 24px 40px; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 48px; }
-      .portrait-circle { width: 200px; height: 200px; }
+      .portrait-circle { width: 100%; height: auto; border-radius: 12px; }
 
       #contact { padding: 48px 24px; }
       .contact-heading { font-size: 28px; letter-spacing: -1.4px; line-height: 36px; }
@@ -773,7 +779,7 @@
       </div>
     </div>
 
-    <p class="about-statement reveal">I design products and experiences for companies building the next generation of technology - pushing the boundaries of what technology can feel like. From Daimler's award-winning MBUX to an AI-native home that thinks, learns, and speaks. My work has been featured at CES, GITEX, and Shanghai Auto.</p>
+    <p class="about-statement reveal">From Daimler's award-winning MBUX to an AI-native home that thinks, learns and speaks. My work has been featured at CES, GITEX and Shanghai Auto</p>
 
     <div class="about-grid">
       <div class="about-portrait reveal">
@@ -781,7 +787,12 @@
           <img src="Photo.png" alt="Hristiyan Stratev">
         </div>
       </div>
-      <p class="about-bio reveal">I hold a degree from the University of Sheffield, and my career has taken me across Germany and the U.S. Currently, I'm the Lead Product Designer at Living Homes Dubai, where we focus on IoT, smart living solutions and AI-powered 3D virtual assistants. Previously, I led the design team at Visteon - Sofia as Design Manager, working on advanced HMI, UI/UX, motion graphics, and real-time 2D/3D design for the automotive industry. With over a decade of experience, I've contributed to projects across various sectors and platforms. My work has been featured at major events like CES, Gitex Global, and Shanghai Auto, and I've collaborated with clients including General Motors, Ford, Daimler, TEDx, Cannes Lions, Living Homes, and Maserati.</p>
+      <div class="about-bio reveal">
+        <p>I hold a degree from the University of Sheffield, where my passion for technology and user experience began.</p>
+        <p>My career has taken me across Germany and the U.S., leading teams at the forefront of Human Machine Interface and AI user experiences.</p>
+        <p>Today I lead the design of the first AI-native home intelligence platform — an intelligent assistant that sees, thinks, reasons and speaks, bringing a fully connected home to life.</p>
+        <p>Over the years I've collaborated with General Motors, Ford, Daimler, Maserati, TEDx, and Cannes Lions.</p>
+      </div>
     </div>
   </section>
 
