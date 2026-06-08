@@ -856,15 +856,43 @@
     }, { threshold: 0.1 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    /* ── EMAIL COPY ── */
-    document.getElementById('emailCopy').addEventListener('click', e => {
-      e.preventDefault();
-      navigator.clipboard.writeText('hstratev@gmail.com').then(() => {
-        const el = document.getElementById('emailCopy');
-        const original = el.childNodes[0].textContent;
-        el.childNodes[0].textContent = 'Copied! ';
-        setTimeout(() => { el.childNodes[0].textContent = original; }, 1800);
-      });
+    /* ── FIT HERO TITLE ── */
+    function fitHeroTitle() {
+      const inner = document.querySelector('.hero-name-inner');
+      const container = document.querySelector('.hero-name');
+      if (!inner || !container) return;
+
+      /* On tablet/mobile the CSS handles sizing — reset any inline value */
+      if (window.innerWidth <= 1300) {
+        inner.style.fontSize = '';
+        return;
+      }
+
+      const maxWidth = container.offsetWidth;
+      if (maxWidth === 0) return;
+
+      /* Binary search for the exact font-size that fills the container */
+      let lo = 10, hi = 400;
+      while (hi - lo > 0.25) {
+        const mid = (lo + hi) / 2;
+        inner.style.fontSize = mid + 'px';
+        if (inner.scrollWidth <= maxWidth) { lo = mid; } else { hi = mid; }
+      }
+      inner.style.fontSize = lo + 'px';
+    }
+
+    /* Run after fonts are loaded for accurate measurement */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitHeroTitle);
+    } else {
+      window.addEventListener('load', fitHeroTitle);
+    }
+
+    /* Debounced resize */
+    let _fitTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(_fitTimer);
+      _fitTimer = setTimeout(fitHeroTitle, 80);
     });
   </script>
 
