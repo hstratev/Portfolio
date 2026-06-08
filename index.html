@@ -190,38 +190,29 @@
     }
 
     .hero-avatar {
-      position: absolute;
-      top: 96px;
-      right: 100px;
-      width: 168px;
-      height: 168px;
-      border-radius: 140px;
-      overflow: hidden;
-      background: #d2d2d2;
-      flex-shrink: 0;
+      display: none;
     }
-    .hero-avatar svg { width: 100%; height: 100%; }
 
-    .hero-names { margin-bottom: 32px; }
+    .hero-names { margin-bottom: 80px; }
 
     .hero-name {
       display: block;
-      line-height: 174px;
+      line-height: 1.0;
     }
     .hero-name-inner {
       display: block;
-      font-size: 174px;
-      font-weight: 600;
+      font-size: clamp(36px, 8.5vw, 140px);
+      font-weight: 700;
       font-family: 'Inter Display', sans-serif;
-      letter-spacing: -8.7px;
-      line-height: 174px;
+      letter-spacing: -0.04em;
+      line-height: 1.0;
+      text-transform: uppercase;
+      white-space: nowrap;
       color: #000000;
       transform: translateY(40px);
       opacity: 0;
       animation: slideUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
     }
-    /* second line delay */
-    .hero-name:nth-child(2) .hero-name-inner { animation-delay: 0.1s; }
 
     @keyframes slideUp {
       to { transform: translateY(0); opacity: 1; }
@@ -279,21 +270,21 @@
       margin-left: auto;
     }
     .hero-bio {
-      font-size: 40px;
-      font-weight: 500;
+      font-size: 36px;
+      font-weight: 400;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.5px;
-      line-height: 46px;
+      line-height: 44px;
       text-align: left;
       color: #000000;
     }
     .hero-caption {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 400;
       font-family: 'Inter Display', sans-serif;
-      color: #aaaaaa;
+      color: #999999;
       margin-top: 16px;
-      letter-spacing: 0.01em;
+      letter-spacing: 0em;
     }
 
     /* ── SECTION HEADER ── */
@@ -555,21 +546,12 @@
         padding-bottom: 60px;
       }
 
-      .hero-avatar {
-        top: 70px;
-        right: 80px;
-        width: 120px;
-        height: 120px;
-      }
-
-      .hero-name { line-height: 1.0; }
       .hero-name-inner {
-        font-size: clamp(64px, 8.5vw, 120px);
-        letter-spacing: -0.05em;
-        line-height: 1.0;
+        white-space: normal;
+        letter-spacing: -0.04em;
       }
 
-      .hero-names { margin-bottom: 24px; }
+      .hero-names { margin-bottom: 48px; }
       .hero-bio { font-size: 28px; letter-spacing: -0.3px; line-height: 36px; }
       .hero-bio-col { max-width: 500px; }
 
@@ -610,20 +592,13 @@
         padding-right: 24px;
         padding-bottom: 48px;
       }
-      /* Avatar flows naturally above the name on mobile */
-      .hero-avatar {
-        position: static;
-        width: 72px;
-        height: 72px;
-        margin-bottom: 24px;
-        border-radius: 50%;
-      }
-      .hero-names { margin-bottom: 0; }
+      .hero-names { margin-bottom: 24px; }
       .hero-name { line-height: 1.0; }
       .hero-name-inner {
-        font-size: clamp(3rem, 15vw, 6rem);
-        letter-spacing: -4px;
-        line-height: 1.0;
+        font-size: clamp(36px, 11vw, 80px);
+        white-space: normal;
+        letter-spacing: -0.03em;
+        line-height: 1.05;
       }
       .hero-bottom { flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 24px; }
       .hero-left-col { width: 100%; }
@@ -673,14 +648,8 @@
     #mainNav {
       animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
-    .hero-names .hero-name:first-child {
+    .hero-names .hero-name {
       animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
-    }
-    .hero-names .hero-name:last-child {
-      animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
-    }
-    .hero-avatar {
-      animation: scaleIn 1.2s cubic-bezier(0, 0.13, 0, 0.98) both;
     }
     .hero-bottom {
       animation: enterBio 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
@@ -725,13 +694,8 @@
   <!-- ── HERO ── -->
   <section id="hero">
 
-    <div class="hero-avatar">
-      <img src="Photo.png" alt="Hristiyan Stratev">
-    </div>
-
     <div class="hero-names">
-      <div class="hero-name"><span class="hero-name-inner">Hristiyan</span></div>
-      <div class="hero-name"><span class="hero-name-inner">Stratev</span></div>
+      <div class="hero-name"><span class="hero-name-inner">Hristiyan Stratev</span></div>
     </div>
 
     <div class="hero-bottom">
