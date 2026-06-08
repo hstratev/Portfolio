@@ -193,15 +193,16 @@
       display: none;
     }
 
-    .hero-names { margin-bottom: 48px; overflow: hidden; }
+    .hero-names { margin-bottom: 48px; }
 
     .hero-name {
       display: block;
       line-height: 1.0;
+      overflow: hidden;
     }
     .hero-name-inner {
       display: block;
-      font-size: clamp(36px, calc((100vw - 200px) / 9.4), 150px);
+      font-size: clamp(36px, 9.5vw, 180px);
       font-weight: 700;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.04em;
@@ -547,8 +548,9 @@
         padding-bottom: 60px;
       }
 
+      .hero-name { overflow: visible; }
       .hero-name-inner {
-        font-size: clamp(36px, calc((100vw - 160px) / 9.4), 110px);
+        font-size: clamp(36px, 9.5vw, 110px);
         white-space: normal;
         letter-spacing: -0.04em;
       }
@@ -595,7 +597,7 @@
         padding-bottom: 48px;
       }
       .hero-names { margin-bottom: 24px; }
-      .hero-name { line-height: 1.0; }
+      .hero-name { line-height: 1.0; overflow: visible; }
       .hero-name-inner {
         font-size: clamp(36px, 11vw, 80px);
         white-space: normal;
