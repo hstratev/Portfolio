@@ -193,7 +193,7 @@
       display: none;
     }
 
-    .hero-names { margin-bottom: 48px; }
+    .hero-names { margin-bottom: 48px; overflow: hidden; }
 
     .hero-name {
       display: block;
@@ -201,7 +201,7 @@
     }
     .hero-name-inner {
       display: block;
-      font-size: clamp(36px, 9.2vw, 200px);
+      font-size: clamp(36px, calc((100vw - 200px) / 9.4), 150px);
       font-weight: 700;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.04em;
@@ -264,9 +264,8 @@
     }
 
     .hero-bio-col {
-      flex: 0 0 656px;
-      width: 656px;
-      max-width: 656px;
+      flex: 0 0 auto;
+      width: min(53%, 656px);
       margin-left: auto;
     }
     .hero-bio {
@@ -549,6 +548,7 @@
       }
 
       .hero-name-inner {
+        font-size: clamp(36px, calc((100vw - 160px) / 9.4), 110px);
         white-space: normal;
         letter-spacing: -0.04em;
       }
