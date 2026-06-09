@@ -424,6 +424,34 @@
       gap: 32px;
     }
 
+    /* ── SERVICES ── */
+    .services-head {
+      padding: 40px 100px 40px;
+    }
+    .services-label {
+      font-size: 30px;
+      font-weight: 500;
+      font-family: 'Inter Display', sans-serif;
+      letter-spacing: -1.5px;
+      color: #000000;
+    }
+    .services-list {
+      padding: 0 100px 80px;
+    }
+    .service-item {
+      font-size: 90px;
+      font-weight: 700;
+      font-family: 'Inter Display', sans-serif;
+      letter-spacing: -4px;
+      text-align: center;
+      color: #000000;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.1);
+    }
+    .service-item:first-child {
+      border-top: 1px solid rgba(0,0,0,0.1);
+    }
+
     /* ── CONTACT / FOOTER ── */
     #contact {
       background: #000000;
@@ -585,6 +613,10 @@
       }
       .about-grid { padding: 0 80px 60px; gap: 40px; grid-template-columns: 1fr 2fr; }
 
+      .services-head { padding: 40px 80px 32px; }
+      .services-list { padding: 0 80px 60px; }
+      .service-item { font-size: clamp(2rem, 7vw, 70px); letter-spacing: -2px; }
+
       #contact { padding: 60px 80px; }
       .contact-heading {
         font-size: 36px;
@@ -634,6 +666,11 @@
       .about-statement { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; padding: 0 24px 40px; max-width: none; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 48px; }
       .portrait-circle { width: 100%; height: auto; border-radius: 12px; }
+
+      .services-head { padding: 32px 24px 24px; }
+      .services-label { font-size: 22px; }
+      .services-list { padding: 0 24px 48px; }
+      .service-item { font-size: clamp(1.8rem, 9vw, 60px); letter-spacing: -2px; }
 
       #contact { padding: 48px 24px; }
       .contact-heading { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; }
@@ -803,6 +840,20 @@
         <p>Today I lead the design of the first AI-native home intelligence platform, an intelligent assistant that sees, thinks, reasons and speaks, bringing a fully connected home to life.</p>
         <p>Over the years I've collaborated with General Motors, Ford, Daimler, Maserati, Nvidia, Qualcomm.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES ── -->
+  <section id="services">
+    <div class="services-head reveal">
+      <span class="services-label">services.</span>
+    </div>
+    <div class="services-list">
+      <div class="service-item reveal">UI / UX DESIGN</div>
+      <div class="service-item reveal">PRODUCT DESIGN</div>
+      <div class="service-item reveal">HMI DESIGN</div>
+      <div class="service-item reveal">MOTION GRAPHICS</div>
+      <div class="service-item reveal">3D VISUALIZATION</div>
     </div>
   </section>
 
