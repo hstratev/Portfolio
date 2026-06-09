@@ -135,27 +135,13 @@
       justify-content: space-between;
       align-items: center;
       padding: 0 100px;
-      background: transparent;
-      -webkit-backdrop-filter: blur(12px) saturate(1.4);
-      backdrop-filter: blur(12px) saturate(1.4);
-    }
-
-    /* WebGL glass canvas — absolutely fills the nav, behind all nav content */
-    #navGlass {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      display: block;
-    }
-
-    /* Ensure logo/links render above the WebGL canvas */
-    .nav-logo,
-    .nav-links,
-    .nav-trigger {
-      position: relative;
-      z-index: 1;
+      -webkit-backdrop-filter: blur(24px) saturate(1.6);
+      backdrop-filter: blur(24px) saturate(1.6);
+      background: linear-gradient(to bottom,
+        rgba(255,255,255,0.88) 0%,
+        rgba(255,255,255,0.88) 52%,
+        rgba(255,255,255,0.00) 100%
+      );
     }
     .nav-logo {
       font-size: 30px;
@@ -709,7 +695,6 @@
 
   <!-- ── NAV ── -->
   <nav id="mainNav">
-    <canvas id="navGlass" aria-hidden="true"></canvas>
     <a href="#" class="nav-logo">H.S.</a>
     <div class="nav-links">
       <a href="#work">Work</a>
@@ -931,134 +916,6 @@
       _fitTimer = setTimeout(fitHeroTitle, 80);
     });
 
-    /* ── NAV GLASS — WebGL liquid glass shader ── */
-    (function () {
-      const canvas = document.getElementById('navGlass');
-      if (!canvas) return;
-      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
-      if (!gl) return;
-      const nav = document.getElementById('mainNav');
-
-      function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        const w = nav.offsetWidth;
-        const h = nav.offsetHeight;
-        canvas.width  = w * dpr;
-        canvas.height = h * dpr;
-        canvas.style.width  = w + 'px';
-        canvas.style.height = h + 'px';
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      /* ── VERTEX SHADER ── */
-      const vsSource = `
-        attribute vec2 a_pos;
-        void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
-      `;
-
-      /* ── FRAGMENT SHADER — glass caustics + specular ── */
-      const fsSource = `
-        precision mediump float;
-        uniform vec3  iResolution;
-        uniform float iTime;
-
-        float hash(vec2 p) {
-          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
-        }
-
-        float sn(vec2 p) {
-          vec2 i = floor(p);
-          vec2 f = fract(p);
-          f = f * f * (3.0 - 2.0 * f);
-          return mix(
-            mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
-            mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), f.x),
-            f.y
-          );
-        }
-
-        void main() {
-          vec2 uv = gl_FragCoord.xy / iResolution.xy;
-          float t  = iTime * 0.18;
-
-          /* Caustic interference — two offset noise fields cancel each other
-             creating the bright filament network characteristic of real glass */
-          float n1 = sn(uv * 3.5  + vec2(t * 0.70, t * 0.50));
-          float n2 = sn(uv * 4.2  - vec2(t * 0.50, t * 0.80));
-          float caustic = pow(1.0 - abs(n1 - n2), 6.0) * 0.60;
-
-          /* Three drifting specular highlights */
-          float sp1 = pow(max(0.0, 1.0 - length(uv - vec2(0.18 + sin(t*0.90)*0.05, 0.40)) * 5.5), 4.5);
-          float sp2 = pow(max(0.0, 1.0 - length(uv - vec2(0.65 + cos(t*0.60)*0.05, 0.33)) * 6.5), 5.0);
-          float sp3 = pow(max(0.0, 1.0 - length(uv - vec2(0.88 + sin(t*0.70)*0.04, 0.52)) * 7.0), 5.5);
-          float spec = sp1 * 0.90 + sp2 * 0.75 + sp3 * 0.60;
-
-          /* Top-edge rim light — glass always catches a bright line at its top edge */
-          float rim = pow(max(0.0, 1.0 - uv.y * 9.0), 2.0) * 0.35;
-
-          /* Vertical fade: fully rendered at the top (where nav sits),
-             dissolves to transparent at the bottom edge */
-          float fade = 1.0 - smoothstep(0.25, 0.95, uv.y);
-
-          float bright = caustic + spec + rim;
-          /* Nearly white with a faint cool tint — classic glass colour */
-          vec3 col = vec3(0.97, 0.98, 1.0) * min(bright + 0.04, 1.0);
-          /* Very low base alpha so the CSS-blurred content shows through */
-          float alpha = (0.07 + bright * 0.78) * fade;
-
-          gl_FragColor = vec4(col, alpha);
-        }
-      `;
-
-      function mkShader(type, src) {
-        const s = gl.createShader(type);
-        gl.shaderSource(s, src);
-        gl.compileShader(s);
-        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-          console.warn('NavGlass shader:', gl.getShaderInfoLog(s));
-          return null;
-        }
-        return s;
-      }
-
-      const vs = mkShader(gl.VERTEX_SHADER,   vsSource);
-      const fs = mkShader(gl.FRAGMENT_SHADER, fsSource);
-      if (!vs || !fs) return;
-
-      const prog = gl.createProgram();
-      gl.attachShader(prog, vs);
-      gl.attachShader(prog, fs);
-      gl.linkProgram(prog);
-      gl.useProgram(prog);
-
-      /* Fullscreen quad */
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(gl.ARRAY_BUFFER,
-        new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
-      const aPos = gl.getAttribLocation(prog, 'a_pos');
-      gl.enableVertexAttribArray(aPos);
-      gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-      const uRes  = gl.getUniformLocation(prog, 'iResolution');
-      const uTime = gl.getUniformLocation(prog, 'iTime');
-
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      gl.clearColor(0, 0, 0, 0);
-
-      const t0 = performance.now();
-      (function loop() {
-        const t = (performance.now() - t0) / 1000;
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.uniform3f(uRes, canvas.width, canvas.height, 1.0);
-        gl.uniform1f(uTime, t);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        requestAnimationFrame(loop);
-      })();
-    })();
   </script>
 
 </body>
