@@ -936,6 +936,33 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 
+    /* ── MAGNETIC EFFECT ── */
+    (function initMagnetic() {
+      const items = [
+        ...Array.from(document.querySelectorAll('.nav-links a')).map(el => ({ el, strength: 0.28, radius: 75 })),
+        ...Array.from(document.querySelectorAll('.cta-btn')).map(el => ({ el, strength: 0.38, radius: 110 })),
+      ];
+
+      window.addEventListener('mousemove', e => {
+        items.forEach(({ el, strength, radius }) => {
+          const rect = el.getBoundingClientRect();
+          const cx = rect.left + rect.width / 2;
+          const cy = rect.top + rect.height / 2;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const dist = Math.hypot(dx, dy);
+
+          if (dist < radius) {
+            el.style.transition = 'transform 0.15s ease-out';
+            el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
+          } else {
+            el.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+            el.style.transform = '';
+          }
+        });
+      });
+    })();
+
     /* ── SCROLL REVEAL ── */
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
