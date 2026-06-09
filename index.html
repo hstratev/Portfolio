@@ -18,6 +18,7 @@
     html {
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
+      scroll-behavior: smooth;
     }
 
     body {
@@ -680,9 +681,9 @@
       <button class="mo-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
     </div>
     <nav class="mo-nav">
-      <a href="works.html">Work</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="#work" onclick="closeMenu()">Work</a>
+      <a href="#about" onclick="closeMenu()">About</a>
+      <a href="#contact" onclick="closeMenu()">Contact</a>
     </nav>
   </div>
 
@@ -690,9 +691,9 @@
   <nav id="mainNav">
     <a href="#" class="nav-logo">H.S.</a>
     <div class="nav-links">
-      <a href="works.html">Work</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
     </div>
     <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
       <span class="dots-grid">
