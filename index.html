@@ -125,92 +125,16 @@
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    /* ── NAV GLASS — progressive (gradient) blur ── */
-    /* Fixed at z-399, nav text sits at z-400 above — never blurred or obscured.
-       8 stacked divs, each with increasing backdrop-filter blur and a mask-image
-       that fades in at a different point from the bottom edge upward.
-       Result: 0 blur at the bottom edge → 28 px blur at the top where nav links sit.
-       No hard cutoff line — content dissolves softly into the blur. */
-
-    #navGlass {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 93px;
-      z-index: 399;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    /* All blur bands share the same base positioning */
-    .nb { position: absolute; inset: 0; }
-
-    /* Progressive blur bands — mask uses "to top" so 0% = bottom edge.
-       Each layer starts transparent at the bottom and becomes solid (black)
-       higher up, meaning the blur only activates in its upper band.
-       Percentages are measured from the BOTTOM of the header.            */
-    .nb1 {
-      -webkit-backdrop-filter: blur(1px);  backdrop-filter: blur(1px);
-      -webkit-mask-image: linear-gradient(to top, black 0%, black 100%);
-              mask-image: linear-gradient(to top, black 0%, black 100%);
-    }
-    .nb2 {
-      -webkit-backdrop-filter: blur(2px);  backdrop-filter: blur(2px);
-      -webkit-mask-image: linear-gradient(to top, transparent 8%,  black 20%);
-              mask-image: linear-gradient(to top, transparent 8%,  black 20%);
-    }
-    .nb3 {
-      -webkit-backdrop-filter: blur(4px);  backdrop-filter: blur(4px);
-      -webkit-mask-image: linear-gradient(to top, transparent 20%, black 34%);
-              mask-image: linear-gradient(to top, transparent 20%, black 34%);
-    }
-    .nb4 {
-      -webkit-backdrop-filter: blur(7px);  backdrop-filter: blur(7px);
-      -webkit-mask-image: linear-gradient(to top, transparent 32%, black 48%);
-              mask-image: linear-gradient(to top, transparent 32%, black 48%);
-    }
-    .nb5 {
-      -webkit-backdrop-filter: blur(11px); backdrop-filter: blur(11px);
-      -webkit-mask-image: linear-gradient(to top, transparent 46%, black 60%);
-              mask-image: linear-gradient(to top, transparent 46%, black 60%);
-    }
-    .nb6 {
-      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
-      -webkit-mask-image: linear-gradient(to top, transparent 58%, black 73%);
-              mask-image: linear-gradient(to top, transparent 58%, black 73%);
-    }
-    .nb7 {
-      -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px);
-      -webkit-mask-image: linear-gradient(to top, transparent 72%, black 86%);
-              mask-image: linear-gradient(to top, transparent 72%, black 86%);
-    }
-    .nb8 {
-      -webkit-backdrop-filter: blur(28px); backdrop-filter: blur(28px);
-      -webkit-mask-image: linear-gradient(to top, transparent 84%, black 100%);
-              mask-image: linear-gradient(to top, transparent 84%, black 100%);
-    }
-
-    /* White tint layer — topmost inside #navGlass, behind nav text.
-       Transparent at the bottom (shows blurred content = glass effect),
-       opaque toward the top so H.S. logo + links remain readable. */
-    .nb-bg {
-      background: linear-gradient(to top,
-        rgba(255,255,255,0.00)  0%,
-        rgba(255,255,255,0.88) 32%,
-        rgba(255,255,255,0.92) 100%
-      );
-    }
-
     /* ── NAV ── */
     #mainNav {
-      position: sticky;
-      top: 0;
+      position: static;
       z-index: 400;
       height: 93px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 100px;
-      background: transparent;
+      background: #ffffff;
     }
     .nav-logo {
       font-size: 30px;
@@ -760,19 +684,6 @@
       <a href="#about" onclick="closeMenu()">About</a>
       <a href="#contact" onclick="closeMenu()">Contact</a>
     </nav>
-  </div>
-
-  <!-- ── NAV GLASS (fixed, z-index 399 — blurs page content, nav text sits above) ── -->
-  <div id="navGlass" aria-hidden="true">
-    <div class="nb nb1"></div>
-    <div class="nb nb2"></div>
-    <div class="nb nb3"></div>
-    <div class="nb nb4"></div>
-    <div class="nb nb5"></div>
-    <div class="nb nb6"></div>
-    <div class="nb nb7"></div>
-    <div class="nb nb8"></div>
-    <div class="nb nb-bg"></div>
   </div>
 
   <!-- ── NAV ── -->
