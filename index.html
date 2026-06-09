@@ -359,6 +359,8 @@
       display: block;
       background: #e0e0e0;
       border-radius: 10px;
+      will-change: transform;
+      transform-origin: center center;
     }
     .work-item img {
       width: 100%;
@@ -974,6 +976,28 @@
             el.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
             el.style.transform = '';
           }
+        });
+      });
+    })();
+
+    /* ── CARD TILT ── */
+    (function initCardTilt() {
+      document.querySelectorAll('.work-item').forEach(card => {
+        card.addEventListener('mousemove', function(e) {
+          const rect = this.getBoundingClientRect();
+          const dx = (e.clientX - rect.left - rect.width  / 2) / (rect.width  / 2);
+          const dy = (e.clientY - rect.top  - rect.height / 2) / (rect.height / 2);
+
+          const rotX = dy * -6;
+          const rotY = dx *  6;
+
+          this.style.transition = 'transform 0.12s ease-out';
+          this.style.transform  = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale(1.02)`;
+        });
+
+        card.addEventListener('mouseleave', function() {
+          this.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+          this.style.transform  = '';
         });
       });
     })();
