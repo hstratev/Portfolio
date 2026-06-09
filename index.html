@@ -125,7 +125,13 @@
     #menuOverlay.open .mo-nav a:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.15s; }
     .mo-nav a:hover { color: #888888; }
 
-    /* ── NAV GLASS LAYER (separate fixed element, sits behind nav) ── */
+    /* ── NAV GLASS — progressive (gradient) blur ── */
+    /* Fixed at z-399, nav text sits at z-400 above — never blurred or obscured.
+       8 stacked divs, each with increasing backdrop-filter blur and a mask-image
+       that fades in at a different point from the bottom edge upward.
+       Result: 0 blur at the bottom edge → 28 px blur at the top where nav links sit.
+       No hard cutoff line — content dissolves softly into the blur. */
+
     #navGlass {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -133,20 +139,65 @@
       z-index: 399;
       pointer-events: none;
       overflow: hidden;
-      -webkit-backdrop-filter: blur(20px) saturate(1.4);
-      backdrop-filter: blur(20px) saturate(1.4);
-      background: linear-gradient(to bottom,
-        rgba(255,255,255,0.78) 0%,
-        rgba(255,255,255,0.78) 58%,
-        rgba(255,255,255,0.00) 100%
-      );
     }
-    #navGlassCanvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
+
+    /* All blur bands share the same base positioning */
+    .nb { position: absolute; inset: 0; }
+
+    /* Progressive blur bands — mask uses "to top" so 0% = bottom edge.
+       Each layer starts transparent at the bottom and becomes solid (black)
+       higher up, meaning the blur only activates in its upper band.
+       Percentages are measured from the BOTTOM of the header.            */
+    .nb1 {
+      -webkit-backdrop-filter: blur(1px);  backdrop-filter: blur(1px);
+      -webkit-mask-image: linear-gradient(to top, black 0%, black 100%);
+              mask-image: linear-gradient(to top, black 0%, black 100%);
+    }
+    .nb2 {
+      -webkit-backdrop-filter: blur(2px);  backdrop-filter: blur(2px);
+      -webkit-mask-image: linear-gradient(to top, transparent 8%,  black 20%);
+              mask-image: linear-gradient(to top, transparent 8%,  black 20%);
+    }
+    .nb3 {
+      -webkit-backdrop-filter: blur(4px);  backdrop-filter: blur(4px);
+      -webkit-mask-image: linear-gradient(to top, transparent 20%, black 34%);
+              mask-image: linear-gradient(to top, transparent 20%, black 34%);
+    }
+    .nb4 {
+      -webkit-backdrop-filter: blur(7px);  backdrop-filter: blur(7px);
+      -webkit-mask-image: linear-gradient(to top, transparent 32%, black 48%);
+              mask-image: linear-gradient(to top, transparent 32%, black 48%);
+    }
+    .nb5 {
+      -webkit-backdrop-filter: blur(11px); backdrop-filter: blur(11px);
+      -webkit-mask-image: linear-gradient(to top, transparent 46%, black 60%);
+              mask-image: linear-gradient(to top, transparent 46%, black 60%);
+    }
+    .nb6 {
+      -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+      -webkit-mask-image: linear-gradient(to top, transparent 58%, black 73%);
+              mask-image: linear-gradient(to top, transparent 58%, black 73%);
+    }
+    .nb7 {
+      -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px);
+      -webkit-mask-image: linear-gradient(to top, transparent 72%, black 86%);
+              mask-image: linear-gradient(to top, transparent 72%, black 86%);
+    }
+    .nb8 {
+      -webkit-backdrop-filter: blur(28px); backdrop-filter: blur(28px);
+      -webkit-mask-image: linear-gradient(to top, transparent 84%, black 100%);
+              mask-image: linear-gradient(to top, transparent 84%, black 100%);
+    }
+
+    /* White tint layer — topmost inside #navGlass, behind nav text.
+       Transparent at the bottom (shows blurred content = glass effect),
+       opaque toward the top so H.S. logo + links remain readable. */
+    .nb-bg {
+      background: linear-gradient(to top,
+        rgba(255,255,255,0.00)  0%,
+        rgba(255,255,255,0.88) 32%,
+        rgba(255,255,255,0.92) 100%
+      );
     }
 
     /* ── NAV ── */
@@ -713,7 +764,15 @@
 
   <!-- ── NAV GLASS (fixed, z-index 399 — blurs page content, nav text sits above) ── -->
   <div id="navGlass" aria-hidden="true">
-    <canvas id="navGlassCanvas"></canvas>
+    <div class="nb nb1"></div>
+    <div class="nb nb2"></div>
+    <div class="nb nb3"></div>
+    <div class="nb nb4"></div>
+    <div class="nb nb5"></div>
+    <div class="nb nb6"></div>
+    <div class="nb nb7"></div>
+    <div class="nb nb8"></div>
+    <div class="nb nb-bg"></div>
   </div>
 
   <!-- ── NAV ── -->
@@ -939,105 +998,6 @@
       _fitTimer = setTimeout(fitHeroTitle, 80);
     });
 
-    /* ── NAV GLASS — WebGL caustic layer ── */
-    /* Sits inside #navGlass (fixed, z-399). Nav text is in #mainNav (z-400) above it.
-       backdrop-filter on #navGlass blurs page content. This canvas adds glass optics. */
-    (function () {
-      const canvas = document.getElementById('navGlassCanvas');
-      if (!canvas) return;
-      const gl = canvas.getContext('webgl', { alpha: true, premultipliedAlpha: false });
-      if (!gl) return;
-      const wrap = document.getElementById('navGlass');
-
-      function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width  = wrap.offsetWidth  * dpr;
-        canvas.height = wrap.offsetHeight * dpr;
-        canvas.style.width  = wrap.offsetWidth  + 'px';
-        canvas.style.height = wrap.offsetHeight + 'px';
-        gl.viewport(0, 0, canvas.width, canvas.height);
-      }
-      resize();
-      window.addEventListener('resize', resize);
-
-      const vs = `attribute vec2 p; void main(){ gl_Position=vec4(p,0.,1.); }`;
-
-      const fs = `
-        precision mediump float;
-        uniform vec3  iRes;
-        uniform float iTime;
-
-        float h(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
-
-        float sn(vec2 p){
-          vec2 i=floor(p), f=fract(p);
-          f=f*f*(3.-2.*f);
-          return mix(mix(h(i),h(i+vec2(1,0)),f.x),
-                     mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);
-        }
-
-        void main(){
-          vec2 uv = gl_FragCoord.xy / iRes.xy;
-          float t  = iTime * 0.15;
-
-          /* Caustic filament network — interference of two drifting noise fields */
-          float n1 = sn(uv*4.0 + vec2(t*0.60, t*0.40));
-          float n2 = sn(uv*4.5 - vec2(t*0.40, t*0.70));
-          float caustic = pow(1.0 - abs(n1-n2), 7.0) * 0.45;
-
-          /* Two small drifting specular highlights */
-          float sp1 = pow(max(0., 1.-length(uv-vec2(0.22+sin(t*.8)*.04, .45))*6.5), 5.0) * .60;
-          float sp2 = pow(max(0., 1.-length(uv-vec2(0.78+cos(t*.6)*.04, .38))*7.0), 5.5) * .50;
-
-          /* Top-edge rim */
-          float rim = pow(max(0., 1.-uv.y*10.), 2.0) * 0.20;
-
-          /* Match CSS gradient fade */
-          float fade = 1.0 - smoothstep(0.30, 0.95, uv.y);
-
-          float b = caustic + sp1 + sp2 + rim;
-          /* Zero base alpha — invisible on white, visible as shimmer on dark content */
-          gl_FragColor = vec4(vec3(1.0)*b, b * 0.72 * fade);
-        }
-      `;
-
-      function mkS(type, src) {
-        const s = gl.createShader(type);
-        gl.shaderSource(s, src); gl.compileShader(s);
-        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
-          console.warn('navGlass:', gl.getShaderInfoLog(s)); return null;
-        }
-        return s;
-      }
-
-      const prog = gl.createProgram();
-      gl.attachShader(prog, mkS(gl.VERTEX_SHADER, vs));
-      gl.attachShader(prog, mkS(gl.FRAGMENT_SHADER, fs));
-      gl.linkProgram(prog); gl.useProgram(prog);
-
-      const buf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,1,1]), gl.STATIC_DRAW);
-      const ap = gl.getAttribLocation(prog, 'p');
-      gl.enableVertexAttribArray(ap);
-      gl.vertexAttribPointer(ap, 2, gl.FLOAT, false, 0, 0);
-
-      const uR = gl.getUniformLocation(prog, 'iRes');
-      const uT = gl.getUniformLocation(prog, 'iTime');
-
-      gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      gl.clearColor(0, 0, 0, 0);
-
-      const t0 = performance.now();
-      (function loop() {
-        gl.clear(gl.COLOR_BUFFER_BIT);
-        gl.uniform3f(uR, canvas.width, canvas.height, 1.0);
-        gl.uniform1f(uT, (performance.now()-t0)/1000);
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-        requestAnimationFrame(loop);
-      })();
-    })();
 
   </script>
 
