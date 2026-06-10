@@ -467,49 +467,6 @@
       border-top: 1px solid rgba(0,0,0,0.1);
     }
 
-    /* ── GLASS TRANSITION ── */
-    #contact {
-      position: relative;
-      overflow: visible;
-    }
-    .glass-fade {
-      position: absolute;
-      top: -160px;
-      left: 0;
-      right: 0;
-      height: 160px;
-      pointer-events: none;
-      z-index: 10;
-    }
-    .glass-fade > div {
-      position: absolute;
-      inset: 0;
-    }
-    .glass-fade > div:nth-child(1) {
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      -webkit-mask-image: linear-gradient(to top, transparent 0%, black 100%);
-      mask-image: linear-gradient(to top, transparent 0%, black 100%);
-    }
-    .glass-fade > div:nth-child(2) {
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      -webkit-mask-image: linear-gradient(to top, transparent 30%, black 100%);
-      mask-image: linear-gradient(to top, transparent 30%, black 100%);
-    }
-    .glass-fade > div:nth-child(3) {
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      -webkit-mask-image: linear-gradient(to top, transparent 55%, black 100%);
-      mask-image: linear-gradient(to top, transparent 55%, black 100%);
-    }
-    .glass-fade > div:nth-child(4) {
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
-      -webkit-mask-image: linear-gradient(to top, transparent 75%, black 100%);
-      mask-image: linear-gradient(to top, transparent 75%, black 100%);
-    }
-
     /* ── CONTACT / FOOTER ── */
     #contact {
       background: #000000;
@@ -914,12 +871,6 @@
 
   <!-- ── CONTACT ── -->
   <section id="contact">
-    <div class="glass-fade" aria-hidden="true">
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
     <div class="contact-top-row">
       <div class="contact-links">
         <a href="https://www.linkedin.com/in/hstratev" target="_blank">LinkedIn</a>
