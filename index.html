@@ -205,8 +205,16 @@
       position: sticky;
       top: 0;
       z-index: 1;
-      will-change: opacity, transform;
+      will-change: transform;
       transform-origin: center top;
+    }
+    #hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, var(--overlay, 0));
+      pointer-events: none;
+      z-index: 50;
     }
 
     .hero-avatar {
@@ -347,7 +355,15 @@
     .pill-btn:hover { background: #e0e0e0; }
 
     /* ── WORK ── */
-    #work { background: #ffffff; position: sticky; top: 0; z-index: 2; will-change: opacity, transform; transform-origin: center top; }
+    #work { background: #ffffff; position: sticky; top: 0; z-index: 2; will-change: transform; transform-origin: center top; }
+    #work::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, var(--overlay, 0));
+      pointer-events: none;
+      z-index: 50;
+    }
 
     .work-grid {
       display: grid;
@@ -443,7 +459,15 @@
     }
 
     /* ── SERVICES ── */
-    #services { position: sticky; top: 0; z-index: 3; background: #ffffff; will-change: opacity, transform; transform-origin: center top; }
+    #services { position: sticky; top: 0; z-index: 3; background: #ffffff; will-change: transform; transform-origin: center top; }
+    #services::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, var(--overlay, 0));
+      pointer-events: none;
+      z-index: 50;
+    }
     .services-head {
       padding: 40px 100px 40px;
     }
@@ -974,25 +998,25 @@
     }
 
     lenis.on('scroll', ({ scroll }) => {
-      // Hero
+      // Hero — white overlay, recedes before work
       const hero = document.getElementById('hero');
       if (hero) {
         const p = Math.min(1, Math.max(0, scroll / hero.offsetHeight));
-        hero.style.opacity   = Math.max(0.5, 1 - p * 0.5).toFixed(3);
+        hero.style.setProperty('--overlay', (p * 0.75).toFixed(3));
         hero.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
       }
-      // Work
+      // Work — white overlay, recedes before about
       const work = document.getElementById('work');
       if (work) {
         const p = Math.min(1, Math.max(0, (scroll - workFadeTrigger) / FADE_DIST));
-        work.style.opacity   = Math.max(0.5, 1 - p * 0.5).toFixed(3);
+        work.style.setProperty('--overlay', (p * 0.75).toFixed(3));
         work.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
       }
-      // Services
+      // Services — black overlay, recedes before contact
       const svc = document.getElementById('services');
       if (svc) {
         const p = Math.min(1, Math.max(0, (scroll - servicesFadeTrigger) / FADE_DIST));
-        svc.style.opacity   = Math.max(0.5, 1 - p * 0.5).toFixed(3);
+        svc.style.setProperty('--overlay', (p * 0.75).toFixed(3));
         svc.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
       }
     });
