@@ -303,6 +303,7 @@
       letter-spacing: 0em;
       display: block;
       width: 100%;
+      opacity: 0; /* typewriter activates this */
     }
 
     /* ── SECTION HEADER ── */
@@ -1112,18 +1113,36 @@
       const heroBio     = document.querySelector('.hero-bio.mask-reveal');
       const heroCaption = document.querySelector('.hero-caption');
       if (heroBio && heroCaption) {
-        const captionText     = heroCaption.textContent;
+        const captionText = heroCaption.textContent;
+
+        // Reserve height before clearing so layout doesn't shift
+        heroCaption.style.minHeight = heroCaption.offsetHeight + 'px';
         heroCaption.textContent = '';
-        heroCaption.style.opacity = '0';
+
+        // Split at "?" for the mid-sentence pause
+        const pauseIdx = captionText.indexOf('?') + 1;
+        const part1 = captionText.slice(0, pauseIdx);
+        const part2 = captionText.slice(pauseIdx);
 
         const lastLine = heroBio.querySelector('.line-inner:last-child');
         if (lastLine) {
           lastLine.addEventListener('transitionend', () => {
             heroCaption.style.opacity = '1';
             let i = 0;
-            const iv = setInterval(() => {
-              heroCaption.textContent += captionText[i++];
-              if (i >= captionText.length) clearInterval(iv);
+            // Type part 1
+            const iv1 = setInterval(() => {
+              heroCaption.textContent += part1[i++];
+              if (i >= part1.length) {
+                clearInterval(iv1);
+                // 1s pause, then type part 2
+                setTimeout(() => {
+                  let j = 0;
+                  const iv2 = setInterval(() => {
+                    heroCaption.textContent += part2[j++];
+                    if (j >= part2.length) clearInterval(iv2);
+                  }, 38);
+                }, 1000);
+              }
             }, 38);
           }, { once: true });
         }
