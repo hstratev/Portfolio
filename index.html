@@ -242,8 +242,6 @@
       justify-content: space-between;
       align-items: baseline;
       gap: 40px;
-      opacity: 0;
-      animation: fadeUp 0.8s ease 0.4s forwards;
     }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
@@ -741,9 +739,7 @@
     #mainNav {
       animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
-    .hero-bottom {
-      animation: enterBio 1.0s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-    }
+    /* hero-bottom entrance handled by mask-reveal + typewriter */
 
   </style>
 </head>
@@ -790,7 +786,7 @@
 
     <div class="hero-bottom">
       <div class="hero-bio-col">
-        <p class="hero-bio">Product Design Lead with 13+ years of experience at the intersection of human perception and emerging technology.</p>
+        <p class="hero-bio mask-reveal" data-reveal-delay="400">Product Design Lead with 13+ years of experience at the intersection of human perception and emerging technology.</p>
         <p class="hero-caption">Curious about my AI skills? I vibe coded the entire website from scratch.</p>
       </div>
     </div>
@@ -1072,13 +1068,12 @@
         if (el.dataset.maskDone) return;
         el.dataset.maskDone = '1';
 
+        const baseDelay = parseInt(el.dataset.revealDelay || 0);
         let lines;
 
         if (/<br\s*\/?>/i.test(el.innerHTML)) {
-          // Split by explicit <br>
           lines = el.innerHTML.split(/<br\s*\/?>/i).map(l => l.trim()).filter(Boolean);
         } else {
-          // Measure word positions to detect natural line breaks
           const words = el.innerText.trim().split(/\s+/);
           el.innerHTML = words.map(w => `<span class="_mw">${w}</span>`).join(' ');
           const spans = [...el.querySelectorAll('._mw')];
@@ -1093,17 +1088,46 @@
         }
 
         el.innerHTML = lines.map((line, i) =>
-          `<span class="line-mask"><span class="line-inner" style="transition-delay:${i * 100}ms">${line}</span></span>`
+          `<span class="line-mask"><span class="line-inner" style="transition-delay:${baseDelay + i * 100}ms">${line}</span></span>`
         ).join('');
       });
 
+      // IntersectionObserver for scroll-triggered elements
       const mio = new IntersectionObserver(entries => {
         entries.forEach(e => {
           if (e.isIntersecting) { e.target.classList.add('revealed'); mio.unobserve(e.target); }
         });
       }, { threshold: 0.2 });
 
-      document.querySelectorAll('.mask-reveal').forEach(el => mio.observe(el));
+      document.querySelectorAll('.mask-reveal').forEach(el => {
+        // Hero bio triggers immediately; everything else on scroll
+        if (el.dataset.revealDelay) {
+          requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add('revealed')));
+        } else {
+          mio.observe(el);
+        }
+      });
+
+      // Typewriter on hero caption — starts after last bio line settles
+      const heroBio     = document.querySelector('.hero-bio.mask-reveal');
+      const heroCaption = document.querySelector('.hero-caption');
+      if (heroBio && heroCaption) {
+        const captionText     = heroCaption.textContent;
+        heroCaption.textContent = '';
+        heroCaption.style.opacity = '0';
+
+        const lastLine = heroBio.querySelector('.line-inner:last-child');
+        if (lastLine) {
+          lastLine.addEventListener('transitionend', () => {
+            heroCaption.style.opacity = '1';
+            let i = 0;
+            const iv = setInterval(() => {
+              heroCaption.textContent += captionText[i++];
+              if (i >= captionText.length) clearInterval(iv);
+            }, 38);
+          }, { once: true });
+        }
+      }
     }
 
     /* ── FIT HERO TITLE ── */
