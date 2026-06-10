@@ -233,7 +233,7 @@
       from { transform: scale(1.15); opacity: 0; }
       to   { transform: scale(1);    opacity: 1; }
     }
-    .proj-img-full:first-of-type img {
+    .proj-img-full.is-hero img {
       animation: heroZoomOut 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
 
@@ -461,6 +461,10 @@
     video.addEventListener('pause', function() { overlay.classList.remove('hidden'); });
     video.addEventListener('ended', function() { overlay.classList.remove('hidden'); });
   });
+
+  // ── HERO IMAGE ZOOM ──
+  var heroImgEl = document.querySelector('.proj-img-full');
+  if (heroImgEl) heroImgEl.classList.add('is-hero');
 
   // ── SCROLL REVEAL ──
   document.querySelectorAll('.proj-img-full').forEach(function(el, i) {
