@@ -593,6 +593,20 @@
       line-height: 1.5;
     }
 
+    /* ── TEXT MASK REVEAL ── */
+    .mask-reveal .line-mask {
+      display: block;
+      overflow: hidden;
+    }
+    .mask-reveal .line-inner {
+      display: block;
+      transform: translateY(105%);
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .mask-reveal.revealed .line-inner {
+      transform: translateY(0);
+    }
+
     /* ── SCROLL REVEAL ── */
     .reveal {
       opacity: 0;
@@ -847,7 +861,7 @@
       </div>
     </div>
 
-    <p class="about-statement reveal">From Daimler's award-winning MBUX to an AI-native home that thinks, learns and speaks. My work has been featured at CES, GITEX and Shanghai Auto</p>
+    <p class="about-statement mask-reveal">From Daimler's award-winning MBUX to an AI-native home that thinks, learns and speaks. My work has been featured at CES, GITEX and Shanghai Auto</p>
 
     <div class="about-grid">
       <div class="about-portrait reveal">
@@ -886,7 +900,7 @@
       </div>
     </div>
 
-    <p class="contact-heading reveal">Have something worth building?<br>Let's make it real.</p>
+    <p class="contact-heading mask-reveal">Have something worth building?<br>Let's make it real.</p>
 
     <div class="contact-actions reveal">
       <a href="mailto:hstratev@gmail.com" class="cta-btn">Get in Touch</a>
@@ -1052,6 +1066,46 @@
       });
     }
 
+    /* ── TEXT MASK REVEAL ── */
+    function initMaskReveal() {
+      document.querySelectorAll('.mask-reveal').forEach(el => {
+        if (el.dataset.maskDone) return;
+        el.dataset.maskDone = '1';
+
+        let lines;
+
+        if (/<br\s*\/?>/i.test(el.innerHTML)) {
+          // Split by explicit <br>
+          lines = el.innerHTML.split(/<br\s*\/?>/i).map(l => l.trim()).filter(Boolean);
+        } else {
+          // Measure word positions to detect natural line breaks
+          const words = el.innerText.trim().split(/\s+/);
+          el.innerHTML = words.map(w => `<span class="_mw">${w}</span>`).join(' ');
+          const spans = [...el.querySelectorAll('._mw')];
+          const groups = [];
+          let lastY = null;
+          spans.forEach(s => {
+            const y = Math.round(s.getBoundingClientRect().top);
+            if (lastY === null || Math.abs(y - lastY) > 4) { groups.push([]); lastY = y; }
+            groups[groups.length - 1].push(s.textContent);
+          });
+          lines = groups.map(g => g.join(' '));
+        }
+
+        el.innerHTML = lines.map((line, i) =>
+          `<span class="line-mask"><span class="line-inner" style="transition-delay:${i * 100}ms">${line}</span></span>`
+        ).join('');
+      });
+
+      const mio = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) { e.target.classList.add('revealed'); mio.unobserve(e.target); }
+        });
+      }, { threshold: 0.2 });
+
+      document.querySelectorAll('.mask-reveal').forEach(el => mio.observe(el));
+    }
+
     /* ── FIT HERO TITLE ── */
     function fitHeroTitle() {
       const inner = document.querySelector('.hero-name-inner');
@@ -1079,9 +1133,9 @@
 
     /* Run after fonts are loaded for accurate measurement */
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); });
+      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); });
     } else {
-      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); });
+      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); });
     }
 
     /* Debounced resize */
