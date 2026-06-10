@@ -347,7 +347,7 @@
     .pill-btn:hover { background: #e0e0e0; }
 
     /* ── WORK ── */
-    #work { background: #ffffff; position: relative; z-index: 2; }
+    #work { background: #ffffff; position: sticky; top: 0; z-index: 2; will-change: opacity, transform; transform-origin: center top; }
 
     .work-grid {
       display: grid;
@@ -392,7 +392,7 @@
     }
 
     /* ── ABOUT ── */
-    #about { background: #ffffff; position: relative; z-index: 2; }
+    #about { background: #ffffff; position: relative; z-index: 3; }
 
     .about-statement {
       font-size: 50px;
@@ -443,7 +443,7 @@
     }
 
     /* ── SERVICES ── */
-    #services { position: relative; z-index: 2; background: #ffffff; }
+    #services { position: sticky; top: 0; z-index: 3; background: #ffffff; will-change: opacity, transform; transform-origin: center top; }
     .services-head {
       padding: 40px 100px 40px;
     }
@@ -478,7 +478,7 @@
       background: #000000;
       padding: 80px 100px;
       position: relative;
-      z-index: 2;
+      z-index: 4;
     }
 
     .contact-top-row {
@@ -942,13 +942,48 @@
       requestAnimationFrame(lenisRaf);
     })(0);
 
-    // Hero curtain reveal — fade + scale as work section covers it
+    // Curtain reveal — fade + scale as next section covers each sticky section
+    let workFadeTrigger   = Infinity;
+    let servicesFadeTrigger = Infinity;
+    const FADE_DIST = 400; // px over which the fade plays out
+
+    function initCurtainTriggers() {
+      // Work: trigger when 2nd-to-last card top enters viewport
+      const workItems = [...document.querySelectorAll('.work-item')];
+      if (workItems.length >= 2) {
+        const el = workItems[workItems.length - 2];
+        workFadeTrigger = el.getBoundingClientRect().top + window.scrollY - window.innerHeight + el.offsetHeight * 0.5;
+      }
+      // Services: trigger when 2nd-to-last expertise line top enters viewport
+      const svcItems = [...document.querySelectorAll('.service-item')];
+      if (svcItems.length >= 2) {
+        const el = svcItems[svcItems.length - 2];
+        servicesFadeTrigger = el.getBoundingClientRect().top + window.scrollY - window.innerHeight + el.offsetHeight * 0.5;
+      }
+    }
+
     lenis.on('scroll', ({ scroll }) => {
+      // Hero
       const hero = document.getElementById('hero');
-      if (!hero) return;
-      const progress = Math.min(1, Math.max(0, scroll / hero.offsetHeight));
-      hero.style.opacity   = Math.max(0.5, 1 - progress * 0.5).toFixed(3);
-      hero.style.transform = `scale(${(1 - progress * 0.04).toFixed(4)})`;
+      if (hero) {
+        const p = Math.min(1, Math.max(0, scroll / hero.offsetHeight));
+        hero.style.opacity   = Math.max(0.5, 1 - p * 0.5).toFixed(3);
+        hero.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
+      }
+      // Work
+      const work = document.getElementById('work');
+      if (work) {
+        const p = Math.min(1, Math.max(0, (scroll - workFadeTrigger) / FADE_DIST));
+        work.style.opacity   = Math.max(0.5, 1 - p * 0.5).toFixed(3);
+        work.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
+      }
+      // Services
+      const svc = document.getElementById('services');
+      if (svc) {
+        const p = Math.min(1, Math.max(0, (scroll - servicesFadeTrigger) / FADE_DIST));
+        svc.style.opacity   = Math.max(0.5, 1 - p * 0.5).toFixed(3);
+        svc.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
+      }
     });
 
     // Wire all anchor links through Lenis
@@ -1176,10 +1211,11 @@
 
     /* Run after fonts are loaded for accurate measurement */
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); });
+      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initCurtainTriggers(); });
     } else {
-      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); });
+      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initCurtainTriggers(); });
     }
+    window.addEventListener('resize', initCurtainTriggers);
 
     /* Debounced resize */
     let _fitTimer;
