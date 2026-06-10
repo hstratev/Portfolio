@@ -479,6 +479,16 @@
       padding: 80px 100px;
       position: relative;
       z-index: 4;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    .contact-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .contact-top-row {
@@ -514,7 +524,7 @@
       display: flex;
       gap: 32px;
       align-items: center;
-      margin-bottom: 80px;
+      margin-top: 40px;
     }
     .cta-btn {
       font-size: 16px;
@@ -654,7 +664,7 @@
       .services-list { padding: 0 80px 60px; }
       .service-item { font-size: clamp(2rem, 7vw, 70px); letter-spacing: -2px; }
 
-      #contact { padding: 60px 80px; }
+      #contact { padding: 60px 80px; min-height: 100vh; }
       .contact-heading {
         font-size: 36px;
         letter-spacing: -2px;
@@ -709,7 +719,7 @@
       .services-list { padding: 0 24px 48px; }
       .service-item { font-size: clamp(1.8rem, 9vw, 60px); letter-spacing: -2px; }
 
-      #contact { padding: 48px 24px; }
+      #contact { padding: 48px 24px; min-height: 100svh; }
       .contact-heading { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; }
       .footer-row { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
@@ -897,10 +907,11 @@
       </div>
     </div>
 
-    <p class="contact-heading mask-reveal">Have something worth building?<br>Let's make it real.</p>
-
-    <div class="contact-actions reveal">
-      <a href="mailto:hstratev@gmail.com" class="cta-btn">Get in Touch</a>
+    <div class="contact-center">
+      <p class="contact-heading mask-reveal">Have something worth building?<br>Let's make it real.</p>
+      <div class="contact-actions reveal">
+        <a href="mailto:hstratev@gmail.com" class="cta-btn">Get in Touch</a>
+      </div>
     </div>
 
     <div class="footer-row">
