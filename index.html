@@ -594,15 +594,21 @@
     .footer-left {
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 8px;
     }
-    .footer-left span,
     .footer-left a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-size: 16px;
       font-weight: 400;
       font-family: 'Inter Display', sans-serif;
       color: #ffffff;
       transition: opacity 0.2s;
+    }
+    .footer-left a svg {
+      flex-shrink: 0;
+      opacity: 0.8;
     }
     .footer-left a:hover { opacity: 0.55; }
     .footer-credit {
@@ -920,12 +926,6 @@
 
   <!-- ── CONTACT ── -->
   <section id="contact">
-    <div class="contact-top-row">
-      <div class="contact-links">
-        <a href="https://www.linkedin.com/in/hstratev" target="_blank">LinkedIn</a>
-      </div>
-    </div>
-
     <div class="contact-center">
       <p class="contact-heading mask-reveal">Have something worth building?<br>Let's make it real.</p>
       <div class="contact-actions reveal">
@@ -935,8 +935,23 @@
 
     <div class="footer-row">
       <div class="footer-left">
-        <span>+359 XX XXX XXXX</span>
-        <a href="mailto:hstratev@gmail.com">hstratev@gmail.com</a>
+        <a href="https://www.linkedin.com/in/hstratev" target="_blank">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="1" width="13" height="13" rx="2.5" stroke="white" stroke-width="1"/>
+            <circle cx="4.5" cy="4.8" r="0.75" fill="white"/>
+            <line x1="4.5" y1="6.5" x2="4.5" y2="11" stroke="white" stroke-width="1" stroke-linecap="round"/>
+            <path d="M7 6.5v4.5" stroke="white" stroke-width="1" stroke-linecap="round"/>
+            <path d="M7 8.75a2.25 2.25 0 014.5 0V11" stroke="white" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          LinkedIn
+        </a>
+        <a href="mailto:hstratev@gmail.com">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="1" y="3" width="13" height="9" rx="1.5" stroke="white" stroke-width="1"/>
+            <path d="M1 5l6.5 4L14 5" stroke="white" stroke-width="1" stroke-linejoin="round"/>
+          </svg>
+          hstratev@gmail.com
+        </a>
       </div>
       <span class="footer-credit">Designed &amp; Developed by Hristiyan Stratev</span>
       <span class="footer-copy">All rights reserved.<br>HS © 2025</span>
