@@ -988,7 +988,7 @@
     })(0);
 
     // Scroll-driven animations
-    let _contactNaturalH = 0, _contactTop = 0;
+    let _contactNaturalH = 0, _contactTop = 0, _contactLocked = false;
 
     function initContactExpand() {
       const contact = document.getElementById('contact');
@@ -1011,7 +1011,7 @@
       // triggerEnd = _contactTop - NAV_H so the section stops exactly when its top edge
       // meets the nav bottom — all content stays below the nav, nothing hidden.
       const contact = document.getElementById('contact');
-      if (contact && _contactNaturalH && _contactTop) {
+      if (contact && _contactNaturalH && _contactTop && !_contactLocked) {
         const vh    = window.innerHeight;
         const NAV_H = 93;
         const maxH  = vh - NAV_H; // visible area below sticky nav
@@ -1032,7 +1032,32 @@
         if (!href || href === '#') return;
         e.preventDefault();
         const target = document.querySelector(href);
-        if (target) lenis.scrollTo(target, { duration: 1.4 });
+        if (!target) return;
+
+        if (href === '#contact') {
+          // Pre-expand contact to its full height so the page is tall enough
+          // to scroll to, then jump to the page bottom.
+          const contact = document.getElementById('contact');
+          if (contact) {
+            _contactLocked = true;
+            contact.style.minHeight = (window.innerHeight - 93) + 'px';
+            requestAnimationFrame(() => {
+              lenis.scrollTo(
+                document.documentElement.scrollHeight - window.innerHeight,
+                {
+                  duration: 1.4,
+                  onComplete: () => { _contactLocked = false; },
+                }
+              );
+            });
+          }
+        } else {
+          // For Work / About: scroll past the sec-head so the section title
+          // disappears behind the sticky nav instead of peeking below it.
+          const secHead = target.querySelector('.sec-head');
+          const offset  = secHead ? secHead.offsetHeight : 0;
+          lenis.scrollTo(target, { duration: 1.4, offset });
+        }
       });
     });
 
