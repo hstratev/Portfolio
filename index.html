@@ -1322,11 +1322,16 @@
     })();
 
     /* Run after fonts are loaded for accurate measurement */
+    const _lenisEasing = t => Math.min(1, 1.001 - Math.pow(2, -10 * t));
+
     function handlePendingScroll() {
       const pendingScroll = sessionStorage.getItem('portfolioScrollTo');
       if (!pendingScroll) return;
       sessionStorage.removeItem('portfolioScrollTo');
-      requestAnimationFrame(() => requestAnimationFrame(() => {
+      // Delay long enough for the initial paint + Lenis RAF loop to warm up
+      // before triggering programmatic scroll, so it feels identical to a
+      // nav click made from within the home page.
+      setTimeout(() => {
         if (pendingScroll === '#contact') {
           const contact = document.getElementById('contact');
           if (contact) {
@@ -1336,6 +1341,7 @@
               if (typeof lenis.resize === 'function') lenis.resize();
               lenis.scrollTo(contact.offsetTop - 93, {
                 duration: 1.4,
+                easing: _lenisEasing,
                 onComplete: () => { _contactLocked = false; },
               });
             }));
@@ -1347,9 +1353,9 @@
           };
           const target = document.querySelector(pendingScroll);
           const scrollEl = contentTargets[pendingScroll] || target;
-          if (scrollEl) lenis.scrollTo(scrollEl, { duration: 1.4 });
+          if (scrollEl) lenis.scrollTo(scrollEl, { duration: 1.4, easing: _lenisEasing });
         }
-      }));
+      }, 400);
     }
 
     if (document.fonts && document.fonts.ready) {
