@@ -1035,28 +1035,30 @@
         if (!target) return;
 
         if (href === '#contact') {
-          // Pre-expand contact to its full height so the page is tall enough
-          // to scroll to, then jump to the page bottom.
+          // Pre-expand contact to its full height, lock the expansion handler
+          // so it can't fight back, then scroll to the element after layout settles.
           const contact = document.getElementById('contact');
           if (contact) {
             _contactLocked = true;
             contact.style.minHeight = (window.innerHeight - 93) + 'px';
-            requestAnimationFrame(() => {
-              lenis.scrollTo(
-                document.documentElement.scrollHeight - window.innerHeight,
-                {
-                  duration: 1.4,
-                  onComplete: () => { _contactLocked = false; },
-                }
-              );
-            });
+            // Double rAF ensures the browser has painted the new layout
+            // before Lenis recalculates the scroll limit.
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              lenis.scrollTo(contact, {
+                duration: 1.4,
+                onComplete: () => { _contactLocked = false; },
+              });
+            }));
           }
         } else {
-          // For Work / About: scroll past the sec-head so the section title
-          // disappears behind the sticky nav instead of peeking below it.
-          const secHead = target.querySelector('.sec-head');
-          const offset  = secHead ? secHead.offsetHeight : 0;
-          lenis.scrollTo(target, { duration: 1.4, offset });
+          // Work / About: scroll to the first content element *after* the
+          // sec-head so the section title is hidden behind the sticky nav.
+          const contentTargets = {
+            '#work':  document.querySelector('.work-grid'),
+            '#about': document.querySelector('.about-statement'),
+          };
+          const scrollEl = contentTargets[href] || target;
+          lenis.scrollTo(scrollEl, { duration: 1.4 });
         }
       });
     });
