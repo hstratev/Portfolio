@@ -496,7 +496,7 @@
     /* ── CONTACT / FOOTER ── */
     #contact {
       background: #000000;
-      padding: 110px 100px 80px;
+      padding: 80px 100px;
       position: relative;
       z-index: 4;
       display: flex;
@@ -683,7 +683,7 @@
       .services-list { padding: 0 80px 60px; }
       .service-item { font-size: clamp(2rem, 7vw, 70px); letter-spacing: -2px; }
 
-      #contact { padding: 110px 80px 60px; }
+      #contact { padding: 60px 80px; }
       .contact-heading {
         font-size: 36px;
         letter-spacing: -2px;
@@ -738,7 +738,7 @@
       .services-list { padding: 0 24px 48px; }
       .service-item { font-size: clamp(1.8rem, 9vw, 60px); letter-spacing: -2px; }
 
-      #contact { padding: 110px 24px 48px; }
+      #contact { padding: 48px 24px; }
       .contact-heading { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; }
       .footer-row { flex-direction: column; align-items: flex-start; gap: 16px; }
     }
@@ -992,19 +992,20 @@
         hero.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
       }
 
-      // Contact expand — black grows from content height → 100vh as you scroll in
+      // Contact expand — black grows from content height → (vh - navH) as you scroll in.
+      // triggerEnd = _contactTop - NAV_H so the section stops exactly when its top edge
+      // meets the nav bottom — all content stays below the nav, nothing hidden.
       const contact = document.getElementById('contact');
       if (contact && _contactNaturalH && _contactTop) {
-        const vh = window.innerHeight;
-        if (_contactNaturalH < vh) {
-          // triggerEnd = _contactTop: as contact grows, scrollMax grows by the same amount,
-          // so these always meet — expansion is guaranteed to reach 100vh.
+        const vh    = window.innerHeight;
+        const NAV_H = 93;
+        const maxH  = vh - NAV_H; // visible area below sticky nav
+        if (_contactNaturalH < maxH) {
           const triggerStart = _contactTop - vh;
-          const triggerEnd   = _contactTop;
+          const triggerEnd   = _contactTop - NAV_H; // page can't scroll past here
           const p  = Math.min(1, Math.max(0, (scroll - triggerStart) / (triggerEnd - triggerStart)));
-          // ease-out³ — fast bloom at first, noticeably slower in the second half
-          const ep = 1 - Math.pow(1 - p, 3);
-          contact.style.minHeight = Math.round(_contactNaturalH + ep * (vh - _contactNaturalH)) + 'px';
+          const ep = 1 - Math.pow(1 - p, 3); // ease-out³
+          contact.style.minHeight = Math.round(_contactNaturalH + ep * (maxH - _contactNaturalH)) + 'px';
         }
       }
     });
