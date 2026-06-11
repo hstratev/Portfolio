@@ -41,6 +41,11 @@
       align-items: center;
       padding: 0 100px;
       background: #ffffff;
+      box-shadow: 0 2px 16px rgba(0,0,0,0);
+      transition: box-shadow 0.4s ease;
+    }
+    #mainNav.nav-scrolled {
+      box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
     .nav-logo {
       font-size: 30px;
@@ -323,6 +328,10 @@
     document.addEventListener('fullscreenchange', function() {
       document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
     });
+
+  window.addEventListener('scroll', function() {
+    document.getElementById('mainNav').classList.toggle('nav-scrolled', window.scrollY > 0);
+  });
 </script>
 </body>
 </html>
