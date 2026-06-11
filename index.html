@@ -1035,16 +1035,19 @@
         if (!target) return;
 
         if (href === '#contact') {
-          // Pre-expand contact to its full height, lock the expansion handler
-          // so it can't fight back, then scroll to the element after layout settles.
           const contact = document.getElementById('contact');
           if (contact) {
+            // 1. Lock the scroll-driven expansion so it can't fight us.
+            // 2. Pre-expand to full height so the page is long enough to scroll to.
+            // 3. Call lenis.resize() so Lenis re-reads scrollHeight and lifts its
+            //    internal limit ceiling — without this it clamps short.
+            // 4. Scroll to the exact numeric target (contactTop - navH) so there is
+            //    no element-position ambiguity and no clamping.
             _contactLocked = true;
             contact.style.minHeight = (window.innerHeight - 93) + 'px';
-            // Double rAF ensures the browser has painted the new layout
-            // before Lenis recalculates the scroll limit.
             requestAnimationFrame(() => requestAnimationFrame(() => {
-              lenis.scrollTo(contact, {
+              if (typeof lenis.resize === 'function') lenis.resize();
+              lenis.scrollTo(contact.offsetTop - 93, {
                 duration: 1.4,
                 onComplete: () => { _contactLocked = false; },
               });
