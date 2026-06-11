@@ -502,6 +502,7 @@
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
+      min-height: calc(100vh - 93px);
     }
     .contact-center {
       flex: 1;
@@ -988,26 +989,6 @@
     })(0);
 
     // Scroll-driven animations
-    let _contactNaturalH = 0, _contactTop = 0, _contactLocked = false;
-
-    function initContactExpand() {
-      const contact = document.getElementById('contact');
-      if (!contact) return;
-      contact.style.minHeight = '';
-      _contactNaturalH = contact.offsetHeight;
-      _contactTop      = contact.getBoundingClientRect().top + window.scrollY;
-      // Pre-expand transiently so lenis.resize() captures the maximum page height
-      // (triggerEnd = _contactTop - 93). Without this, Lenis clamps to the shorter
-      // natural-height page and the expansion stalls mid-scroll, requiring a second
-      // scroll gesture to complete. The set+resize+clear runs in a single JS task,
-      // no paint occurs, and the scroll handler animates from naturalH as normal.
-      const maxH = window.innerHeight - 93;
-      if (_contactNaturalH < maxH) {
-        contact.style.minHeight = maxH + 'px';
-        lenis.resize();
-        contact.style.minHeight = '';
-      }
-    }
 
     lenis.on('scroll', ({ scroll }) => {
       // Hero curtain — fades + slight scale as work slides over it
@@ -1018,22 +999,6 @@
         hero.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
       }
 
-      // Contact expand — black grows from content height → (vh - navH) as you scroll in.
-      // triggerEnd = _contactTop - NAV_H so the section stops exactly when its top edge
-      // meets the nav bottom — all content stays below the nav, nothing hidden.
-      const contact = document.getElementById('contact');
-      if (contact && _contactNaturalH && _contactTop && !_contactLocked) {
-        const vh    = window.innerHeight;
-        const NAV_H = 93;
-        const maxH  = vh - NAV_H; // visible area below sticky nav
-        if (_contactNaturalH < maxH) {
-          const triggerStart = _contactTop - vh;
-          const triggerEnd   = _contactTop - NAV_H; // page can't scroll past here
-          const p  = Math.min(1, Math.max(0, (scroll - triggerStart) / (triggerEnd - triggerStart)));
-          const ep = 1 - Math.pow(1 - p, 3); // ease-out³
-          contact.style.minHeight = Math.round(_contactNaturalH + ep * (maxH - _contactNaturalH)) + 'px';
-        }
-      }
     });
 
     // Wire all anchor links through Lenis
@@ -1048,21 +1013,7 @@
         if (href === '#contact') {
           const contact = document.getElementById('contact');
           if (contact) {
-            // 1. Lock the scroll-driven expansion so it can't fight us.
-            // 2. Pre-expand to full height so the page is long enough to scroll to.
-            // 3. Call lenis.resize() so Lenis re-reads scrollHeight and lifts its
-            //    internal limit ceiling — without this it clamps short.
-            // 4. Scroll to the exact numeric target (contactTop - navH) so there is
-            //    no element-position ambiguity and no clamping.
-            _contactLocked = true;
-            contact.style.minHeight = (window.innerHeight - 93) + 'px';
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-              if (typeof lenis.resize === 'function') lenis.resize();
-              lenis.scrollTo(contact.offsetTop - 93, {
-                duration: 1.4,
-                onComplete: () => { _contactLocked = false; },
-              });
-            }));
+            lenis.scrollTo(contact.offsetTop - 93, { duration: 1.4 });
           }
         } else {
           // Work / About: scroll to the first content element *after* the
@@ -1346,16 +1297,7 @@
         if (pendingScroll === '#contact') {
           const contact = document.getElementById('contact');
           if (contact) {
-            _contactLocked = true;
-            contact.style.minHeight = (window.innerHeight - 93) + 'px';
-            requestAnimationFrame(() => requestAnimationFrame(() => {
-              if (typeof lenis.resize === 'function') lenis.resize();
-              lenis.scrollTo(contact.offsetTop - 93, {
-                duration: 1.4,
-                easing: _lenisEasing,
-                onComplete: () => { _contactLocked = false; },
-              });
-            }));
+            lenis.scrollTo(contact.offsetTop - 93, { duration: 1.4, easing: _lenisEasing });
           }
         } else {
           const contentTargets = {
@@ -1370,16 +1312,16 @@
     }
 
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initContactExpand(); handlePendingScroll(); });
+      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); });
     } else {
-      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initContactExpand(); handlePendingScroll(); });
+      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); });
     }
 
     /* Debounced resize */
     let _fitTimer;
     window.addEventListener('resize', function () {
       clearTimeout(_fitTimer);
-      _fitTimer = setTimeout(() => { fitHeroTitle(); initContactExpand(); }, 80);
+      _fitTimer = setTimeout(() => { fitHeroTitle(); }, 80);
     });
 
 
