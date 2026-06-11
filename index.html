@@ -985,9 +985,9 @@
       if (contact && _contactNaturalH && _contactTop) {
         const vh = window.innerHeight;
         if (_contactNaturalH < vh) {
-          // trigger: contact top goes from viewport-bottom → viewport-top
+          // trigger: contact top enters viewport-bottom, expansion finishes 60% into the section
           const triggerStart = _contactTop - vh;
-          const triggerEnd   = _contactTop;
+          const triggerEnd   = _contactTop + vh * 0.6;
           const p = Math.min(1, Math.max(0, (scroll - triggerStart) / (triggerEnd - triggerStart)));
           contact.style.minHeight = Math.round(_contactNaturalH + p * (vh - _contactNaturalH)) + 'px';
         }
