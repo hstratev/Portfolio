@@ -993,9 +993,20 @@
     function initContactExpand() {
       const contact = document.getElementById('contact');
       if (!contact) return;
-      contact.style.minHeight = '';          // clear any JS value first
+      contact.style.minHeight = '';
       _contactNaturalH = contact.offsetHeight;
       _contactTop      = contact.getBoundingClientRect().top + window.scrollY;
+      // Pre-expand transiently so lenis.resize() captures the maximum page height
+      // (triggerEnd = _contactTop - 93). Without this, Lenis clamps to the shorter
+      // natural-height page and the expansion stalls mid-scroll, requiring a second
+      // scroll gesture to complete. The set+resize+clear runs in a single JS task,
+      // no paint occurs, and the scroll handler animates from naturalH as normal.
+      const maxH = window.innerHeight - 93;
+      if (_contactNaturalH < maxH) {
+        contact.style.minHeight = maxH + 'px';
+        lenis.resize();
+        contact.style.minHeight = '';
+      }
     }
 
     lenis.on('scroll', ({ scroll }) => {
