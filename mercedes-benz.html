@@ -121,8 +121,6 @@
     .proj-meta-item label { display: block; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; color: #000000; margin-bottom: 6px; }
     .proj-meta-item span { font-size: 20px; font-weight: 400; color: #999999; }
     .proj-section { margin: 80px 0; }
-    .back-top { text-align: center; padding: 60px 0; font-size: 16px; font-weight: 400; color: #999999; }
-    .back-top a { color: #999999; text-decoration: none; }
 
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
@@ -187,6 +185,16 @@
       body.fullscreen-active, body.fullscreen-active * { cursor: auto !important; }
     video:fullscreen { object-fit: contain; }
     video:-webkit-full-screen { object-fit: contain; }
+
+    .proj-back-link { padding: 16px 100px; }
+    .proj-back-link a { font-size: 13px; letter-spacing: 0.05em; color: #aaaaaa; text-decoration: none; }
+    .proj-back-link a:hover { text-decoration: underline; }
+    .proj-next { display: flex; align-items: center; gap: 24px; padding: 40px 100px; border-top: 1px solid #eeeeee; text-decoration: none; color: #000000; }
+    .proj-next:hover .proj-next-title { text-decoration: underline; }
+    .proj-next-thumb { width: 120px; height: 80px; object-fit: cover; flex-shrink: 0; }
+    .proj-next-text { display: flex; flex-direction: column; gap: 4px; }
+    .proj-next-label { font-size: 13px; color: #aaaaaa; letter-spacing: 0.05em; }
+    .proj-next-title { font-size: 18px; font-weight: 500; letter-spacing: -0.3px; }
   </style>
 </head>
 <body>
@@ -221,6 +229,8 @@
       </span>
     </button>
 </nav>
+
+<div class="proj-back-link"><a href="index.html#work">← Work</a></div>
 
 <!-- Hero -->
 <section style="padding: 80px 80px 0; max-width: 1200px; margin: 0 auto;">
@@ -269,7 +279,13 @@
   </div>
 </div>
 
-<div class="back-top"><a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Back to Top</a></div>
+<a class="proj-next" href="genesis.html">
+  <img class="proj-next-thumb" src="Genesis/Thumbnail.png" alt="Genesis">
+  <div class="proj-next-text">
+    <span class="proj-next-label">Next project</span>
+    <span class="proj-next-title">Genesis AI - 2026 →</span>
+  </div>
+</a>
 
 <script>
   const cur = document.getElementById('cursor');
