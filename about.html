@@ -630,6 +630,16 @@
     });
   })();
 
+
+  // Cross-page nav: store target, navigate to home top, then Lenis scrolls
+  document.querySelectorAll('a[href^="index.html#"]').forEach(function(a) {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      var hash = this.getAttribute('href').replace('index.html', '');
+      sessionStorage.setItem('portfolioScrollTo', hash);
+      window.location.href = 'index.html';
+    });
+  });
 </script>
 
 </body>

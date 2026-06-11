@@ -1322,10 +1322,40 @@
     })();
 
     /* Run after fonts are loaded for accurate measurement */
+    function handlePendingScroll() {
+      const pendingScroll = sessionStorage.getItem('portfolioScrollTo');
+      if (!pendingScroll) return;
+      sessionStorage.removeItem('portfolioScrollTo');
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        if (pendingScroll === '#contact') {
+          const contact = document.getElementById('contact');
+          if (contact) {
+            _contactLocked = true;
+            contact.style.minHeight = (window.innerHeight - 93) + 'px';
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              if (typeof lenis.resize === 'function') lenis.resize();
+              lenis.scrollTo(contact.offsetTop - 93, {
+                duration: 1.4,
+                onComplete: () => { _contactLocked = false; },
+              });
+            }));
+          }
+        } else {
+          const contentTargets = {
+            '#work':  document.querySelector('.work-grid'),
+            '#about': document.querySelector('.about-statement'),
+          };
+          const target = document.querySelector(pendingScroll);
+          const scrollEl = contentTargets[pendingScroll] || target;
+          if (scrollEl) lenis.scrollTo(scrollEl, { duration: 1.4 });
+        }
+      }));
+    }
+
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initContactExpand(); });
+      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initContactExpand(); handlePendingScroll(); });
     } else {
-      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initContactExpand(); });
+      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); initContactExpand(); handlePendingScroll(); });
     }
 
     /* Debounced resize */
