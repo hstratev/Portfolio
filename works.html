@@ -449,6 +449,7 @@
     /* Items inside animated grid should not double-animate via .reveal */
     .work-grid .work-item { opacity: 1; transform: none; transition: transform 0.4s ease; }
 
+      body.fullscreen-active, body.fullscreen-active * { cursor: auto !important; }
   </style>
 </head>
 <body>
@@ -632,6 +633,9 @@
       });
     });
   })();
+    document.addEventListener('fullscreenchange', function() {
+      document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
+    });
 </script>
 
 </body>

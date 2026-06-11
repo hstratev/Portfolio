@@ -467,6 +467,7 @@
       animation: enterHeroName 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
     }
 
+      body.fullscreen-active, body.fullscreen-active * { cursor: auto !important; }
   </style>
 </head>
 <body>
@@ -628,6 +629,9 @@
       });
     });
   })();
+    document.addEventListener('fullscreenchange', function() {
+      document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
+    });
 </script>
 
 </body>

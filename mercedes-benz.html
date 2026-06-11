@@ -178,6 +178,7 @@
       transform: translateY(0);
     }
 
+      body.fullscreen-active, body.fullscreen-active * { cursor: auto !important; }
   </style>
 </head>
 <body>
@@ -316,6 +317,9 @@
       });
     });
   })();
+    document.addEventListener('fullscreenchange', function() {
+      document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
+    });
 </script>
 </body>
 </html>

@@ -778,6 +778,7 @@
     }
     /* hero-bottom entrance handled by mask-reveal + typewriter */
 
+      body.fullscreen-active, body.fullscreen-active * { cursor: auto !important; }
   </style>
 </head>
 <body>
@@ -1325,7 +1326,9 @@
       _fitTimer = setTimeout(() => { fitHeroTitle(); }, 80);
     });
 
-
+    document.addEventListener('fullscreenchange', function() {
+      document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
+    });
   </script>
 
 </body>

@@ -200,6 +200,7 @@
     .play-overlay:hover .play-circle { transform: scale(1.1); background: #fff; }
     .play-triangle { width: 0; height: 0; border-top: 13px solid transparent; border-bottom: 13px solid transparent; border-left: 22px solid #000; margin-left: 5px; }
 
+      body.fullscreen-active, body.fullscreen-active * { cursor: auto !important; }
   </style>
 </head>
 <body>
@@ -476,6 +477,9 @@
       });
     });
   })();
+    document.addEventListener('fullscreenchange', function() {
+      document.body.classList.toggle('fullscreen-active', !!document.fullscreenElement);
+    });
 </script>
 </body>
 </html>
