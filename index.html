@@ -775,6 +775,12 @@
 
     #mainNav {
       animation: enterFromTop 1.2s cubic-bezier(0.42, 0.21, 0, 1) both;
+      transition: transform 0.45s cubic-bezier(0.42, 0.21, 0, 1), opacity 0.45s ease;
+    }
+    #mainNav.nav-hidden {
+      transform: translateY(-110%);
+      opacity: 0;
+      pointer-events: none;
     }
     /* hero-bottom entrance handled by mask-reveal + typewriter */
 
@@ -987,6 +993,19 @@
       lenis.raf(time);
       requestAnimationFrame(lenisRaf);
     })(0);
+
+    /* ── NAV AUTO-HIDE ── */
+    (function () {
+      const nav = document.getElementById('mainNav');
+      let hideTimer = null;
+      lenis.on('scroll', function () {
+        nav.classList.remove('nav-hidden');
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(function () {
+          nav.classList.add('nav-hidden');
+        }, 3000);
+      });
+    })();
 
     // Scroll-driven animations
 
