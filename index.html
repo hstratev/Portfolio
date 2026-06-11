@@ -173,6 +173,17 @@
       transform: scaleX(1);
       transform-origin: left;
     }
+    /* Active section underline */
+    .nav-links a.nav-active::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    /* When hovering any nav link, pull the underline off the active link
+       so it appears to jump to whatever is hovered */
+    .nav-links:hover a.nav-active:not(:hover)::after {
+      transform: scaleX(0);
+      transform-origin: right;
+    }
     .nav-trigger {
       background: none;
       border: none;
@@ -1219,6 +1230,49 @@
       }
       inner.style.fontSize = lo + 'px';
     }
+
+    /* ── NAV ACTIVE SECTION HIGHLIGHT ── */
+    (function initNavHighlight() {
+      // Map section IDs → which nav href they belong to
+      // 'services' (expertise) belongs to the same 'about' nav link
+      const sectionMap = [
+        { id: 'work',     nav: '#work' },
+        { id: 'about',    nav: '#about' },
+        { id: 'services', nav: '#about' },
+        { id: 'contact',  nav: '#contact' },
+      ];
+
+      // Build lookup: href → <a> element
+      const navLinks = {};
+      document.querySelectorAll('.nav-links a[href]').forEach(a => {
+        navLinks[a.getAttribute('href')] = a;
+      });
+
+      // Resolve section elements (do this lazily so DOM is ready)
+      const sections = sectionMap.map(s => ({
+        el: document.getElementById(s.id),
+        nav: s.nav,
+      })).filter(s => s.el);
+
+      function setActive(navHref) {
+        Object.values(navLinks).forEach(a => a.classList.remove('nav-active'));
+        if (navHref && navLinks[navHref]) navLinks[navHref].classList.add('nav-active');
+      }
+
+      function updateFromScroll(scroll) {
+        // Use a point 40% down from viewport top as the "which section am I in" probe
+        const probe = scroll + window.innerHeight * 0.40;
+        let activeNav = null;
+        for (const s of sections) {
+          if (probe >= s.el.offsetTop) activeNav = s.nav; // last section whose top is passed
+        }
+        setActive(activeNav);
+      }
+
+      lenis.on('scroll', ({ scroll }) => updateFromScroll(scroll));
+      // Run once so the initial load state is correct
+      updateFromScroll(window.scrollY || 0);
+    })();
 
     /* Run after fonts are loaded for accurate measurement */
     if (document.fonts && document.fonts.ready) {
