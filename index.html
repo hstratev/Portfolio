@@ -1660,16 +1660,21 @@
 
       var PALETTE = ['#534AB7', '#7F77DD', '#993556', '#D4537E', '#0F6E56'];
       var PPC = 14;
+      var dpr = 1;
 
+      // Canvas is a direct child of row; row already has position:relative from foundation
       var canvas = document.createElement('canvas');
       canvas.style.cssText = 'position:absolute;inset:0;pointer-events:none;';
       row.appendChild(canvas);
       var ctx = canvas.getContext('2d');
 
       function sizeCanvas() {
-        var dpr = Math.min(2, window.devicePixelRatio || 1);
-        canvas.width  = row.offsetWidth  * dpr;
-        canvas.height = row.offsetHeight * dpr;
+        dpr = Math.min(2, window.devicePixelRatio || 1);
+        var W = row.offsetWidth, H = row.offsetHeight;
+        canvas.width        = W * dpr;
+        canvas.height       = H * dpr;
+        canvas.style.width  = W + 'px';
+        canvas.style.height = H + 'px';
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
@@ -1677,15 +1682,21 @@
 
       function buildLetterData() {
         letters = [];
+        var rowRect = row.getBoundingClientRect();
         Array.from(row.querySelectorAll('.ltr')).forEach(function (span) {
           if (span.textContent === ' ') return;
+          var r = span.getBoundingClientRect();
+          var x = r.left - rowRect.left;
+          var y = r.top  - rowRect.top;
+          var w = r.width;
+          var h = r.height;
           var particles = [];
           for (var i = 0; i < PPC; i++) {
             particles.push({
-              hx: span.offsetLeft + span.offsetWidth  * 0.1 + Math.random() * span.offsetWidth  * 0.8,
-              hy: span.offsetTop  + span.offsetHeight * 0.25 + Math.random() * span.offsetHeight * 0.5,
-              sx: (Math.random() - 0.5) * 14,
-              sy: (Math.random() - 0.5) * 12,
+              hx: x + Math.random() * w,
+              hy: y + h * 0.18 + Math.random() * h * 0.62,
+              sx: (Math.random() - 0.5) * 95,
+              sy: (Math.random() - 0.5) * 75 - 8,
               r:  0.9 + Math.random() * 1.7,
               c:  PALETTE[Math.floor(Math.random() * PALETTE.length)],
               ph: Math.random() * Math.PI * 2,
@@ -1694,26 +1705,34 @@
           }
           letters.push({
             span: span,
-            cx: span.offsetLeft + span.offsetWidth / 2,
+            cx: x + w / 2,
+            dbx: x, dby: y, dbw: w, dbh: h,
             particles: particles,
             dis: 0,
             target: 0
           });
         });
+        // ── DEBUG: draw red outlines to verify alignment ──
+        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+        ctx.strokeStyle = 'red'; ctx.lineWidth = 1;
+        letters.forEach(function (L) { ctx.strokeRect(L.dbx, L.dby, L.dbw, L.dbh); });
       }
 
-      sizeCanvas();
-      buildLetterData();
+      document.fonts.ready.then(function () {
+        sizeCanvas();
+        buildLetterData();
+      });
 
       var resizeTimer;
       window.addEventListener('resize', function () {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(function () { sizeCanvas(); buildLetterData(); }, 150);
+        resizeTimer = setTimeout(function () { sizeCanvas(); buildLetterData(); }, 200);
       });
 
-      var hovering = false, cursorX = 0, rafId = null, t = 0;
+      var hovering = false, cursorX = 0, rafId = null, t = 0, firstEnter = true;
 
       row.addEventListener('mouseenter', function () {
+        if (firstEnter) { sizeCanvas(); buildLetterData(); firstEnter = false; }
         hovering = true;
         if (!rafId) rafId = requestAnimationFrame(loop);
       });
@@ -1727,8 +1746,12 @@
           rafId = requestAnimationFrame(loop); return;
         }
         t += 0.016;
-        ctx.clearRect(0, 0, row.offsetWidth, row.offsetHeight);
+        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
         var anyActive = false;
+
+        // ── DEBUG: red outlines on every frame ──
+        ctx.strokeStyle = 'red'; ctx.lineWidth = 1;
+        letters.forEach(function (L) { ctx.strokeRect(L.dbx, L.dby, L.dbw, L.dbh); });
 
         letters.forEach(function (L) {
           if (hovering) {
