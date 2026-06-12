@@ -504,6 +504,7 @@
       border-top: 1px solid rgba(0,0,0,0.1);
     }
     .ltr { display: inline-block; }
+    #fx-ai .ltr { transition: opacity 0.18s ease; }
 
     /* ── FX-UIUX: Figma selection ── */
     .fx-uiux-inner { display: inline-block; position: relative; }
@@ -1537,6 +1538,81 @@
       });
       inner.addEventListener('mouseleave', function () {
         inner.classList.remove('fx-hovered');
+      });
+    });
+  })();
+
+  // ── FX-AI: TOKEN BOIL EFFECT ──
+  (function () {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(hover: none)').matches
+    ) return;
+
+    var CHARS  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#%&$@*<>/';
+    var RADIUS = 38;
+    var TICK   = 8; // every Nth frame
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var row = document.getElementById('fx-ai');
+      if (!row) return;
+
+      var spans   = Array.from(row.querySelectorAll('.ltr'));
+      var cursorX = null;
+      var frameN  = 0;
+      var rafId   = null;
+      var active  = false;
+
+      function randChar() {
+        return CHARS[Math.floor(Math.random() * CHARS.length)];
+      }
+
+      function tick() {
+        if (!active) return;
+        rafId = requestAnimationFrame(tick);
+        frameN++;
+        if (frameN % TICK !== 0) return;
+
+        spans.forEach(function (s) {
+          var orig = s.dataset.o;
+          if (orig === ' ' || orig === '/') return;
+
+          var rect = s.getBoundingClientRect();
+          var cx   = rect.left + rect.width / 2;
+          var dist = cursorX !== null ? Math.abs(cursorX - cx) : Infinity;
+
+          if (dist < RADIUS) {
+            s.textContent = randChar();
+            s.style.opacity = '0.7';
+          } else if (s.textContent !== orig) {
+            s.textContent = orig;
+            s.style.opacity = '1';
+          }
+        });
+      }
+
+      function restore() {
+        spans.forEach(function (s) {
+          s.textContent = s.dataset.o === ' ' ? ' ' : s.dataset.o;
+          s.style.opacity = '1';
+        });
+      }
+
+      row.addEventListener('mouseenter', function () {
+        active = true;
+        frameN = 0;
+        if (!rafId) rafId = requestAnimationFrame(tick);
+      });
+
+      row.addEventListener('mousemove', function (e) {
+        cursorX = e.clientX;
+      });
+
+      row.addEventListener('mouseleave', function () {
+        active  = false;
+        cursorX = null;
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+        restore();
       });
     });
   })();
