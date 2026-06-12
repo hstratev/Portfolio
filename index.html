@@ -503,6 +503,7 @@
     .service-item:first-child {
       border-top: 1px solid rgba(0,0,0,0.1);
     }
+    .ltr { display: inline-block; }
 
     /* ── CONTACT / FOOTER ── */
     #contact {
@@ -940,11 +941,11 @@
       <span class="services-label">expertise.</span>
     </div>
     <div class="services-list">
-      <div class="service-item reveal">UI / UX Design</div>
-      <div class="service-item reveal">AI Experience Design</div>
-      <div class="service-item reveal">Interaction & Motion</div>
-      <div class="service-item reveal">Design Leadership</div>
-      <div class="service-item reveal">HMI Design</div>
+      <div class="service-item reveal" id="fx-uiux">UI / UX Design</div>
+      <div class="service-item reveal" id="fx-ai">AI Experience Design</div>
+      <div class="service-item reveal" id="fx-motion">Interaction & Motion</div>
+      <div class="service-item reveal" id="fx-lead">Design Leadership</div>
+      <div class="service-item reveal" id="fx-hmi">HMI Design</div>
     </div>
   </section>
 
@@ -1365,6 +1366,49 @@
     });
     // Page fade transition
   document.addEventListener('DOMContentLoaded', function() { document.body.classList.add('loaded'); });
+
+  // ── EXPERTISE FX FOUNDATION ──
+  (function () {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(hover: none)').matches
+    ) return;
+
+    var _fxVisible = false;
+    window._fxSectionVisible = function () { return _fxVisible; };
+
+    function splitLetters(el) {
+      var text = el.textContent;
+      el.textContent = '';
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+        var span = document.createElement('span');
+        span.className = 'ltr';
+        span.dataset.o = ch;
+        span.textContent = ch === ' ' ? ' ' : ch;
+        el.appendChild(span);
+      }
+    }
+
+    var rowIds = ['fx-uiux', 'fx-ai', 'fx-motion', 'fx-lead', 'fx-hmi'];
+
+    document.addEventListener('DOMContentLoaded', function () {
+      rowIds.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.style.position = 'relative';
+        splitLetters(el);
+      });
+
+      var section = document.getElementById('services');
+      if (section) {
+        var obs = new IntersectionObserver(function (entries) {
+          _fxVisible = entries[0].isIntersecting;
+        });
+        obs.observe(section);
+      }
+    });
+  })();
   window.addEventListener('pageshow', function() { document.body.classList.add('loaded'); });
   document.querySelectorAll('a[href]').forEach(function(link) {
     var href = link.getAttribute('href');
