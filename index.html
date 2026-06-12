@@ -66,6 +66,13 @@
       background: #111111;
       mix-blend-mode: normal;
     }
+    #cursor.copied {
+      width: 92px;
+      height: 36px;
+      border-radius: 100px;
+      background: #1C4A2E;
+      mix-blend-mode: normal;
+    }
     .cursor-label {
       font-size: 11px;
       font-weight: 600;
@@ -78,7 +85,8 @@
       pointer-events: none;
       user-select: none;
     }
-    #cursor.view .cursor-label { opacity: 1; }
+    #cursor.view .cursor-label,
+    #cursor.copied .cursor-label { opacity: 1; }
 
     /* ── MENU OVERLAY ── */
     #menuOverlay {
@@ -1116,7 +1124,7 @@
           </svg>
           LinkedIn
         </a>
-        <a href="mailto:hstratev@gmail.com">
+        <a href="mailto:hstratev@gmail.com" id="footer-email">
           <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="1" y="3" width="13" height="9" rx="1.5" stroke="white" stroke-width="1"/>
             <path d="M1 5l6.5 4L14 5" stroke="white" stroke-width="1" stroke-linejoin="round"/>
@@ -1149,6 +1157,23 @@
       el.addEventListener('mouseenter', () => cur.classList.add('view'));
       el.addEventListener('mouseleave', () => cur.classList.remove('view'));
     });
+    const footerEmail = document.getElementById('footer-email');
+    if (footerEmail) {
+      const curLabel = cur.querySelector('.cursor-label');
+      let copyTimer = null;
+      footerEmail.addEventListener('click', e => {
+        e.preventDefault();
+        navigator.clipboard.writeText('hstratev@gmail.com').then(() => {
+          curLabel.textContent = 'Copied!';
+          cur.classList.add('copied');
+          clearTimeout(copyTimer);
+          copyTimer = setTimeout(() => {
+            cur.classList.remove('copied');
+            curLabel.textContent = 'VIEW';
+          }, 1800);
+        });
+      });
+    }
 
     /* ── SMOOTH SCROLL (LENIS) ── */
     const lenis = new Lenis({
