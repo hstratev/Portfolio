@@ -1781,6 +1781,242 @@
     });
   })();
 
+  // ── MOBILE EXPERTISE DEMOS ──
+  (function () {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      !window.matchMedia('(hover: none)').matches
+    ) return;
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      function splitLocal(row) {
+        var text = row.textContent;
+        row.textContent = '';
+        for (var i = 0; i < text.length; i++) {
+          var ch = text[i];
+          var sp = document.createElement('span');
+          sp.className = 'ltr';
+          sp.dataset.o = ch;
+          sp.textContent = ch === ' ' ? ' ' : ch;
+          row.appendChild(sp);
+        }
+        row.style.position = 'relative';
+      }
+
+      // ── UIUX ──
+      function setupUiux() {
+        var row = document.getElementById('fx-uiux');
+        if (!row) return null;
+        splitLocal(row);
+        var inner = document.createElement('span');
+        inner.className = 'fx-uiux-inner';
+        while (row.firstChild) inner.appendChild(row.firstChild);
+        row.appendChild(inner);
+        var box = document.createElement('span');
+        box.className = 'fx-ov fx-box';
+        inner.appendChild(box);
+        var hDefs = [
+          {t:'-8px', l:'-14px',tx:'-50%',ty:'-50%'},{t:'-8px', l:'50%',  tx:'-50%',ty:'-50%'},
+          {t:'-8px', r:'-14px',tx:'50%', ty:'-50%'},{t:'50%',  l:'-14px',tx:'-50%',ty:'-50%'},
+          {t:'50%',  r:'-14px',tx:'50%', ty:'-50%'},{b:'-8px', l:'-14px',tx:'-50%',ty:'50%' },
+          {b:'-8px', l:'50%',  tx:'-50%',ty:'50%' },{b:'-8px', r:'-14px',tx:'50%', ty:'50%' },
+        ];
+        hDefs.forEach(function (p) {
+          var h = document.createElement('span');
+          h.className = 'fx-ov fx-handle';
+          if (p.t) h.style.top    = p.t;
+          if (p.b) h.style.bottom = p.b;
+          if (p.l) h.style.left   = p.l;
+          if (p.r) h.style.right  = p.r;
+          h.style.transform = 'translate('+p.tx+','+p.ty+')';
+          inner.appendChild(h);
+        });
+        var dimsEl = document.createElement('span');
+        dimsEl.className = 'fx-ov fx-dims';
+        inner.appendChild(dimsEl);
+        var cWrap = document.createElement('span');
+        cWrap.className = 'fx-cursor-wrap';
+        var cDrift = document.createElement('span');
+        cDrift.className = 'fx-cursor-drift';
+        cDrift.innerHTML =
+          '<svg width="10" height="14" viewBox="0 0 10 14" fill="none"><path d="M1 1L1 11.5L3.5 9L5 13.5L6.5 13L5 9L9 9L1 1Z" fill="#FF5CA8" stroke="white" stroke-width="0.8" stroke-linejoin="round"/></svg>' +
+          '<span class="fx-cursor-label">Hristiyan S.</span>';
+        cWrap.appendChild(cDrift);
+        inner.appendChild(cWrap);
+        return { row: row, inner: inner, dimsEl: dimsEl };
+      }
+      function demoUiux(ctx) {
+        var r = ctx.inner.getBoundingClientRect();
+        ctx.dimsEl.textContent = Math.round(r.width) + ' × ' + Math.round(r.height);
+        ctx.inner.classList.add('fx-hovered');
+        setTimeout(function () { ctx.inner.classList.remove('fx-hovered'); }, 1600);
+      }
+
+      // ── AI ──
+      function setupAi() {
+        var row = document.getElementById('fx-ai');
+        return row ? { row: row } : null;
+      }
+      function demoAi(ctx) {
+        ctx.row.classList.add('fx-ai-shimmer');
+        setTimeout(function () { ctx.row.classList.remove('fx-ai-shimmer'); }, 6000);
+      }
+
+      // ── Motion ──
+      function setupMotion() {
+        var row = document.getElementById('fx-motion');
+        if (!row) return null;
+        splitLocal(row);
+        return { row: row };
+      }
+      function demoMotion(ctx) {
+        var spans = Array.from(ctx.row.querySelectorAll('.ltr'));
+        spans.forEach(function (s, i) {
+          setTimeout(function () {
+            if (s.classList.contains('ltr-boing')) return;
+            s.classList.add('ltr-boing');
+            s.addEventListener('animationend', function once() {
+              s.classList.remove('ltr-boing');
+              s.removeEventListener('animationend', once);
+            });
+          }, i * 40);
+        });
+      }
+
+      // ── Lead ──
+      function setupLead() {
+        var row = document.getElementById('fx-lead');
+        if (!row) return null;
+        splitLocal(row);
+        return { row: row };
+      }
+      function demoLead(ctx) {
+        var spans   = Array.from(ctx.row.querySelectorAll('.ltr'));
+        var centers = spans.map(function (s) { return s.offsetLeft + s.offsetWidth / 2; });
+        var rots    = spans.map(function () { return 0; });
+        var rowW    = ctx.row.offsetWidth;
+        var phase   = 'sweep';
+        var start   = null;
+        var DURATION = 1600;
+        function ease(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+        function loop(ts) {
+          if (!start) start = ts;
+          if (phase === 'sweep') {
+            var t = Math.min(1, (ts - start) / DURATION);
+            var sx = ease(t) * rowW;
+            spans.forEach(function (s, i) {
+              var tgt = Math.max(-6, Math.min(6, (sx - centers[i]) * 0.045));
+              rots[i] += (tgt - rots[i]) * 0.12;
+              s.style.transform = 'rotate('+rots[i].toFixed(2)+'deg)';
+            });
+            if (t >= 1) phase = 'settle';
+            requestAnimationFrame(loop);
+          } else {
+            var done = true;
+            spans.forEach(function (s, i) {
+              rots[i] *= 0.88;
+              if (Math.abs(rots[i]) > 0.05) done = false;
+              s.style.transform = 'rotate('+rots[i].toFixed(2)+'deg)';
+            });
+            if (done) { spans.forEach(function (s) { s.style.transform = ''; }); }
+            else { requestAnimationFrame(loop); }
+          }
+        }
+        requestAnimationFrame(loop);
+      }
+
+      // ── HMI ──
+      function setupHmi() {
+        var row = document.getElementById('fx-hmi');
+        if (!row) return null;
+        splitLocal(row);
+        var chip = document.createElement('span');
+        chip.className = 'fx-hmi-chip';
+        row.appendChild(chip);
+        return { row: row, chip: chip };
+      }
+      function demoHmi(ctx) {
+        var row = ctx.row, chip = ctx.chip;
+        var allSpans    = Array.from(row.querySelectorAll('.ltr'));
+        var spans       = allSpans.filter(function (s) { return s.dataset.o !== ' '; });
+        var letterCount = spans.length;
+        var rev = 0, target = 1.0, released = false, held = false;
+        function rand(r) { return (Math.random()*2-1)*r; }
+        chip.style.opacity = '1';
+        function loop() {
+          rev += (target - rev) * (target > rev ? 0.07 : 0.045);
+          var rowW = row.offsetWidth, lit = rev * letterCount, fl = Math.floor(lit), ra = rev*rev*1.6;
+          spans.forEach(function (s, i) {
+            if (i < fl) {
+              s.style.color = '#111';
+              s.style.transform = 'translate('+rand(ra).toFixed(2)+'px,'+rand(ra).toFixed(2)+'px) rotate('+rand(ra*0.5).toFixed(2)+'deg)';
+            } else if (i === fl && lit > fl) {
+              s.style.color = '#EF9F27';
+              s.style.transform = 'translate('+rand(ra).toFixed(2)+'px,'+rand(ra).toFixed(2)+'px)';
+            } else {
+              s.style.color = released ? '#111' : '#ddd';
+              s.style.transform = '';
+            }
+          });
+          var cl = Math.max(44, Math.min(rev * rowW, rowW - 44));
+          chip.style.left  = cl + 'px';
+          chip.style.color = rev > 0.82 ? '#E24B4A' : '#EF9F27';
+          chip.textContent = Math.round(rev * 260) + ' km/h';
+          if (!held && rev > 0.95) {
+            held = true;
+            setTimeout(function () { target = 0; released = true; }, 600);
+          }
+          if (rev > 0.01 || target > 0) {
+            requestAnimationFrame(loop);
+          } else {
+            allSpans.forEach(function (s) { s.style.color = ''; s.style.transform = ''; });
+            chip.style.opacity = '0';
+          }
+        }
+        requestAnimationFrame(loop);
+      }
+
+      // ── Observer & stagger queue ──
+      var demos = [
+        { id:'fx-uiux',   setup:setupUiux,   demo:demoUiux   },
+        { id:'fx-ai',     setup:setupAi,     demo:demoAi     },
+        { id:'fx-motion', setup:setupMotion, demo:demoMotion },
+        { id:'fx-lead',   setup:setupLead,   demo:demoLead   },
+        { id:'fx-hmi',    setup:setupHmi,    demo:demoHmi    },
+      ];
+      demos.forEach(function (d) { d.ctx = d.setup(); });
+
+      var queue = [], timer = null;
+      function runNext() {
+        if (!queue.length) { timer = null; return; }
+        var d = queue.shift();
+        if (d.ctx) d.demo(d.ctx);
+        timer = setTimeout(runNext, 250);
+      }
+
+      var io = new IntersectionObserver(function (entries) {
+        var added = false;
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          for (var i = 0; i < demos.length; i++) {
+            if (demos[i].ctx && demos[i].ctx.row === e.target) {
+              io.unobserve(e.target);
+              queue.push(demos[i]);
+              added = true;
+              break;
+            }
+          }
+        });
+        if (added && !timer) timer = setTimeout(runNext, 0);
+      }, { threshold: 0.6 });
+
+      demos.forEach(function (d) {
+        if (d.ctx && d.ctx.row) io.observe(d.ctx.row);
+      });
+    });
+  })();
+
   window.addEventListener('pageshow', function() { document.body.classList.add('loaded'); });
   document.querySelectorAll('a[href]').forEach(function(link) {
     var href = link.getAttribute('href');
