@@ -563,6 +563,16 @@
       line-height: 1.4;
     }
 
+    /* ── FX-MOTION: Spring boing ── */
+    #fx-motion .ltr { transform-origin: center bottom; }
+    @keyframes letterBoing {
+      0%   { transform: translateY(0)     scaleY(1)    scaleX(1); }
+      30%  { transform: translateY(-20px) scaleY(1.12) scaleX(0.94); }
+      60%  { transform: translateY(3px)   scaleY(0.86) scaleX(1.08); }
+      100% { transform: translateY(0)     scaleY(1)    scaleX(1); }
+    }
+    .ltr-boing { animation: letterBoing 0.5s cubic-bezier(0.3, 1.6, 0.4, 1); }
+
     /* ── CONTACT / FOOTER ── */
     #contact {
       background: #000000;
@@ -1613,6 +1623,38 @@
         cursorX = null;
         if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
         restore();
+      });
+    });
+  })();
+
+  // ── FX-MOTION: SPRING BOING EFFECT ──
+  (function () {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(hover: none)').matches
+    ) return;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var row = document.getElementById('fx-motion');
+      if (!row) return;
+
+      var spans = Array.from(row.querySelectorAll('.ltr'));
+
+      spans.forEach(function (s) {
+        s.addEventListener('animationend', function () {
+          s.classList.remove('ltr-boing');
+        });
+      });
+
+      row.addEventListener('mousemove', function (e) {
+        var cx = e.clientX;
+        spans.forEach(function (s) {
+          if (s.classList.contains('ltr-boing')) return;
+          var r = s.getBoundingClientRect();
+          if (cx >= r.left && cx <= r.right) {
+            s.classList.add('ltr-boing');
+          }
+        });
       });
     });
   })();
