@@ -505,6 +505,63 @@
     }
     .ltr { display: inline-block; }
 
+    /* ── FX-UIUX: Figma selection ── */
+    .fx-uiux-inner { display: inline-block; position: relative; }
+    .fx-ov {
+      position: absolute;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+    }
+    .fx-uiux-inner.fx-hovered .fx-ov { opacity: 1; }
+    .fx-box { inset: -8px -14px; border: 1.5px solid #4D9FFF; }
+    .fx-handle { width: 7px; height: 7px; background: #fff; border: 1.5px solid #4D9FFF; }
+    .fx-dims {
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #4D9FFF;
+      border-radius: 3px;
+      padding: 2px 7px;
+      color: #fff;
+      font-size: 10px;
+      font-family: 'Inter Display', sans-serif;
+      font-weight: 400;
+      white-space: nowrap;
+      letter-spacing: 0;
+      line-height: 1;
+    }
+    .fx-cursor-wrap {
+      position: absolute;
+      top: -24px;
+      right: -16px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(8px, 8px);
+      transition: opacity 0.18s ease 0.1s, transform 0.18s ease 0.1s;
+    }
+    .fx-uiux-inner.fx-hovered .fx-cursor-wrap { opacity: 1; transform: translate(0, 0); }
+    .fx-cursor-drift { display: inline-flex; align-items: flex-start; gap: 3px; }
+    .fx-uiux-inner.fx-hovered .fx-cursor-drift {
+      animation: figmaCursorDrift 3s ease-in-out 0.28s infinite;
+    }
+    @keyframes figmaCursorDrift {
+      0%, 100% { transform: translateY(-3px); }
+      50%       { transform: translateY(3px); }
+    }
+    .fx-cursor-label {
+      background: #FF5CA8;
+      color: #fff;
+      font-size: 10px;
+      font-family: 'Inter Display', sans-serif;
+      font-weight: 500;
+      border-radius: 3px;
+      padding: 2px 6px;
+      white-space: nowrap;
+      letter-spacing: 0;
+      line-height: 1.4;
+    }
+
     /* ── CONTACT / FOOTER ── */
     #contact {
       background: #000000;
@@ -1409,6 +1466,81 @@
       }
     });
   })();
+
+  // ── FX-UIUX: FIGMA SELECTION EFFECT ──
+  (function () {
+    if (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(hover: none)').matches
+    ) return;
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var row = document.getElementById('fx-uiux');
+      if (!row) return;
+
+      // Wrap letter spans in inline-block inner container
+      var inner = document.createElement('span');
+      inner.className = 'fx-uiux-inner';
+      while (row.firstChild) inner.appendChild(row.firstChild);
+      row.appendChild(inner);
+
+      // Bounding box
+      var box = document.createElement('span');
+      box.className = 'fx-ov fx-box';
+      inner.appendChild(box);
+
+      // 8 selection handles: corners + top/bottom centers + left/right midpoints
+      var hDefs = [
+        { t: '-8px',  l: '-14px', tx: '-50%', ty: '-50%' },
+        { t: '-8px',  l: '50%',   tx: '-50%', ty: '-50%' },
+        { t: '-8px',  r: '-14px', tx: '50%',  ty: '-50%' },
+        { t: '50%',   l: '-14px', tx: '-50%', ty: '-50%' },
+        { t: '50%',   r: '-14px', tx: '50%',  ty: '-50%' },
+        { b: '-8px',  l: '-14px', tx: '-50%', ty: '50%'  },
+        { b: '-8px',  l: '50%',   tx: '-50%', ty: '50%'  },
+        { b: '-8px',  r: '-14px', tx: '50%',  ty: '50%'  },
+      ];
+      hDefs.forEach(function (p) {
+        var h = document.createElement('span');
+        h.className = 'fx-ov fx-handle';
+        if (p.t) h.style.top    = p.t;
+        if (p.b) h.style.bottom = p.b;
+        if (p.l) h.style.left   = p.l;
+        if (p.r) h.style.right  = p.r;
+        h.style.transform = 'translate(' + p.tx + ', ' + p.ty + ')';
+        inner.appendChild(h);
+      });
+
+      // Dimensions label
+      var dimsEl = document.createElement('span');
+      dimsEl.className = 'fx-ov fx-dims';
+      inner.appendChild(dimsEl);
+
+      // Collaborator cursor
+      var cursorWrap = document.createElement('span');
+      cursorWrap.className = 'fx-cursor-wrap';
+      var cursorDrift = document.createElement('span');
+      cursorDrift.className = 'fx-cursor-drift';
+      cursorDrift.innerHTML =
+        '<svg width="10" height="14" viewBox="0 0 10 14" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+        '<path d="M1 1L1 11.5L3.5 9L5 13.5L6.5 13L5 9L9 9L1 1Z" fill="#FF5CA8" stroke="white" stroke-width="0.8" stroke-linejoin="round"/>' +
+        '</svg>' +
+        '<span class="fx-cursor-label">Hristiyan S.</span>';
+      cursorWrap.appendChild(cursorDrift);
+      inner.appendChild(cursorWrap);
+
+      // Hover: measure text, update dims, toggle class
+      inner.addEventListener('mouseenter', function () {
+        var r = inner.getBoundingClientRect();
+        dimsEl.textContent = Math.round(r.width) + ' × ' + Math.round(r.height);
+        inner.classList.add('fx-hovered');
+      });
+      inner.addEventListener('mouseleave', function () {
+        inner.classList.remove('fx-hovered');
+      });
+    });
+  })();
+
   window.addEventListener('pageshow', function() { document.body.classList.add('loaded'); });
   document.querySelectorAll('a[href]').forEach(function(link) {
     var href = link.getAttribute('href');
