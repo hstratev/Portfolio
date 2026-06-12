@@ -173,6 +173,15 @@
       transform: scaleX(1);
       transform-origin: left;
     }
+    /* Active section underline */
+    .nav-links a.nav-active::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .nav-links:hover a.nav-active:not(:hover)::after {
+      transform: scaleX(0);
+      transform-origin: right;
+    }
     .nav-trigger {
       background: none;
       border: none;
@@ -484,7 +493,7 @@
   <nav id="mainNav">
     <a href="index.html" class="nav-logo">H.S.</a>
     <div class="nav-links">
-      <a href="index.html#work">Work</a>
+      <a href="index.html#work" class="nav-active">Work</a>
       <a href="index.html#about">About</a>
       <a href="index.html#contact">Contact</a>
     </div>
