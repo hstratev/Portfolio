@@ -1338,10 +1338,19 @@
       }, 400);
     }
 
+    function _runInit() { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); }
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); });
+      document.fonts.ready.then(() => {
+        // Explicitly load the weights used by mask-reveal line detection;
+        // fonts.ready resolves with swap fonts "available" but not yet downloaded.
+        return Promise.all([
+          document.fonts.load('500 50px "Inter Display"'),
+          document.fonts.load('400 18px "Inter Display"'),
+          document.fonts.load('300 36px "Inter Display"'),
+        ]);
+      }).then(_runInit);
     } else {
-      window.addEventListener('load', () => { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); });
+      window.addEventListener('load', _runInit);
     }
 
     /* Debounced resize */
