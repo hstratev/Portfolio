@@ -469,6 +469,10 @@
       gap: 32px;
     }
 
+    .about-clients { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 32px; }
+    .about-clients span { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(0,0,0,0.4); border-right: 1px solid rgba(0,0,0,0.15); padding-right: 24px; }
+    .about-clients span:last-child { border-right: none; padding-right: 0; }
+
     /* ── SERVICES ── */
     #services { position: relative; z-index: 3; background: #ffffff; }
     .services-head {
@@ -917,7 +921,14 @@
         <p>I am a product designer, based in Sofia, Bulgaria, with a degree from the University of Sheffield, where my passion for technology and user experience began.</p>
         <p>My career has taken me across Germany and the U.S., leading teams at the forefront of Human Machine Interface and AI user experiences. I led the design team at Visteon as Design Manager, working on advanced HMI Designs and real-time 3D User Experiences.</p>
         <p>Today I lead the design of the first AI-native home intelligence platform, an intelligent assistant that sees, thinks, reasons and speaks, bringing a fully connected home to life.</p>
-        <p>Over the years I've collaborated with General Motors, Ford, Daimler, Maserati, Nvidia, Qualcomm.</p>
+        <div class="about-clients">
+          <span>General Motors</span>
+          <span>Ford</span>
+          <span>Daimler</span>
+          <span>Maserati</span>
+          <span>Nvidia</span>
+          <span>Qualcomm</span>
+        </div>
       </div>
     </div>
   </section>
