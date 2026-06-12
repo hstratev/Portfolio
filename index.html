@@ -742,20 +742,35 @@
       gap: 8px;
     }
     .footer-left a {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 10px;
       font-size: 16px;
       font-weight: 400;
       font-family: 'Inter Display', sans-serif;
       color: #ffffff;
-      transition: opacity 0.2s;
+      position: relative;
+    }
+    .footer-left a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #ffffff;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .footer-left a:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
     }
     .footer-left a svg {
       flex-shrink: 0;
       opacity: 0.8;
     }
-    .footer-left a:hover { opacity: 0.55; }
     .footer-credit {
       font-size: 16px;
       font-weight: 400;
