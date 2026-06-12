@@ -839,7 +839,7 @@
     <div class="hero-bottom">
       <div class="hero-bio-col">
         <p class="hero-bio mask-reveal" data-reveal-delay="400">Product Designer with 13+ years of experience at the intersection of human perception and emerging technology.</p>
-        <p class="hero-caption">Curious about my AI skills? I vibe coded the entire website from scratch.</p>
+        <p class="hero-caption">Designed and built from scratch — AI in the workflow.</p>
       </div>
     </div>
 
@@ -1209,8 +1209,8 @@
         heroCaption.style.minHeight = heroCaption.offsetHeight + 'px';
         heroCaption.textContent = '';
 
-        // Split at "?" for the mid-sentence pause
-        const pauseIdx = captionText.indexOf('?') + 1;
+        // Split before "—" for the mid-sentence pause
+        const pauseIdx = captionText.indexOf('—');
         const part1 = captionText.slice(0, pauseIdx);
         const part2 = captionText.slice(pauseIdx);
 
