@@ -32,6 +32,8 @@
 
     body.no-scroll { overflow: hidden; }
     body, body * { cursor: none; }
+    body { opacity: 0; transition: opacity 0.35s ease; }
+    body.loaded { opacity: 1; }
 
     a { color: inherit; text-decoration: none; }
     img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -581,6 +583,20 @@
 
   window.addEventListener('scroll', function() {
     document.getElementById('mainNav').classList.toggle('nav-scrolled', window.scrollY > 0);
+  });
+  // Page fade transition
+  document.addEventListener('DOMContentLoaded', function() { document.body.classList.add('loaded'); });
+  window.addEventListener('pageshow', function() { document.body.classList.add('loaded'); });
+  document.querySelectorAll('a[href]').forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (href && href !== '#' && !href.startsWith('#') && !href.startsWith('http') && !href.startsWith('mailto')) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.body.classList.remove('loaded');
+        var dest = href;
+        setTimeout(function() { window.location.href = dest; }, 350);
+      });
+    }
   });
 </script>
 
