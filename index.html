@@ -1249,9 +1249,9 @@
     /* ── MAGNETIC EFFECT ── */
     (function initMagnetic() {
       const items = [
-        ...Array.from(document.querySelectorAll('.nav-logo')).map(el => ({ el, strength: 0.14, radius: 75 })),
-        ...Array.from(document.querySelectorAll('.nav-links a')).map(el => ({ el, strength: 0.14, radius: 75 })),
-        ...Array.from(document.querySelectorAll('.cta-btn')).map(el => ({ el, strength: 0.19, radius: 110 })),
+        ...Array.from(document.querySelectorAll('.nav-logo')).map(el => ({ el, strength: 0.14, radius: 65 })),
+        ...Array.from(document.querySelectorAll('.nav-links a')).map(el => ({ el, strength: 0.14, radius: 65 })),
+        ...Array.from(document.querySelectorAll('.cta-btn')).map(el => ({ el, strength: 0.19, radius: 90 })),
       ];
 
       window.addEventListener('mousemove', e => {
@@ -1267,7 +1267,7 @@
             el.style.transition = 'transform 0.15s ease-out';
             el.style.transform = `translate(${dx * strength}px, ${dy * strength}px)`;
           } else {
-            el.style.transition = 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1)';
+            el.style.transition = 'transform 0.65s cubic-bezier(0.34, 1.45, 0.64, 1)';
             el.style.transform = '';
           }
         });
