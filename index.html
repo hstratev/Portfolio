@@ -16,6 +16,10 @@
 
     /* ── RESET ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    ::selection { background: #111; color: #fff; }
+    ::-moz-selection { background: #111; color: #fff; }
+    #contact ::selection { background: #fff; color: #111; }
+    #contact ::-moz-selection { background: #fff; color: #111; }
 
     html {
       -webkit-font-smoothing: antialiased;
