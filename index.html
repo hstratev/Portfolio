@@ -52,10 +52,33 @@
       z-index: 10000;
       top: 0; left: 0;
       transform: translate(-50%, -50%);
-      transition: width 0.2s ease, height 0.2s ease;
+      transition: width 0.28s cubic-bezier(0.16,1,0.3,1), height 0.28s cubic-bezier(0.16,1,0.3,1), border-radius 0.28s cubic-bezier(0.16,1,0.3,1), background 0.2s ease;
       will-change: left, top;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     #cursor.hover { width: 40px; height: 40px; }
+    #cursor.view {
+      width: 76px;
+      height: 36px;
+      border-radius: 100px;
+      background: #111111;
+      mix-blend-mode: normal;
+    }
+    .cursor-label {
+      font-size: 11px;
+      font-weight: 600;
+      font-family: 'Inter Display', sans-serif;
+      letter-spacing: 0.1em;
+      color: #ffffff;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+    #cursor.view .cursor-label { opacity: 1; }
 
     /* ── MENU OVERLAY ── */
     #menuOverlay {
@@ -907,7 +930,7 @@
 <body>
 
   <!-- ── CURSOR ── -->
-  <div id="cursor"></div>
+  <div id="cursor"><span class="cursor-label">VIEW</span></div>
 
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay">
@@ -1106,6 +1129,10 @@
     document.querySelectorAll('a, button').forEach(el => {
       el.addEventListener('mouseenter', () => cur.classList.add('hover'));
       el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+    });
+    document.querySelectorAll('.work-item').forEach(el => {
+      el.addEventListener('mouseenter', () => cur.classList.add('view'));
+      el.addEventListener('mouseleave', () => cur.classList.remove('view'));
     });
 
     /* ── SMOOTH SCROLL (LENIS) ── */
