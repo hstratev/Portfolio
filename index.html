@@ -1659,7 +1659,7 @@
       if (!row) return;
 
       var PALETTE = ['#534AB7', '#7F77DD', '#993556', '#D4537E', '#0F6E56'];
-      var PPC = 14;
+      var PPC = 28;
       var dpr = 1;
 
       // Canvas is a direct child of row; row already has position:relative from foundation
@@ -1695,9 +1695,9 @@
             particles.push({
               hx: x + Math.random() * w,
               hy: y + h * 0.18 + Math.random() * h * 0.62,
-              sx: (Math.random() - 0.5) * 95,
-              sy: (Math.random() - 0.5) * 75 - 8,
-              r:  0.9 + Math.random() * 1.7,
+              sx: (Math.random() - 0.5) * 115,
+              sy: (Math.random() - 0.5) * 90 - 8,
+              r:  1.8 + Math.random() * 3.4,
               c:  PALETTE[Math.floor(Math.random() * PALETTE.length)],
               ph: Math.random() * Math.PI * 2,
               sp: 0.6 + Math.random() * 1.6
@@ -1712,10 +1712,6 @@
             target: 0
           });
         });
-        // ── DEBUG: draw red outlines to verify alignment ──
-        ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-        ctx.strokeStyle = 'red'; ctx.lineWidth = 1;
-        letters.forEach(function (L) { ctx.strokeRect(L.dbx, L.dby, L.dbw, L.dbh); });
       }
 
       document.fonts.ready.then(function () {
@@ -1749,9 +1745,6 @@
         ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
         var anyActive = false;
 
-        // ── DEBUG: red outlines on every frame ──
-        ctx.strokeStyle = 'red'; ctx.lineWidth = 1;
-        letters.forEach(function (L) { ctx.strokeRect(L.dbx, L.dby, L.dbw, L.dbh); });
 
         letters.forEach(function (L) {
           if (hovering) {
