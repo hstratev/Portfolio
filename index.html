@@ -504,22 +504,27 @@
       gap: 32px;
     }
 
-    .about-clients { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 32px; align-items: center; }
+    .about-clients { display: flex; gap: 0; flex-wrap: wrap; margin-top: 32px; align-items: center; }
     .about-clients span {
       border-right: 1px solid #8A8A8A;
-      padding-right: 24px;
+      padding: 0 24px;
       display: inline-flex;
       align-items: center;
       height: 24px;
     }
+    .about-clients span:first-child { padding-left: 0; }
     .about-clients span:last-child { border-right: none; padding-right: 0; }
+    .client-inner {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
     .client-text {
       font-size: 12px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #8A8A8A;
       white-space: nowrap;
-      position: relative;
       transition: opacity 0.18s ease, transform 0.18s ease;
     }
     .about-clients span:hover .client-text {
@@ -1102,13 +1107,13 @@
         <p>My career has taken me across Germany and the U.S., leading teams at the forefront of Human Machine Interface and AI user experiences. I led the design team at Visteon as Design Manager, working on advanced HMI Designs and real-time 3D User Experiences.</p>
         <p>Today I lead the design of the first AI-native home intelligence platform, an intelligent assistant that sees, thinks, reasons and speaks, bringing a fully connected home to life.</p>
         <div class="about-clients">
-          <span><span class="client-text">General Motors</span><img class="client-logo" src="Company_logos/logo-gm.png" alt="General Motors"></span>
-          <span><span class="client-text">Ford</span><img class="client-logo client-logo-ford" src="Company_logos/logo-ford.svg" alt="Ford"></span>
-          <span><span class="client-text">Mercedes-Benz</span><img class="client-logo" src="Company_logos/logo-mercedes.svg" alt="Mercedes-Benz"></span>
-          <span><span class="client-text">Maserati</span><img class="client-logo" src="Company_logos/logo-maserati.png" alt="Maserati"></span>
-          <span><span class="client-text">Nvidia</span><img class="client-logo" src="Company_logos/logo-nvidia.png" alt="Nvidia"></span>
-          <span><span class="client-text">Qualcomm</span><img class="client-logo" src="Company_logos/logo-qualcomm.png" alt="Qualcomm"></span>
-          <span><span class="client-text">Visteon</span><img class="client-logo" src="Company_logos/logo-visteon.png" alt="Visteon"></span>
+          <span><span class="client-inner"><span class="client-text">General Motors</span><img class="client-logo" src="Company_logos/logo-gm.png" alt="General Motors"></span></span>
+          <span><span class="client-inner"><span class="client-text">Ford</span><img class="client-logo client-logo-ford" src="Company_logos/logo-ford.svg" alt="Ford"></span></span>
+          <span><span class="client-inner"><span class="client-text">Mercedes-Benz</span><img class="client-logo" src="Company_logos/logo-mercedes.svg" alt="Mercedes-Benz"></span></span>
+          <span><span class="client-inner"><span class="client-text">Maserati</span><img class="client-logo" src="Company_logos/logo-maserati.png" alt="Maserati"></span></span>
+          <span><span class="client-inner"><span class="client-text">Nvidia</span><img class="client-logo" src="Company_logos/logo-nvidia.png" alt="Nvidia"></span></span>
+          <span><span class="client-inner"><span class="client-text">Qualcomm</span><img class="client-logo" src="Company_logos/logo-qualcomm.png" alt="Qualcomm"></span></span>
+          <span><span class="client-inner"><span class="client-text">Visteon</span><img class="client-logo" src="Company_logos/logo-visteon.png" alt="Visteon"></span></span>
         </div>
       </div>
     </div>
