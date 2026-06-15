@@ -975,7 +975,7 @@
       .hero-email { font-size: 18px; letter-spacing: -0.5px; }
       .hero-bio-col { max-width: 100%; flex: none; width: 100%; }
       .hero-bio { font-size: 20px; letter-spacing: 0px; line-height: 28px; }
-      .hero-caption { font-size: 12px; margin-top: 10px; }
+      .hero-caption { font-size: 14px; margin-top: 10px; }
 
       .sec-head { padding: 48px 24px 28px; }
       .sec-label { font-size: 22px; }
@@ -997,6 +997,9 @@
       #contact { padding: 48px 24px; }
       .contact-heading { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; }
       .footer-row { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .contact-actions { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .about-clients > span .client-text { opacity: 1 !important; transform: none !important; }
+      .about-clients > span .client-logo { display: none; }
     }
 
 
@@ -1580,8 +1583,14 @@
       })).filter(s => s.el);
 
       function setActive(navHref) {
-        Object.values(navLinks).forEach(a => a.classList.remove('nav-active'));
-        if (navHref && navLinks[navHref]) navLinks[navHref].classList.add('nav-active');
+        Object.values(navLinks).forEach(a => {
+          a.classList.remove('nav-active');
+          a.removeAttribute('aria-current');
+        });
+        if (navHref && navLinks[navHref]) {
+          navLinks[navHref].classList.add('nav-active');
+          navLinks[navHref].setAttribute('aria-current', 'true');
+        }
       }
 
       function updateFromScroll(scroll) {

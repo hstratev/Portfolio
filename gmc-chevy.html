@@ -153,6 +153,8 @@
       .proj-body-text { font-size: 16px; line-height: 1.7em; }
       section > h1 { font-size: 36px !important; letter-spacing: -1.5px !important; }
       .proj-next { padding: 32px 24px; }
+      .proj-back-link { padding-left: 24px; padding-right: 24px; }
+      .proj-back-link a, .proj-back-sep, .proj-back-current { font-size: 13px; }
     }
 
     /* ── PAGE LOAD ANIMATIONS ── */
@@ -262,7 +264,7 @@
 <div id="menuOverlay">
   <div class="mo-top">
     <a href="index.html" class="mo-logo">H.S.</a>
-    <button class="mo-close" onclick="closeMenu()">✕</button>
+    <button class="mo-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
   </div>
   <nav class="mo-nav">
     <a href="index.html#work">Work</a>
