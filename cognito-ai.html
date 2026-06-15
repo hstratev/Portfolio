@@ -227,6 +227,11 @@
     :focus-visible { outline: 2px solid #111111; outline-offset: 3px; border-radius: 2px; }
     #menuOverlay :focus-visible { outline-color: #ffffff; }
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
+    /* ── SECTION DOT NAVIGATOR ── */
+    .section-dots { position: fixed; right: 20px; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 10px; z-index: 200; }
+    .section-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(0,0,0,0.18); border: none; padding: 0; cursor: pointer; transition: background 0.3s ease, transform 0.3s ease; flex-shrink: 0; }
+    .section-dot.active { background: #111111; transform: scale(1.25); }
+    @media (max-width: 768px) { .section-dots { display: none; } }
   </style>
 </head>
 <body>
@@ -452,6 +457,34 @@
       });
     }
   });
+  // ── SECTION DOT NAVIGATOR ──
+  (function() {
+    var sections = [];
+    var hero = document.querySelector('.proj-hero-section') || document.querySelector('section');
+    if (hero) sections.push(hero);
+    document.querySelectorAll('.proj-section').forEach(function(el) { sections.push(el); });
+    if (sections.length < 2) return;
+    var container = document.createElement('div');
+    container.className = 'section-dots';
+    container.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(container);
+    var dots = sections.map(function(section, i) {
+      var btn = document.createElement('button');
+      btn.className = 'section-dot';
+      btn.setAttribute('aria-label', 'Go to section ' + (i + 1));
+      btn.addEventListener('click', function() { section.scrollIntoView({ behavior: 'smooth' }); });
+      container.appendChild(btn);
+      return btn;
+    });
+    function update() {
+      var mid = window.scrollY + window.innerHeight * 0.5;
+      var active = 0;
+      sections.forEach(function(s, i) { if (s.offsetTop <= mid) active = i; });
+      dots.forEach(function(d, i) { d.classList.toggle('active', i === active); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
 </script>
 </body>
 </html>
