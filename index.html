@@ -130,8 +130,8 @@
       font-family: 'Inter Display', sans-serif;
       padding: 0;
       line-height: 1;
-      width: 19px;
-      height: 19px;
+      width: 44px;
+      height: 44px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -360,7 +360,7 @@
       font-size: 16px;
       font-weight: 300;
       font-family: 'Inter Display', sans-serif;
-      color: #8A8A8A;
+      color: #767676;
       margin-top: 20px;
       letter-spacing: 0em;
       display: block;
@@ -554,7 +554,7 @@
       font-size: 12px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: #8A8A8A;
+      color: #767676;
       white-space: nowrap;
       transition: opacity 0.18s ease, transform 0.18s ease;
     }
@@ -880,6 +880,16 @@
     }
     .reveal.in { opacity: 1; transform: translateY(0); }
 
+    :focus-visible {
+      outline: 2px solid #111111;
+      outline-offset: 3px;
+      border-radius: 2px;
+    }
+    #menuOverlay :focus-visible,
+    #contact :focus-visible {
+      outline-color: #ffffff;
+    }
+
     /* ── TABLET ── */
     @media (min-width: 769px) and (max-width: 1300px) {
       #mainNav {
@@ -935,7 +945,7 @@
 
       #mainNav { padding: 0 24px; }
       .nav-links { display: none; }
-      .nav-trigger { display: flex; }
+      .nav-trigger { display: flex; min-width: 44px; min-height: 44px; }
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
       .mo-nav a { font-size: 32px; }
 
