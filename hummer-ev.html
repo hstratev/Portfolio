@@ -314,9 +314,11 @@
     video:fullscreen { object-fit: contain; }
     video:-webkit-full-screen { object-fit: contain; }
 
-    .proj-back-link { padding: 16px 100px; }
-    .proj-back-link a { font-size: 13px; letter-spacing: 0.05em; color: #aaaaaa; text-decoration: none; }
-    .proj-back-link a:hover { text-decoration: underline; }
+    .proj-back-link { max-width: 100ch; margin: 0 auto; padding: 20px 0 0; display: flex; align-items: center; gap: 8px; }
+    .proj-back-link a { font-size: 12px; letter-spacing: 0.06em; color: #aaaaaa; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; }
+    .proj-back-link a:hover { color: #111111; }
+    .proj-back-sep { font-size: 12px; color: #dddddd; }
+    .proj-back-current { font-size: 12px; letter-spacing: 0.06em; color: #333333; }
     .proj-next { display: flex; align-items: center; gap: 24px; padding: 40px 100px; border-top: 1px solid #eeeeee; text-decoration: none; color: #111111; }
     .proj-next:hover .proj-next-title { text-decoration: underline; }
     .proj-next-thumb { width: 120px; height: 80px; object-fit: cover; flex-shrink: 0; }
@@ -358,7 +360,7 @@
     </button>
 </nav>
 
-<div class="proj-back-link"><a href="index.html#work">← Work</a></div>
+<div class="proj-back-link"><a href="index.html#work"><svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 1.5L3 6L7.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Work</a><span class="proj-back-sep">/</span><span class="proj-back-current">Hummer EV</span></div>
 
 <!-- HERO -->
 <section class="proj-hero-section" style="padding: 80px 0 0; max-width: 100ch; margin: 0 auto;">
