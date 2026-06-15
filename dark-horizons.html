@@ -143,6 +143,7 @@
     .proj-back-current { font-size: 12px; letter-spacing: 0.06em; color: #333333; }
     :focus-visible { outline: 2px solid #111111; outline-offset: 3px; border-radius: 2px; }
     #menuOverlay :focus-visible { outline-color: #ffffff; }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; } }
 
     @media (max-width: 768px) {
       body, body * { cursor: auto; }

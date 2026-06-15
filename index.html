@@ -889,6 +889,13 @@
     #contact :focus-visible {
       outline-color: #ffffff;
     }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
 
     /* ── TABLET ── */
     @media (min-width: 769px) and (max-width: 1300px) {
@@ -975,6 +982,8 @@
       .sec-dot { width: 18px; height: 18px; }
 
       .work-grid { grid-template-columns: 1fr; gap: 12px; padding: 0 24px 48px; }
+      .work-overlay { opacity: 1; }
+      .work-item img { transition: none; }
 
       .about-statement { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; padding: 0 24px 40px; max-width: none; }
       .about-grid { grid-template-columns: 1fr; gap: 32px; padding: 0 24px 48px; }
@@ -1029,7 +1038,7 @@
   <div id="cursor"><span class="cursor-label">VIEW</span></div>
 
   <!-- ── MENU OVERLAY ── -->
-  <div id="menuOverlay">
+  <div id="menuOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
     <div class="mo-top">
       <span class="mo-logo">H.S.</span>
       <button class="mo-close" onclick="closeMenu()" aria-label="Close menu">✕</button>
@@ -1049,7 +1058,7 @@
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </div>
-    <button class="nav-trigger" onclick="toggleMenu()" aria-label="Open menu">
+    <button class="nav-trigger" id="navTrigger" onclick="toggleMenu()" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay">
       <span class="dots-grid">
         <span class="dot"></span><span class="dot"></span>
         <span class="dot"></span><span class="dot"></span>
@@ -1269,20 +1278,35 @@
     }
 
     /* ── SMOOTH SCROLL (LENIS) ── */
-    const lenis = new Lenis({
+    const _isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+    const lenis = _isTouch ? null : new Lenis({
       duration: 1.4,
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
     });
 
-    (function lenisRaf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(lenisRaf);
-    })(0);
+    if (lenis) {
+      (function lenisRaf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(lenisRaf);
+      })(0);
+    }
+
+    function _onScroll(fn) {
+      if (lenis) { lenis.on('scroll', ({ scroll }) => fn(scroll)); }
+      else { window.addEventListener('scroll', () => fn(window.scrollY), { passive: true }); }
+    }
+
+    function _scrollTo(target, _lenisOpts) {
+      if (lenis) { lenis.scrollTo(target, _lenisOpts || { duration: 1.4 }); return; }
+      if (typeof target === 'number') { window.scrollTo({ top: target, behavior: 'smooth' }); return; }
+      if (target && target.getBoundingClientRect) {
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+      }
+    }
 
     // Scroll-driven animations
-
-    lenis.on('scroll', ({ scroll }) => {
+    _onScroll(scroll => {
       // Hero curtain — fades + slight scale as work slides over it
       const hero = document.getElementById('hero');
       if (hero) {
@@ -1290,15 +1314,14 @@
         hero.style.setProperty('--overlay', (p * 0.5).toFixed(3));
         hero.style.transform = `scale(${(1 - p * 0.04).toFixed(4)})`;
       }
-
     });
 
-    // Wire all anchor links through Lenis
+    // Wire all anchor links through scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
       a.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (!href) return;
-        if (href === '#') { e.preventDefault(); lenis.scrollTo(0, { duration: 1.4 }); return; }
+        if (href === '#') { e.preventDefault(); _scrollTo(0); return; }
         e.preventDefault();
         const target = document.querySelector(href);
         if (!target) return;
@@ -1306,7 +1329,7 @@
         if (href === '#contact') {
           const contact = document.getElementById('contact');
           if (contact) {
-            lenis.scrollTo(contact.offsetTop - 72, { duration: 1.4 });
+            _scrollTo(contact.offsetTop - 72);
           }
         } else {
           // Work / About: scroll to the first content element *after* the
@@ -1316,7 +1339,7 @@
             '#about': document.querySelector('.about-statement'),
           };
           const scrollEl = contentTargets[href] || target;
-          lenis.scrollTo(scrollEl, { duration: 1.4 });
+          _scrollTo(scrollEl);
         }
       });
     });
@@ -1328,12 +1351,12 @@
       document.getElementById('menuOverlay').style.paddingRight = (parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight) + sw) + 'px';
       document.getElementById('menuOverlay').classList.add('open');
       document.body.classList.add('no-scroll');
-      
+      document.getElementById('navTrigger').setAttribute('aria-expanded', 'true');
     }
     function closeMenu() {
       document.getElementById('menuOverlay').classList.remove('open');
       document.body.classList.remove('no-scroll');
-      
+      document.getElementById('navTrigger').setAttribute('aria-expanded', 'false');
       document.body.style.paddingRight = '';
       document.getElementById('menuOverlay').style.paddingRight = '';
     }
@@ -1571,7 +1594,7 @@
         setActive(activeNav);
       }
 
-      lenis.on('scroll', ({ scroll }) => {
+      _onScroll(scroll => {
         updateFromScroll(scroll);
         document.getElementById('mainNav').classList.toggle('nav-scrolled', scroll > 0);
       });
@@ -1579,22 +1602,14 @@
       updateFromScroll(window.scrollY || 0);
     })();
 
-    /* Run after fonts are loaded for accurate measurement */
-    const _lenisEasing = t => Math.min(1, 1.001 - Math.pow(2, -10 * t));
-
     function handlePendingScroll() {
       const pendingScroll = sessionStorage.getItem('portfolioScrollTo');
       if (!pendingScroll) return;
       sessionStorage.removeItem('portfolioScrollTo');
-      // Delay long enough for the initial paint + Lenis RAF loop to warm up
-      // before triggering programmatic scroll, so it feels identical to a
-      // nav click made from within the home page.
       setTimeout(() => {
         if (pendingScroll === '#contact') {
           const contact = document.getElementById('contact');
-          if (contact) {
-            lenis.scrollTo(contact.offsetTop - 72, { duration: 1.4, easing: _lenisEasing });
-          }
+          if (contact) { _scrollTo(contact.offsetTop - 72); }
         } else {
           const contentTargets = {
             '#work':  document.querySelector('.work-grid'),
@@ -1602,7 +1617,7 @@
           };
           const target = document.querySelector(pendingScroll);
           const scrollEl = contentTargets[pendingScroll] || target;
-          if (scrollEl) lenis.scrollTo(scrollEl, { duration: 1.4, easing: _lenisEasing });
+          if (scrollEl) _scrollTo(scrollEl);
         }
       }, 400);
     }
