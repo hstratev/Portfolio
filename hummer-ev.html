@@ -509,7 +509,6 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
   // ── VIDEO PLAY OVERLAYS ──
   document.querySelectorAll('.proj-img-full video').forEach(function(video) {
-    if (video.hasAttribute('autoplay')) return;
     var wrapper = document.createElement('div');
     wrapper.className = 'video-wrapper';
     video.parentNode.insertBefore(wrapper, video);
@@ -517,6 +516,7 @@
     var overlay = document.createElement('div');
     overlay.className = 'play-overlay';
     overlay.innerHTML = '<div class="play-circle"><div class="play-triangle"></div></div>';
+    if (video.hasAttribute('autoplay')) overlay.classList.add('hidden');
     wrapper.appendChild(overlay);
     overlay.addEventListener('click', function() {
       video.play();
