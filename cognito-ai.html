@@ -406,6 +406,7 @@
     var overlay = document.createElement('div');
     overlay.className = 'play-overlay';
     overlay.innerHTML = '<div class="play-circle"><div class="play-triangle"></div></div>';
+    if (video.hasAttribute('autoplay')) overlay.classList.add('hidden');
     wrapper.appendChild(overlay);
     overlay.addEventListener('click', function() { video.play(); overlay.classList.add('hidden'); });
     video.addEventListener('pause', function() { overlay.classList.remove('hidden'); });
