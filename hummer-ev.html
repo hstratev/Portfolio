@@ -397,9 +397,9 @@
   </div>
 </section>
 
-<!-- FULL-WIDTH HERO IMAGE -->
+<!-- FULL-WIDTH HERO VIDEO -->
 <div class="proj-img-full">
-  <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/3d41b163-2b01-4846-83ed-f055e0b03567_rw_1920.jpg?h=289d52c4c33c4469fd71f21f359c86dc" alt="Hummer EV">
+  <video src="Videos/BT1x/media2.mp4" autoplay muted loop playsinline style="width:100%;display:block;background:#000;"></video>
 </div>
 
 <!-- SECTION: Target Groups & UX Challenge -->
@@ -509,6 +509,7 @@
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
   // ── VIDEO PLAY OVERLAYS ──
   document.querySelectorAll('.proj-img-full video').forEach(function(video) {
+    if (video.hasAttribute('autoplay')) return;
     var wrapper = document.createElement('div');
     wrapper.className = 'video-wrapper';
     video.parentNode.insertBefore(wrapper, video);
