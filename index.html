@@ -1252,8 +1252,8 @@
     let mx = 0, my = 0, cx = 0, cy = 0;
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
     (function loop() {
-      cx += (mx - cx) * 0.15;
-      cy += (my - cy) * 0.15;
+      cx += (mx - cx) * 0.25;
+      cy += (my - cy) * 0.25;
       cur.style.left = cx + 'px';
       cur.style.top  = cy + 'px';
       requestAnimationFrame(loop);
