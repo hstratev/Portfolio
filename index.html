@@ -1345,7 +1345,7 @@
             '#about': document.querySelector('.about-statement'),
           };
           const scrollEl = contentTargets[href] || target;
-          _scrollTo(scrollEl);
+          _scrollTo(scrollEl, { duration: 1.4, offset: -80 });
         }
       });
     });
@@ -1629,7 +1629,7 @@
           };
           const target = document.querySelector(pendingScroll);
           const scrollEl = contentTargets[pendingScroll] || target;
-          if (scrollEl) _scrollTo(scrollEl);
+          if (scrollEl) _scrollTo(scrollEl, { duration: 1.4, offset: -80 });
         }
       }, 400);
     }
