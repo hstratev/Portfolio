@@ -1038,6 +1038,15 @@
     video:fullscreen { object-fit: contain; }
     video:-webkit-full-screen { object-fit: contain; }
   </style>
+  <script>
+    // Windows exposes more CSS pixels than macOS HiDPI on the same monitor,
+    // shrinking the fixed-px layout. Scale it back to the 1920px design canvas.
+    (function () {
+      if (navigator.userAgent.indexOf('Windows') === -1) return;
+      var w = window.screen.width;
+      if (w > 1920) document.documentElement.style.zoom = w / 1920;
+    })();
+  </script>
 </head>
 <body>
 
