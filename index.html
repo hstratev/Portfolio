@@ -7,6 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache"/>
   <meta http-equiv="Expires" content="0"/>
   <title>Hristiyan Stratev - Product Design Lead</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -181,11 +182,27 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
     .nav-logo {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
       color: #111111;
-      font-family: 'Inter Display', sans-serif;
+      display: inline-flex;
+      align-items: center;
+      line-height: 0;
+    }
+    .logo-mark {
+      display: block;
+      width: 49.5px;
+      height: 54px;
+    }
+    .logo-guides,
+    .logo-dots {
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+    .nav-logo:hover .logo-guides { opacity: 0.5; transition: opacity 0.25s ease-out; }
+    .nav-logo:hover .logo-dots { opacity: 0.85; transition: opacity 0.25s ease-out; }
+    .nav-logo.logo-flash .logo-guides,
+    .nav-logo.logo-flash .logo-dots {
+      opacity: 1 !important;
+      transition: opacity 0.06s ease-out;
     }
     .nav-links {
       display: flex;
@@ -895,6 +912,7 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
+      .logo-guides, .logo-dots { display: none; }
     }
 
     /* ── TABLET ── */
@@ -954,6 +972,7 @@
       .nav-links { display: none; }
       .nav-trigger { display: flex; min-width: 44px; min-height: 44px; }
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .logo-guides, .logo-dots { display: none; }
       .mo-nav a { font-size: 32px; letter-spacing: 0; }
 
       #hero {
@@ -1068,7 +1087,32 @@
 
   <!-- ── NAV ── -->
   <nav id="mainNav">
-    <a href="#" class="nav-logo">H.S.</a>
+    <a href="#" class="nav-logo" aria-label="Home">
+      <svg class="logo-mark" viewBox="0 0 165 180" xmlns="http://www.w3.org/2000/svg">
+        <g class="logo-guides" fill="none" stroke="currentColor" stroke-width="0.75" stroke-dasharray="3 3">
+          <line x1="0" y1="40" x2="165" y2="40"/>
+          <line x1="0" y1="90" x2="165" y2="90"/>
+          <line x1="0" y1="140" x2="165" y2="140"/>
+          <line x1="40" y1="0" x2="40" y2="180"/>
+          <line x1="125" y1="0" x2="125" y2="180"/>
+          <line x1="40" y1="40" x2="125" y2="140"/>
+          <line x1="125" y1="40" x2="40" y2="140"/>
+          <circle cx="82.5" cy="90" r="20"/>
+        </g>
+        <g class="logo-h" fill="currentColor">
+          <rect x="40" y="40" width="12.75" height="100"/>
+          <rect x="112.25" y="40" width="12.75" height="100"/>
+          <rect x="40" y="83.5" width="85" height="13"/>
+        </g>
+        <g class="logo-dots" fill="currentColor">
+          <circle cx="40" cy="40" r="2"/>
+          <circle cx="125" cy="40" r="2"/>
+          <circle cx="40" cy="140" r="2"/>
+          <circle cx="125" cy="140" r="2"/>
+          <circle cx="82.5" cy="90" r="2"/>
+        </g>
+      </svg>
+    </a>
     <div class="nav-links">
       <a href="#work">Work</a>
       <a href="#about">About</a>
@@ -1331,8 +1375,23 @@
       }
     });
 
+    // Logo: flash construction layer, then scroll to top
+    document.querySelectorAll('.nav-logo').forEach(logo => {
+      logo.addEventListener('click', function(e) {
+        e.preventDefault();
+        const skipFlash = window.innerWidth <= 768 ||
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (skipFlash) { _scrollTo(0); return; }
+        logo.classList.add('logo-flash');
+        setTimeout(() => {
+          logo.classList.remove('logo-flash');
+          _scrollTo(0);
+        }, 120);
+      });
+    });
+
     // Wire all anchor links through scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
+    document.querySelectorAll('a[href^="#"]:not(.nav-logo)').forEach(a => {
       a.addEventListener('click', function(e) {
         const href = this.getAttribute('href');
         if (!href) return;
