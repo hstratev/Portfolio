@@ -65,7 +65,6 @@
       justify-content: center;
     }
     #cursor.hover { width: 40px; height: 40px; }
-    #cursor.precision { width: 6px; height: 6px; }
     #cursor.view {
       width: 64px;
       height: 64px;
@@ -191,11 +190,21 @@
     }
     .logo-mark {
       display: block;
-      width: 24px;
-      height: 30px;
-      transition: transform 0.08s ease-out;
+      width: 49.5px;
+      height: 54px;
     }
-    .nav-logo.logo-press .logo-mark { transform: scale(0.96); }
+    .logo-guides,
+    .logo-dots {
+      opacity: 0;
+      transition: opacity 0.15s ease-out;
+    }
+    .nav-logo:hover .logo-guides { opacity: 0.5; transition: opacity 0.25s ease-out; }
+    .nav-logo:hover .logo-dots { opacity: 0.85; transition: opacity 0.25s ease-out; }
+    .nav-logo.logo-flash .logo-guides,
+    .nav-logo.logo-flash .logo-dots {
+      opacity: 1 !important;
+      transition: opacity 0.06s ease-out;
+    }
     .nav-links {
       display: flex;
       gap: 40px;
@@ -962,6 +971,7 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
       }
+      .logo-guides, .logo-dots { display: none; }
     }
 
     /* ── TABLET ── */
@@ -1021,6 +1031,7 @@
       .nav-links { display: none; }
       .nav-trigger { display: flex; min-width: 44px; min-height: 44px; }
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
+      .logo-guides, .logo-dots { display: none; }
       .mo-nav a { font-size: 32px; letter-spacing: 0; }
 
       #hero {
@@ -1136,11 +1147,28 @@
   <!-- ── NAV ── -->
   <nav id="mainNav">
     <a href="#" class="nav-logo" aria-label="Home">
-      <svg class="logo-mark" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+      <svg class="logo-mark" viewBox="0 0 165 180" xmlns="http://www.w3.org/2000/svg">
+        <g class="logo-guides" fill="none" stroke="currentColor" stroke-width="0.75" stroke-dasharray="3 3">
+          <line x1="0" y1="40" x2="165" y2="40"/>
+          <line x1="0" y1="90" x2="165" y2="90"/>
+          <line x1="0" y1="140" x2="165" y2="140"/>
+          <line x1="40" y1="0" x2="40" y2="180"/>
+          <line x1="125" y1="0" x2="125" y2="180"/>
+          <line x1="40" y1="40" x2="125" y2="140"/>
+          <line x1="125" y1="40" x2="40" y2="140"/>
+          <circle cx="82.5" cy="90" r="20"/>
+        </g>
         <g class="logo-h" fill="currentColor">
-          <rect x="0" y="0" width="14.4" height="100"/>
-          <rect x="65.6" y="0" width="14.4" height="100"/>
-          <rect x="0" y="43" width="80" height="14"/>
+          <rect x="40" y="40" width="12.75" height="100"/>
+          <rect x="112.25" y="40" width="12.75" height="100"/>
+          <rect x="40" y="83.5" width="85" height="13"/>
+        </g>
+        <g class="logo-dots" fill="currentColor">
+          <circle cx="40" cy="40" r="2"/>
+          <circle cx="125" cy="40" r="2"/>
+          <circle cx="40" cy="140" r="2"/>
+          <circle cx="125" cy="140" r="2"/>
+          <circle cx="82.5" cy="90" r="2"/>
         </g>
       </svg>
     </a>
@@ -1341,13 +1369,9 @@
       cur.style.top  = cy + 'px';
       requestAnimationFrame(loop);
     })();
-    document.querySelectorAll('a:not(.nav-logo), button').forEach(el => {
+    document.querySelectorAll('a, button').forEach(el => {
       el.addEventListener('mouseenter', () => cur.classList.add('hover'));
       el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
-    });
-    document.querySelectorAll('.nav-logo').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('precision'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('precision'));
     });
     document.querySelectorAll('.work-item').forEach(el => {
       el.addEventListener('mouseenter', () => cur.classList.add('view'));
@@ -1410,18 +1434,18 @@
       }
     });
 
-    // Logo: brief press feedback, then scroll to top
+    // Logo: flash construction layer, then scroll to top
     document.querySelectorAll('.nav-logo').forEach(logo => {
       logo.addEventListener('click', function(e) {
         e.preventDefault();
-        const skipPress = window.innerWidth <= 768 ||
+        const skipFlash = window.innerWidth <= 768 ||
           window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (skipPress) { _scrollTo(0); return; }
-        logo.classList.add('logo-press');
+        if (skipFlash) { _scrollTo(0); return; }
+        logo.classList.add('logo-flash');
         setTimeout(() => {
-          logo.classList.remove('logo-press');
+          logo.classList.remove('logo-flash');
           _scrollTo(0);
-        }, 80);
+        }, 120);
       });
     });
 
@@ -1474,6 +1498,7 @@
     /* ── MAGNETIC EFFECT ── */
     (function initMagnetic() {
       const items = [
+        ...Array.from(document.querySelectorAll('.nav-logo')).map(el => ({ el, strength: 0.14, radius: 65 })),
         ...Array.from(document.querySelectorAll('.nav-links a')).map(el => ({ el, strength: 0.14, radius: 65 })),
         ...Array.from(document.querySelectorAll('.cta-btn')).map(el => ({ el, strength: 0.19, radius: 90 })),
       ];
