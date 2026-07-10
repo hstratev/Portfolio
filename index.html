@@ -1998,6 +1998,10 @@
       }
 
       return function init() {
+        // Disabled for now — hero name stays static. Scene code kept intact
+        // below for future development; flip this off to re-enable.
+        var READING_DISABLED = true;
+        if (READING_DISABLED) return;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         container = document.querySelector('.hero-name');
         inner = document.querySelector('.hero-name-inner');
