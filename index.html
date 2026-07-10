@@ -1735,7 +1735,8 @@
         var r = inner.getBoundingClientRect();
         if (!r.width || !r.height) return;
         var x = r.left - cr.left, y = r.top - cr.top, w = r.width, h = r.height;
-        var B = 18, A = 16;
+        // breathing room scales with the name so brackets never crowd the letterforms
+        var B = Math.min(56, Math.max(26, h * 0.34)), A = 16;
         function bracket(bx, by, dx, dy) {
           return '<path d="M ' + (bx + A * dx) + ' ' + by + ' L ' + bx + ' ' + by + ' L ' + bx + ' ' + (by + A * dy) + '"/>';
         }
@@ -1808,7 +1809,7 @@
         hero.insertBefore(canvasHost, hero.firstChild);
 
         var scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(0xffffff, 70, 175);
+        scene.fog = new THREE.Fog(0xffffff, 75, 260);
         var camera = new THREE.PerspectiveCamera(40, 1, 1, 400);
         var BASE_Z = 70;
         camera.position.set(0, 0, BASE_Z);
@@ -1845,15 +1846,15 @@
           scene.add(cloud);
           return { geo: geo, arr: arr, idx: idxList };
         }
-        var near = subCloud(nearIdx, 0.9, 0.55, 0.35);
-        var far  = subCloud(farIdx, 1.6, 0.15, 0.2);
+        var near = subCloud(nearIdx, 1.5, 0.7, 0.35);
+        var far  = subCloud(farIdx, 2.4, 0.3, 0.2);
 
-        var MAX_LINES = 26;
+        var MAX_LINES = 40;
         var lineArr = new Float32Array(MAX_LINES * 2 * 3);
         var lineGeo = new THREE.BufferGeometry();
         lineGeo.setAttribute('position', new THREE.BufferAttribute(lineArr, 3));
         var lines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({
-          color: 0x111111, transparent: true, opacity: 0.15, depthWrite: false, fog: true
+          color: 0x111111, transparent: true, opacity: 0.28, depthWrite: false, fog: true
         }));
         scene.add(lines);
 
@@ -1908,7 +1909,7 @@
         });
 
         // connections under distance threshold, capped
-        var n = 0, TH2 = 12 * 12;
+        var n = 0, TH2 = 15 * 15;
         outer:
         for (var a = 0; a < f.count; a++) {
           for (var b = a + 1; b < f.count; b++) {
