@@ -295,7 +295,18 @@
       opacity: 0;
     }
 
-    /* ── HERO READING (hover scene) ── */
+    /* ── THE READING ── */
+    #hero { position: relative; }
+    #heroReadCanvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+    #heroReadCanvas.on { opacity: 1; transition: opacity 0.55s ease 0.1s; }
+    .hero-names, .hero-bottom { position: relative; z-index: 1; }
     .hero-name { position: relative; }
     .hero-name-inner {
       position: relative;
@@ -306,45 +317,33 @@
       transform: scale(1.028);
       text-shadow: 0 12px 30px rgba(17,17,17,0.12);
     }
-    #heroField {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.45s ease;
-    }
-    #heroField.on { opacity: 1; transition: opacity 0.55s ease 0.1s; }
-    #hero > .hero-names, #hero > .hero-bottom { position: relative; z-index: 1; }
-    .read-layer {
+    .read-overlay {
       position: absolute;
       inset: 0;
       z-index: 3;
       pointer-events: none;
-      color: #111111;
-    }
-    .read-layer svg {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
       overflow: visible;
-      display: block;
     }
-    .read-brackets {
+    .read-overlay svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; display: block; }
+    .read-corner {
       opacity: 0;
-      transform: scale(1.12);
+      transform: scale(1.12) translate(0,0);
       transform-box: fill-box;
       transform-origin: center;
       transition: opacity 0.22s ease, transform 0.22s ease;
     }
-    .hero-name.read-on .read-brackets {
+    .hero-name.read-on .read-corner {
       opacity: 1;
-      transform: scale(1);
+      transform: scale(1) translate(0,0);
       transition: opacity 0.3s cubic-bezier(0.16,1,0.3,1), transform 0.3s cubic-bezier(0.16,1,0.3,1);
     }
+    .hero-name.read-descent .read-corner-tl { transform: scale(1) translate(3px,3px); }
+    .hero-name.read-descent .read-corner-tr { transform: scale(1) translate(-3px,3px); }
+    .hero-name.read-descent .read-corner-bl { transform: scale(1) translate(3px,-3px); }
+    .hero-name.read-descent .read-corner-br { transform: scale(1) translate(-3px,-3px); }
     .read-label {
       position: absolute;
+      height: 16px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       font-weight: 400;
@@ -1710,366 +1709,457 @@
       }, 400);
     }
 
-    /* ── HERO READING (hover scene) ── */
-    var _heroReadInit = (function () {
+    /* ── THE READING ── */
+    function initHeroReading() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var container = document.querySelector('.hero-name');
+      var inner = document.querySelector('.hero-name-inner');
+      var hero = document.getElementById('hero');
+      if (!container || !inner || !hero || container.dataset.readReady) return;
+      container.dataset.readReady = '1';
+
       var NS = 'http://www.w3.org/2000/svg';
-      var THREE_SRC = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-      var isMobile = window.matchMedia('(hover: none)').matches;
-      var container, inner, hero, svg, labelEl, labelTxt;
-      var timers = [];
-      var hovering = false;
+      var isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 768;
 
-      // Three.js field state
-      var field = null;       // { renderer, scene, camera, pts, lines, ... }
-      var fieldFailed = false;
-      var threeLoading = false;
-      var rafId = null;
-      var stopTimer = null;
+      // ---- shared DOM: corner brackets + verdict label ----
+      var overlay = document.createElement('div');
+      overlay.className = 'read-overlay';
+      overlay.setAttribute('aria-hidden', 'true');
+      var svg = document.createElementNS(NS, 'svg');
+      overlay.appendChild(svg);
+      var corners = ['tl', 'tr', 'bl', 'br'].map(function(name) {
+        var g = document.createElementNS(NS, 'g');
+        g.setAttribute('class', 'read-corner read-corner-' + name);
+        var path = document.createElementNS(NS, 'path');
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', '#111111');
+        path.setAttribute('stroke-width', '2');
+        g.appendChild(path);
+        svg.appendChild(g);
+        return { name: name, g: g, path: path };
+      });
+      var labelEl = document.createElement('div');
+      labelEl.className = 'read-label';
+      var labelTxt = document.createElement('span');
+      labelTxt.className = 'read-txt';
+      var caret = document.createElement('span');
+      caret.className = 'read-caret';
+      caret.textContent = '_';
+      labelEl.appendChild(labelTxt);
+      labelEl.appendChild(caret);
+      overlay.appendChild(labelEl);
+      container.appendChild(overlay);
 
-      function t(delay, fn) { timers.push(setTimeout(fn, delay)); }
-      function clearTimers() { timers.forEach(clearTimeout); timers.length = 0; }
-
-      /* ---- brackets + label geometry ---- */
+      // ---- layout: brackets + label positioned from the name's real rect ----
+      var OFF = 4, ARM = 18;
+      function bracketPath(bx, by, dx, dy) {
+        return 'M ' + (bx + ARM * dx) + ' ' + by + ' L ' + bx + ' ' + by + ' L ' + bx + ' ' + (by + ARM * dy) + '';
+      }
       function layout() {
-        var cr = container.getBoundingClientRect();
+        var boxRect = container.getBoundingClientRect();
         var r = inner.getBoundingClientRect();
         if (!r.width || !r.height) return;
-        var x = r.left - cr.left, y = r.top - cr.top, w = r.width, h = r.height;
-        // breathing room scales with the name; vertical stays tighter so the
-        // top bracket and label keep clear of the sticky nav above the hero
-        var BH = Math.min(48, Math.max(26, h * 0.3));
-        var BV = Math.min(30, Math.max(20, h * 0.2));
-        var A = 16;
-        function bracket(bx, by, dx, dy) {
-          return '<path d="M ' + (bx + A * dx) + ' ' + by + ' L ' + bx + ' ' + by + ' L ' + bx + ' ' + (by + A * dy) + '"/>';
-        }
-        svg.innerHTML =
-          '<g class="read-brackets" fill="none" stroke="currentColor" stroke-width="1.5">' +
-            bracket(x - BH, y - BV, 1, 1) + bracket(x + w + BH, y - BV, -1, 1) +
-            bracket(x - BH, y + h + BV, 1, -1) + bracket(x + w + BH, y + h + BV, -1, -1) +
-          '</g>';
-        labelEl.style.left = (x - BH) + 'px';
-        labelEl.style.top = (y - BV - 22) + 'px';
+        var vw = window.innerWidth;
+        var navBottom = (document.getElementById('mainNav') || {}).getBoundingClientRect
+          ? document.getElementById('mainNav').getBoundingClientRect().bottom : 0;
+
+        function clampVX(viewportX) { return Math.min(Math.max(viewportX, 8), vw - 8); }
+
+        var x0 = r.left - OFF, x1 = r.right + OFF;
+        var y0 = r.top - OFF, y1 = r.bottom + OFF;
+        // clamp horizontally in viewport space, then convert back to container-local
+        var vx0 = clampVX(x0), vx1 = clampVX(x1);
+        var lx0 = vx0 - boxRect.left, lx1 = vx1 - boxRect.left;
+        var ly0 = y0 - boxRect.top, ly1 = y1 - boxRect.top;
+
+        var paths = {
+          tl: bracketPath(lx0, ly0, 1, 1),
+          tr: bracketPath(lx1, ly0, -1, 1),
+          bl: bracketPath(lx0, ly1, 1, -1),
+          br: bracketPath(lx1, ly1, -1, -1)
+        };
+        corners.forEach(function(c) { c.path.setAttribute('d', paths[c.name]); });
+
+        // verdict slot: 16px tall, sits above the top-left bracket, but must
+        // never cross into the sticky nav — clamp to navBottom + 8px margin.
+        var labelBottom = ly0 - 6;
+        var labelTop = labelBottom - 16;
+        var minLocalTop = (navBottom + 8) - boxRect.top;
+        if (labelTop < minLocalTop) labelTop = minLocalTop;
+        labelEl.style.left = lx0 + 'px';
+        labelEl.style.top = labelTop + 'px';
       }
 
-      /* ---- verdict typing ---- */
-      function startTyping() {
-        var conf = (0.997 + Math.random() * 0.0029).toFixed(4);
-        var text = 'HUMAN · ' + conf;
+      // ---- verdict typing ----
+      var timers = [];
+      function t(delay, fn) { var id = setTimeout(fn, delay); timers.push(id); return id; }
+      function clearTimers() { timers.forEach(clearTimeout); timers.length = 0; }
+
+      function randConf(lo, hi) { return (lo + Math.random() * (hi - lo)).toFixed(4); }
+
+      function typeText(text, msPerChar, cb) {
         labelTxt.textContent = '';
         container.classList.add('read-typing');
+        container.classList.remove('read-typed');
         var i = 0;
         (function step() {
           if (i < text.length) {
             labelTxt.textContent += text.charAt(i++);
-            t(30, step);
+            t(msPerChar, step);
           } else {
-            t(1000, function () {
-              container.classList.remove('read-typing');
-              container.classList.add('read-typed');
-            });
+            container.classList.remove('read-typing');
+            container.classList.add('read-typed');
+            if (cb) cb();
           }
         })();
       }
-
-      /* ---- Three.js field ---- */
-      function loadThree() {
-        if (threeLoading || window.THREE) return;
-        threeLoading = true;
-        var s = document.createElement('script');
-        s.src = THREE_SRC;
-        s.async = true;
-        document.head.appendChild(s);
+      function eraseText(msPerChar, cb) {
+        container.classList.remove('read-typed');
+        container.classList.add('read-typing');
+        (function step() {
+          var s = labelTxt.textContent;
+          if (s.length > 0) {
+            labelTxt.textContent = s.slice(0, -1);
+            t(msPerChar, step);
+          } else if (cb) { cb(); }
+        })();
       }
 
-      function softSprite(stop) {
-        var c = document.createElement('canvas');
-        c.width = c.height = 64;
-        var g = c.getContext('2d');
-        var grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
-        grad.addColorStop(0, 'rgba(17,17,17,1)');
-        grad.addColorStop(stop, 'rgba(17,17,17,0.55)');
-        grad.addColorStop(1, 'rgba(17,17,17,0)');
-        g.fillStyle = grad;
-        g.fillRect(0, 0, 64, 64);
-        var tex = new THREE.CanvasTexture(c);
-        return tex;
-      }
+      /* ============ DESKTOP: hover scene + Three.js field ============ */
+      if (isDesktop) {
+        var field = null, fieldFailed = false, threeLoading = false;
+        var rafId = null, stopTimer = null;
+        var gen = 0;              // bumped on every enter/leave/click to invalidate stale async callbacks
+        var state = { hovering: false, typed: false, descended: false, busy: false };
+        var clickTime = 0;
 
-      function buildField() {
-        if (field || fieldFailed || !window.THREE) return;
-        var canvasHost = document.createElement('canvas');
-        var renderer;
-        try {
-          renderer = new THREE.WebGLRenderer({ canvas: canvasHost, alpha: true, antialias: true });
-        } catch (e) {
-          fieldFailed = true;
-          return;
-        }
-        renderer.setClearColor(0x000000, 0);
-        canvasHost.id = 'heroField';
-        canvasHost.setAttribute('aria-hidden', 'true');
-        hero.insertBefore(canvasHost, hero.firstChild);
-
-        var scene = new THREE.Scene();
-        scene.fog = new THREE.Fog(0xffffff, 75, 260);
-        var camera = new THREE.PerspectiveCamera(40, 1, 1, 400);
-        var BASE_Z = 70;
-        camera.position.set(0, 0, BASE_Z);
-
-        var COUNT = isMobile ? 55 : 90;
-
-        // center the field on the name, not the hero: convert the name's
-        // pixel center to world units at the z=0 plane
-        var visH = Math.tan(20 * Math.PI / 180) * BASE_Z * 2;
-        var hr = hero.getBoundingClientRect();
-        var nr = inner.getBoundingClientRect();
-        var cyWorld = hr.height ? ((hr.top + hr.height / 2) - (nr.top + nr.height / 2)) / hr.height * visH : 0;
-
-        var VOL = { x: 75, cy: cyWorld, y: 26, zMin: -70, zMax: -6 };
-        var pos = new Float32Array(COUNT * 3);
-        var vel = new Float32Array(COUNT * 3);
-        for (var i = 0; i < COUNT; i++) {
-          // ~65% cluster tightly around the name, the rest scatter as a halo
-          var core = Math.random() < 0.65;
-          pos[i * 3]     = (Math.random() * 2 - 1) * (core ? 48 : VOL.x);
-          pos[i * 3 + 1] = VOL.cy + (Math.random() * 2 - 1) * (core ? 11 : VOL.y);
-          pos[i * 3 + 2] = core ? (-45 + Math.random() * 39) : (VOL.zMin + Math.random() * (VOL.zMax - VOL.zMin));
-          // slow drift: full traversal of the volume takes 60s+
-          var sp = 0.5 + Math.random() * 1.0;
-          var th = Math.random() * Math.PI * 2, ph = Math.acos(Math.random() * 2 - 1);
-          vel[i * 3]     = sp * Math.sin(ph) * Math.cos(th);
-          vel[i * 3 + 1] = sp * Math.sin(ph) * Math.sin(th) * 0.5;
-          vel[i * 3 + 2] = sp * Math.cos(ph) * 0.6;
+        function loadThree(cb) {
+          if (window.THREE) { cb(); return; }
+          if (threeLoading) { document.addEventListener('__threeReady', cb, { once: true }); return; }
+          threeLoading = true;
+          var s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js';
+          s.defer = true;
+          s.onload = function() { document.dispatchEvent(new Event('__threeReady')); cb(); };
+          s.onerror = function() { fieldFailed = true; };
+          document.head.appendChild(s);
         }
 
-        // two depth layers: near = smaller/sharper, far = larger/fainter (lens-blur feel)
-        var nearIdx = [], farIdx = [];
-        for (var j = 0; j < COUNT; j++) (pos[j * 3 + 2] > -38 ? nearIdx : farIdx).push(j);
-        function subCloud(idxList, size, opacity, stop) {
-          var geo = new THREE.BufferGeometry();
-          var arr = new Float32Array(idxList.length * 3);
-          geo.setAttribute('position', new THREE.BufferAttribute(arr, 3));
-          var mat = new THREE.PointsMaterial({
-            color: 0x111111, size: size, map: softSprite(stop),
-            transparent: true, opacity: opacity, sizeAttenuation: true,
-            depthWrite: false, fog: true
-          });
-          var cloud = new THREE.Points(geo, mat);
-          scene.add(cloud);
-          return { geo: geo, arr: arr, idx: idxList };
+        function softSprite() {
+          var c = document.createElement('canvas');
+          c.width = c.height = 64;
+          var g = c.getContext('2d');
+          var grad = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+          grad.addColorStop(0, 'rgba(17,17,17,1)');
+          grad.addColorStop(0.5, 'rgba(17,17,17,0.85)');
+          grad.addColorStop(1, 'rgba(17,17,17,0)');
+          g.fillStyle = grad;
+          g.fillRect(0, 0, 64, 64);
+          return new THREE.CanvasTexture(c);
         }
-        var near = subCloud(nearIdx, 1.5, 0.7, 0.35);
-        var far  = subCloud(farIdx, 2.4, 0.3, 0.2);
 
-        var MAX_LINES = 60;
-        var lineArr = new Float32Array(MAX_LINES * 2 * 3);
-        var lineGeo = new THREE.BufferGeometry();
-        lineGeo.setAttribute('position', new THREE.BufferAttribute(lineArr, 3));
-        var lines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({
-          color: 0x111111, transparent: true, opacity: 0.28, depthWrite: false, fog: true
-        }));
-        scene.add(lines);
+        var VS = [
+          'attribute float aAlpha;',
+          'varying float vAlpha;',
+          'uniform float uK;',
+          'void main() {',
+          '  vAlpha = aAlpha;',
+          '  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);',
+          '  gl_PointSize = uK / -mvPosition.z;',
+          '  gl_Position = projectionMatrix * mvPosition;',
+          '}'
+        ].join('\n');
+        var FS = [
+          'uniform sampler2D map;',
+          'varying float vAlpha;',
+          'void main() {',
+          '  vec4 tex = texture2D(map, gl_PointCoord);',
+          '  gl_FragColor = vec4(0.067, 0.067, 0.067, tex.a * vAlpha);',
+          '  if (gl_FragColor.a < 0.01) discard;',
+          '}'
+        ].join('\n');
 
-        field = {
-          renderer: renderer, scene: scene, camera: camera, canvas: canvasHost,
-          pos: pos, vel: vel, count: COUNT, vol: VOL,
-          near: near, far: far, lineGeo: lineGeo, lineArr: lineArr, maxLines: MAX_LINES,
-          baseZ: BASE_Z, dolly: { from: BASE_Z, to: BASE_Z, start: 0, dur: 1 },
-          rx: 0, ry: 0, mx: 0.5, my: 0.5, last: 0
-        };
-        sizeField();
-      }
+        function buildField() {
+          if (field || fieldFailed || !window.THREE) return;
+          var canvas = document.createElement('canvas');
+          var renderer;
+          try {
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+          } catch (e) { fieldFailed = true; return; }
+          renderer.setClearColor(0x000000, 0);
+          canvas.id = 'heroReadCanvas';
+          canvas.setAttribute('aria-hidden', 'true');
+          hero.insertBefore(canvas, hero.firstChild);
 
-      function sizeField() {
-        if (!field) return;
-        var w = hero.clientWidth, h = hero.clientHeight;
-        var dpr = Math.min(window.devicePixelRatio || 1, 2);
-        field.renderer.setPixelRatio(dpr);
-        field.renderer.setSize(w, h, false);
-        field.canvas.style.width = '100%';
-        field.canvas.style.height = '100%';
-        field.camera.aspect = w / h;
-        field.camera.updateProjectionMatrix();
-      }
+          var scene = new THREE.Scene();
+          scene.fog = new THREE.Fog(0xffffff, 250, 900);
 
-      function dollyTo(z, dur) {
-        if (!field) return;
-        field.dolly = { from: field.camera.position.z, to: z, start: performance.now(), dur: dur };
-      }
+          var fov = 45, near = 1, far = 1200;
+          var camera = new THREE.PerspectiveCamera(fov, 1, near, far);
+          var BASE_Z = 250;
+          camera.position.set(0, 0, BASE_Z);
 
-      function step(now) {
-        var f = field;
-        var dt = Math.min((now - (f.last || now)) / 1000, 0.05);
-        f.last = now;
-
-        // drift + wrap
-        var p = f.pos, v = f.vel, VOL = f.vol;
-        for (var i = 0; i < f.count; i++) {
-          p[i * 3]     += v[i * 3] * dt;
-          p[i * 3 + 1] += v[i * 3 + 1] * dt;
-          p[i * 3 + 2] += v[i * 3 + 2] * dt;
-          if (p[i * 3] > VOL.x) p[i * 3] = -VOL.x; else if (p[i * 3] < -VOL.x) p[i * 3] = VOL.x;
-          if (p[i * 3 + 1] > VOL.cy + VOL.y) p[i * 3 + 1] = VOL.cy - VOL.y; else if (p[i * 3 + 1] < VOL.cy - VOL.y) p[i * 3 + 1] = VOL.cy + VOL.y;
-          if (p[i * 3 + 2] > VOL.zMax) p[i * 3 + 2] = VOL.zMin; else if (p[i * 3 + 2] < VOL.zMin) p[i * 3 + 2] = VOL.zMax;
-        }
-        [f.near, f.far].forEach(function (c) {
-          for (var k = 0; k < c.idx.length; k++) {
-            var s = c.idx[k] * 3;
-            c.arr[k * 3] = p[s]; c.arr[k * 3 + 1] = p[s + 1]; c.arr[k * 3 + 2] = p[s + 2];
+          var COUNT = 70;
+          var heroRect = hero.getBoundingClientRect();
+          var VOL = {
+            x: (heroRect.width || 1200) * 0.7,
+            y: (heroRect.height || 600) * 0.6,
+            zNear: -60, zFar: -680
+          };
+          var pos = new Float32Array(COUNT * 3);
+          var vel = new Float32Array(COUNT * 3);
+          var alpha = new Float32Array(COUNT);
+          for (var i = 0; i < COUNT; i++) {
+            pos[i*3]   = (Math.random()*2-1) * VOL.x;
+            pos[i*3+1] = (Math.random()*2-1) * VOL.y;
+            pos[i*3+2] = VOL.zFar + Math.random() * (VOL.zNear - VOL.zFar);
+            var sp = 0.6 + Math.random()*1.2;
+            var th = Math.random()*Math.PI*2, ph = Math.acos(Math.random()*2-1);
+            vel[i*3]   = sp*Math.sin(ph)*Math.cos(th);
+            vel[i*3+1] = sp*Math.sin(ph)*Math.sin(th)*0.5;
+            vel[i*3+2] = sp*Math.cos(ph)*0.6;
+            var tt = (pos[i*3+2] - VOL.zFar) / (VOL.zNear - VOL.zFar);
+            alpha[i] = 0.35 + 0.5 * tt;
           }
-          c.geo.attributes.position.needsUpdate = true;
-        });
 
-        // connections under distance threshold, capped
-        var n = 0, TH2 = 15 * 15;
-        outer:
-        for (var a = 0; a < f.count; a++) {
-          for (var b = a + 1; b < f.count; b++) {
-            var dx = p[a * 3] - p[b * 3], dy = p[a * 3 + 1] - p[b * 3 + 1], dz = p[a * 3 + 2] - p[b * 3 + 2];
-            if (dx * dx + dy * dy + dz * dz < TH2) {
-              var o = n * 6;
-              f.lineArr[o] = p[a * 3]; f.lineArr[o + 1] = p[a * 3 + 1]; f.lineArr[o + 2] = p[a * 3 + 2];
-              f.lineArr[o + 3] = p[b * 3]; f.lineArr[o + 4] = p[b * 3 + 1]; f.lineArr[o + 5] = p[b * 3 + 2];
-              if (++n >= f.maxLines) break outer;
+          var geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.BufferAttribute(pos.slice(), 3));
+          geo.setAttribute('aAlpha', new THREE.BufferAttribute(alpha, 1));
+          var mat = new THREE.ShaderMaterial({
+            uniforms: { map: { value: softSprite() }, uK: { value: 3200 * Math.min(window.devicePixelRatio||1,2) } },
+            vertexShader: VS, fragmentShader: FS,
+            transparent: true, depthWrite: false
+          });
+          var points = new THREE.Points(geo, mat);
+          scene.add(points);
+
+          var MAX_LINES = 28;
+          var lineArr = new Float32Array(MAX_LINES * 2 * 3);
+          var lineGeo = new THREE.BufferGeometry();
+          lineGeo.setAttribute('position', new THREE.BufferAttribute(lineArr, 3));
+          var lines = new THREE.LineSegments(lineGeo, new THREE.LineBasicMaterial({
+            color: 0x111111, transparent: true, opacity: 0.55, depthWrite: false, fog: true
+          }));
+          scene.add(lines);
+
+          field = {
+            renderer: renderer, scene: scene, camera: camera, canvas: canvas,
+            pos: pos, vel: vel, count: COUNT, vol: VOL, geo: geo,
+            lineGeo: lineGeo, lineArr: lineArr, maxLines: MAX_LINES,
+            baseZ: BASE_Z, dolly: { from: BASE_Z, to: BASE_Z, start: 0, dur: 1 },
+            rx: 0, ry: 0, mx: 0.5, my: 0.5, last: 0, pullStart: 0
+          };
+          sizeField();
+        }
+
+        function sizeField() {
+          if (!field) return;
+          var w = hero.clientWidth, h = hero.clientHeight;
+          if (!w || !h) return;
+          var dpr = Math.min(window.devicePixelRatio || 1, 2);
+          field.renderer.setPixelRatio(dpr);
+          field.renderer.setSize(w, h, false);
+          field.canvas.style.width = '100%';
+          field.canvas.style.height = '100%';
+          field.camera.aspect = w / h;
+          field.camera.updateProjectionMatrix();
+          field.geo.attributes.aAlpha && (field.geo.attributes.aAlpha.needsUpdate = true);
+        }
+
+        function dollyTo(z, dur) {
+          if (!field) return;
+          field.dolly = { from: field.camera.position.z, to: z, start: performance.now(), dur: dur };
+        }
+        function currentDollyTarget() {
+          var z = field.baseZ;
+          if (state.hovering) z = field.baseZ * 0.92;
+          if (state.descended) z = z * 0.96;
+          return z;
+        }
+
+        function stepFrame(now) {
+          var f = field;
+          var dt = Math.min((now - (f.last || now)) / 1000, 0.05);
+          f.last = now;
+
+          var p = f.pos, v = f.vel, VOL = f.vol;
+          for (var i = 0; i < f.count; i++) {
+            p[i*3]   += v[i*3]*dt;
+            p[i*3+1] += v[i*3+1]*dt;
+            p[i*3+2] += v[i*3+2]*dt;
+            if (p[i*3] > VOL.x) p[i*3] = -VOL.x; else if (p[i*3] < -VOL.x) p[i*3] = VOL.x;
+            if (p[i*3+1] > VOL.y) p[i*3+1] = -VOL.y; else if (p[i*3+1] < -VOL.y) p[i*3+1] = VOL.y;
+            if (p[i*3+2] > VOL.zNear) p[i*3+2] = VOL.zFar; else if (p[i*3+2] < VOL.zFar) p[i*3+2] = VOL.zNear;
+          }
+
+          // click "pull toward center" easing
+          var pull = 0;
+          if (f.pullStart) {
+            var el = now - f.pullStart;
+            if (el < 150) pull = (el/150);
+            else if (el < 750) pull = 1 - (el-150)/600;
+            else { pull = 0; f.pullStart = 0; }
+          }
+          var posAttr = f.geo.attributes.position.array;
+          var shrink = 1 - pull*0.1;
+          for (var j = 0; j < f.count; j++) {
+            posAttr[j*3]   = p[j*3]   * shrink;
+            posAttr[j*3+1] = p[j*3+1] * shrink;
+            posAttr[j*3+2] = p[j*3+2] * shrink;
+          }
+          f.geo.attributes.position.needsUpdate = true;
+
+          var n = 0, TH = Math.max(80, VOL.x * 0.22), TH2 = TH*TH;
+          outer:
+          for (var a = 0; a < f.count; a++) {
+            for (var b = a+1; b < f.count; b++) {
+              var dx = p[a*3]-p[b*3], dy = p[a*3+1]-p[b*3+1], dz = p[a*3+2]-p[b*3+2];
+              if (dx*dx+dy*dy+dz*dz < TH2) {
+                var o = n*6;
+                f.lineArr[o]=p[a*3]; f.lineArr[o+1]=p[a*3+1]; f.lineArr[o+2]=p[a*3+2];
+                f.lineArr[o+3]=p[b*3]; f.lineArr[o+4]=p[b*3+1]; f.lineArr[o+5]=p[b*3+2];
+                if (++n >= f.maxLines) break outer;
+              }
             }
           }
+          f.lineGeo.setDrawRange(0, n*2);
+          f.lineGeo.attributes.position.needsUpdate = true;
+
+          var MAXR = 2.5 * Math.PI/180;
+          var trx = (f.my-0.5)*2*MAXR, trY = (0.5-f.mx)*2*MAXR;
+          f.rx += (trx-f.rx)*0.05; f.ry += (trY-f.ry)*0.05;
+          f.camera.rotation.x = f.rx; f.camera.rotation.y = f.ry;
+
+          var d = f.dolly;
+          var tt = Math.min((now-d.start)/d.dur, 1);
+          var e = 1 - Math.pow(1-tt, 4);
+          f.camera.position.z = d.from + (d.to-d.from)*e;
+
+          f.renderer.render(f.scene, f.camera);
         }
-        f.lineGeo.setDrawRange(0, n * 2);
-        f.lineGeo.attributes.position.needsUpdate = true;
+        function loop(now) { rafId = requestAnimationFrame(loop); stepFrame(now); }
+        function startLoop() { if (rafId === null && field) { field.last = 0; rafId = requestAnimationFrame(loop); } }
+        function stopLoop() { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
 
-        // steadicam: damped pan/rotate, max ±2.5°
-        var MAXR = 2.5 * Math.PI / 180;
-        var trx = (f.my - 0.5) * 2 * MAXR;
-        var trY = (0.5 - f.mx) * 2 * MAXR;
-        f.rx += (trx - f.rx) * 0.05;
-        f.ry += (trY - f.ry) * 0.05;
-        f.camera.rotation.x = f.rx;
-        f.camera.rotation.y = f.ry;
+        function play() {
+          gen++; var myGen = gen;
+          state.hovering = true; state.typed = false; state.descended = false; state.busy = false;
+          clearTimers();
+          layout();
+          container.classList.remove('read-descent');
+          container.classList.add('read-on');
 
-        // dolly ease
-        var d = f.dolly;
-        var tt = Math.min((now - d.start) / d.dur, 1);
-        var e = 1 - Math.pow(1 - tt, 4);
-        f.camera.position.z = d.from + (d.to - d.from) * e;
-
-        f.renderer.render(f.scene, f.camera);
-      }
-
-      function loop(now) {
-        rafId = requestAnimationFrame(loop);
-        step(now);
-      }
-      function startLoop() {
-        if (rafId === null && field) { field.last = 0; rafId = requestAnimationFrame(loop); }
-      }
-      function stopLoop() {
-        if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-      }
-
-      /* ---- scene control ---- */
-      function play() {
-        hovering = true;
-        clearTimers();
-        clearTimeout(stopTimer);
-        layout();
-        container.classList.remove('read-typed');
-        container.classList.add('read-on');
-        t(320, startTyping);
-        buildField();
-        if (field) {
-          field.canvas.classList.add('on');
-          startLoop();
-          dollyTo(field.baseZ * 0.92, 700);
-        }
-      }
-
-      function leave() {
-        hovering = false;
-        clearTimers();
-        container.classList.remove('read-on', 'read-typing', 'read-typed');
-        t(230, function () { labelTxt.textContent = ''; });
-        if (field) {
-          field.canvas.classList.remove('on');
-          dollyTo(field.baseZ, 700);
-          clearTimeout(stopTimer);
-          stopTimer = setTimeout(function () { if (!hovering) stopLoop(); }, 600);
-        }
-      }
-
-      return function init() {
-        // Disabled for now — hero name stays static. Scene code kept intact
-        // below for future development; flip this off to re-enable.
-        var READING_DISABLED = true;
-        if (READING_DISABLED) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-        container = document.querySelector('.hero-name');
-        inner = document.querySelector('.hero-name-inner');
-        hero = document.getElementById('hero');
-        if (!container || !inner || !hero || container.dataset.readReady) return;
-        container.dataset.readReady = '1';
-
-        var layer = document.createElement('div');
-        layer.className = 'read-layer';
-        layer.setAttribute('aria-hidden', 'true');
-        svg = document.createElementNS(NS, 'svg');
-        layer.appendChild(svg);
-        labelEl = document.createElement('div');
-        labelEl.className = 'read-label';
-        labelTxt = document.createElement('span');
-        var caret = document.createElement('span');
-        caret.className = 'read-caret';
-        caret.textContent = '_';
-        labelEl.appendChild(labelTxt);
-        labelEl.appendChild(caret);
-        layer.appendChild(labelEl);
-        container.appendChild(layer);
-        layout();
-        loadThree();
-
-        window.addEventListener('mousemove', function (e) {
-          if (field) {
-            field.mx = e.clientX / window.innerWidth;
-            field.my = e.clientY / window.innerHeight;
+          function afterThree() {
+            if (myGen !== gen || !state.hovering) return;
+            buildField();
+            if (field) {
+              sizeField();
+              field.canvas.classList.add('on');
+              dollyTo(currentDollyTarget(), 700);
+              startLoop();
+            }
           }
+          if (window.THREE) { afterThree(); } else { loadThree(afterThree); }
+
+          t(320, function() {
+            if (myGen !== gen) return;
+            state.busy = true;
+            typeText('PRODUCT DESIGNER · ' + randConf(0.9970, 0.9999), 26, function() {
+              if (myGen !== gen) return;
+              state.busy = false; state.typed = true;
+            });
+          });
+        }
+
+        function leave() {
+          gen++; var myGen = gen;
+          state.hovering = false; state.typed = false; state.descended = false; state.busy = false;
+          clearTimers();
+          container.classList.remove('read-on', 'read-descent', 'read-typing', 'read-typed');
+          labelTxt.textContent = '';
+          if (field) {
+            field.canvas.classList.remove('on');
+            dollyTo(field.baseZ, 700);
+            clearTimeout(stopTimer);
+            stopTimer = setTimeout(function() { if (myGen === gen && !state.hovering) stopLoop(); }, 600);
+          }
+        }
+
+        function descend() {
+          if (!state.hovering || !state.typed || state.descended || state.busy) return;
+          gen++; var myGen = gen;
+          state.busy = true;
+          eraseText(11, function() {
+            if (myGen !== gen) return;
+            typeText('AI-NATIVE · ' + randConf(0.9820, 0.9900), 26, function() {
+              if (myGen !== gen) return;
+              state.busy = false; state.typed = true;
+            });
+          });
+          state.descended = true;
+          container.classList.add('read-descent');
+          if (field) {
+            field.pullStart = performance.now();
+            dollyTo(currentDollyTarget(), 700);
+          }
+        }
+
+        container.addEventListener('mouseenter', play);
+        container.addEventListener('mouseleave', leave);
+        container.addEventListener('click', descend);
+
+        window.addEventListener('mousemove', function(e) {
+          if (field) { field.mx = e.clientX/window.innerWidth; field.my = e.clientY/window.innerHeight; }
         });
 
         var rt;
-        window.addEventListener('resize', function () {
+        window.addEventListener('resize', function() {
           clearTimeout(rt);
-          rt = setTimeout(function () { layout(); sizeField(); }, 150);
+          rt = setTimeout(function() { layout(); sizeField(); }, 100);
         });
+        window.addEventListener('orientationchange', function() { setTimeout(function(){ layout(); sizeField(); }, 100); });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
-        if (!isMobile) {
-          container.addEventListener('mouseenter', play);
-          container.addEventListener('mouseleave', leave);
-        } else {
-          // one-time auto-play once the hero is in view and the entrance settled
-          var played = false;
-          function autoPlay() {
-            if (played) return;
-            played = true;
-            setTimeout(function () {
-              play();
-              // brackets + typed verdict complete ≈ 320 + 14*30 + hold 2s
-              setTimeout(leave, 320 + 14 * 30 + 2000);
-            }, 250);
-          }
-          var entranceDone = false, heroSeen = false;
-          function maybe() { if (entranceDone && heroSeen) autoPlay(); }
-          var spans = inner.querySelectorAll('span');
-          var lastSpan = spans.length ? spans[spans.length - 1] : null;
-          if (lastSpan) lastSpan.addEventListener('animationend', function () { entranceDone = true; maybe(); }, { once: true });
-          setTimeout(function () { entranceDone = true; maybe(); }, 2500);
-          var io = new IntersectionObserver(function (entries) {
-            if (entries[0].isIntersecting) { heroSeen = true; io.disconnect(); maybe(); }
-          }, { threshold: 0.3 });
-          io.observe(hero);
+      /* ============ MOBILE/TOUCH: one-time auto-play, no Three.js ============ */
+      } else {
+        layout();
+        var rt2;
+        window.addEventListener('resize', function() {
+          clearTimeout(rt2);
+          rt2 = setTimeout(layout, 100);
+        });
+        window.addEventListener('orientationchange', function() { setTimeout(layout, 100); });
+        if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+
+        var played = false;
+        function autoPlay() {
+          if (played) return;
+          played = true;
+          layout();
+          container.classList.add('read-on');
+          t(320, function() {
+            typeText('PRODUCT DESIGNER · ' + randConf(0.9970, 0.9999), 26, function() {
+              t(1000, function() {
+                eraseText(11, function() {
+                  typeText('AI-NATIVE · ' + randConf(0.9820, 0.9900), 26, function() {
+                    t(1500, function() {
+                      container.classList.remove('read-on', 'read-typing', 'read-typed');
+                    });
+                  });
+                });
+              });
+            });
+          });
         }
-      };
-    })();
+        var io = new IntersectionObserver(function(entries) {
+          if (entries[0].isIntersecting) { io.disconnect(); autoPlay(); }
+        }, { threshold: 0.5 });
+        io.observe(hero);
+      }
+    }
 
-    function _runInit() { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); _heroReadInit(); }
+    function _runInit() { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); initHeroReading(); }
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => {
         // Explicitly load the weights used by mask-reveal line detection;
