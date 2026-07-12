@@ -1613,19 +1613,20 @@
     }
 
     /* ── FIT HERO TITLE ── */
-    function fitHeroTitle() {
+    function fitHeroTitle(cb) {
       const inner = document.querySelector('.hero-name-inner');
       const container = document.querySelector('.hero-name');
-      if (!inner || !container) return;
+      if (!inner || !container) { if (cb) cb(); return; }
 
       /* On tablet/mobile the CSS handles sizing — reset any inline value */
       if (window.innerWidth <= 1300) {
         inner.style.fontSize = '';
+        if (cb) cb();
         return;
       }
 
       const maxWidth = container.offsetWidth;
-      if (maxWidth === 0) return;
+      if (maxWidth === 0) { requestAnimationFrame(function() { fitHeroTitle(cb); }); return; }
 
       /* Binary search for the exact font-size that fills the container */
       let lo = 10, hi = 400;
@@ -1635,6 +1636,7 @@
         if (inner.scrollWidth <= maxWidth) { lo = mid; } else { hi = mid; }
       }
       inner.style.fontSize = lo + 'px';
+      if (cb) cb();
     }
 
     /* ── NAV ACTIVE SECTION HIGHLIGHT ── */
@@ -2159,7 +2161,10 @@
       }
     }
 
-    function _runInit() { splitHeroLetters(); fitHeroTitle(); initMaskReveal(); handlePendingScroll(); initHeroReading(); }
+    function _runInit() {
+      fitHeroTitle(splitHeroLetters);
+      initMaskReveal(); handlePendingScroll(); initHeroReading();
+    }
     if (document.fonts && document.fonts.ready) {
       document.fonts.ready.then(() => {
         // Explicitly load the weights used by mask-reveal line detection;
