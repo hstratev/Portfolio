@@ -10,7 +10,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.css">
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
   <style>
@@ -1720,6 +1719,16 @@
       var hero = document.getElementById('hero');
       if (!container || !inner || !hero || container.dataset.readReady) return;
       container.dataset.readReady = '1';
+
+      // Load the verdict-label font lazily, after the page's own critical
+      // render/init path — an eager <link> in <head> was a render-blocking
+      // cross-origin request that delayed document.fonts.ready (and every
+      // reveal animation gated on it) enough to expose an unrelated timing
+      // race in the site's shared text-reveal code.
+      var fontLink = document.createElement('link');
+      fontLink.rel = 'stylesheet';
+      fontLink.href = 'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap';
+      document.head.appendChild(fontLink);
 
       var NS = 'http://www.w3.org/2000/svg';
       var isDesktop = window.matchMedia('(hover: hover) and (pointer: fine)').matches && window.innerWidth >= 768;
