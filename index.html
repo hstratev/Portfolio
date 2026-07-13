@@ -63,7 +63,7 @@
     }
     .sz-bracket.sz-travel {
       opacity: 0;
-      transition: transform 650ms cubic-bezier(0.22,1,0.36,1), opacity 280ms cubic-bezier(0.22,1,0.36,1);
+      transition: transform 950ms cubic-bezier(0.22,1,0.36,1), opacity 380ms cubic-bezier(0.22,1,0.36,1);
     }
     .sz-bracket-tl { border-top: 2px solid #111111; border-left: 2px solid #111111; }
     .sz-bracket-tr { border-top: 2px solid #111111; border-right: 2px solid #111111; }
@@ -100,6 +100,20 @@
     html.sz-active .hero-bio-col.sz-fade-in {
       opacity: 1;
       transform: translateY(0);
+    }
+    /* Hold any below-the-fold .reveal elements (e.g. work cards) that
+       happen to sit within the initial viewport — their own
+       IntersectionObserver runs independently of Scene Zero and would
+       otherwise silently finish its fade-in while hidden behind the
+       overlay. Releasing this override lets that transition play for
+       real once the sequence reaches the "page assembles" beat. */
+    html.sz-active .reveal {
+      opacity: 0 !important;
+      transform: translateY(24px) !important;
+    }
+    html.sz-active.sz-cards-in .reveal.in {
+      opacity: 1 !important;
+      transform: translateY(0) !important;
     }
     @media (prefers-reduced-motion: reduce) {
       html.sz-active #sceneZero { display: none !important; }
@@ -1465,15 +1479,27 @@
       function t(ms, fn) { var id = setTimeout(fn, ms); timers.push(id); return id; }
       function clearTimers() { timers.forEach(clearTimeout); timers.length = 0; }
 
-      function finish() {
-        if (completed) return;
-        completed = true;
-        clearTimers();
+      // Reveals nav/hero/cards content — does not touch the scroll lock.
+      // Safe to call multiple times; each step is independently idempotent.
+      function revealContent() {
         try {
           if (navEl) navEl.classList.add('sz-nav-in');
           if (heroNameEl) heroNameEl.classList.add('sz-name-in');
           if (heroBioColEl) heroBioColEl.classList.add('sz-fade-in');
+          html.classList.add('sz-cards-in');
           if (overlay && overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        } catch (e) {}
+      }
+
+      // Final step — lifts the scroll lock and ends the sequence. Content
+      // is guaranteed revealed first so a failsafe/error path never leaves
+      // the page in a half-hidden state.
+      function finish() {
+        if (completed) return;
+        completed = true;
+        clearTimers();
+        revealContent();
+        try {
           html.classList.remove('sz-active');
           document.body.style.paddingRight = '';
           if (lenis) lenis.start();
@@ -1482,7 +1508,7 @@
       }
 
       // Unconditional failsafe — scheduled before anything else can throw.
-      setTimeout(finish, 3000);
+      setTimeout(finish, 3400);
 
       try {
         // ---- BEAT 1 + 2: cursor blink, then count up to 0.99 ----
@@ -1575,12 +1601,20 @@
 
           travelBrackets();
           overlay.style.background = 'transparent';
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay); // fully transparent + inert already
 
-          t(180, function () { if (navEl) navEl.classList.add('sz-nav-in'); });
-          t(280, function () { if (heroNameEl) heroNameEl.classList.add('sz-name-in'); });
-          t(430, function () { if (heroBioColEl) heroBioColEl.classList.add('sz-fade-in'); });
+          t(180, function () { if (navEl) navEl.classList.add('sz-nav-in'); });      // settles ~T+860
+          t(280, function () { if (heroNameEl) heroNameEl.classList.add('sz-name-in'); }); // settles ~T+830
+          t(430, function () {
+            if (heroBioColEl) heroBioColEl.classList.add('sz-fade-in');              // settles ~T+880
+            html.classList.add('sz-cards-in');
+          });
 
-          t(680, finish); // ~1150ms after Part B start
+          // Wait until the slowest of the above has visually settled
+          // (~T+880) before releasing the scroll lock, so the native
+          // scrollbar reappears in a moment of calm rather than
+          // interrupting a still-running fade.
+          t(980, finish);
         }
       } catch (e) {
         finish();
