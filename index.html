@@ -255,7 +255,7 @@
       padding-top: 72px;
       padding-left: 100px;
       padding-right: 100px;
-      padding-bottom: 48px;
+      padding-bottom: 0;
       position: sticky;
       top: 72px;
       z-index: 1;
@@ -368,6 +368,12 @@
       opacity: 0; /* typewriter activates this */
     }
 
+    .hero-divider {
+      border: none;
+      border-top: 1px solid #ececec;
+      margin: 26px 0 0;
+    }
+
     /* ── SECTION HEADER ── */
     .sec-head {
       display: flex;
@@ -375,6 +381,7 @@
       align-items: center;
       padding: 64px 100px 40px;
     }
+    #work .sec-head { padding-top: 30px; }
     .sec-label-row {
       display: flex;
       align-items: center;
@@ -907,7 +914,7 @@
         padding-top: 60px;
         padding-left: 80px;
         padding-right: 80px;
-        padding-bottom: 60px;
+        padding-bottom: 0;
       }
 
       .hero-name-inner {
@@ -921,6 +928,7 @@
       .hero-bio-col { flex: 0 0 auto; width: 52%; max-width: 480px; }
 
       .sec-head { padding: 60px 80px 32px; }
+      #work .sec-head { padding-top: 28px; }
       .sec-label { font-size: 26px; }
       .work-grid { padding: 0 80px 60px; }
 
@@ -960,7 +968,7 @@
         padding-top: 32px;
         padding-left: 24px;
         padding-right: 24px;
-        padding-bottom: 48px;
+        padding-bottom: 0;
       }
       .hero-names { margin-bottom: 24px; }
       .hero-name { line-height: 1.0; }
@@ -978,6 +986,7 @@
       .hero-caption { font-size: 14px; margin-top: 10px; }
 
       .sec-head { padding: 48px 24px 28px; }
+      #work .sec-head { padding-top: 24px; }
       .sec-label { font-size: 22px; }
       .sec-dot { width: 18px; height: 18px; }
 
@@ -1094,6 +1103,8 @@
         <p class="hero-bio mask-reveal" data-reveal-delay="400">I design digital products - 13 years shaping emerging tech, from Mercedes Benz to AI&#8209;native homes.</p>
       </div>
     </div>
+
+    <hr class="hero-divider">
 
   </section>
 
