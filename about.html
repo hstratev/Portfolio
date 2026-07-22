@@ -56,6 +56,8 @@
       will-change: left, top;
     }
     #cursor.hover { width: 40px; height: 40px; }
+    #cursorTint { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #FF4400; mix-blend-mode: screen; pointer-events: none; z-index: 10001; top: 0; left: 0; transform: translate(-50%, -50%); will-change: left, top; opacity: 0; transition: opacity 0.15s ease; }
+    #cursorTint.hover { width: 40px; height: 40px; opacity: 1; }
 
     /* ── MENU OVERLAY ── */
     #menuOverlay {
@@ -426,7 +428,7 @@
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
-      #cursor { display: none; }
+      #cursor, #cursorTint { display: none; }
 
       #mainNav { padding: 0 24px; }
       .nav-links { display: none; }
@@ -495,6 +497,7 @@
 
   <!-- ── CURSOR ── -->
   <div id="cursor"></div>
+  <div id="cursorTint"></div>
 
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay">
@@ -597,6 +600,7 @@
   <script>
     /* ── CURSOR LERP ── */
     const cur = document.getElementById('cursor');
+    const curTint = document.getElementById('cursorTint');
     let mx = 0, my = 0, cx = 0, cy = 0;
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
     (function loop() {
@@ -604,11 +608,13 @@
       cy += (my - cy) * 0.15;
       cur.style.left = cx + 'px';
       cur.style.top  = cy + 'px';
+      curTint.style.left = cx + 'px';
+      curTint.style.top  = cy + 'px';
       requestAnimationFrame(loop);
     })();
     document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+      el.addEventListener('mouseenter', () => (cur.classList.add('hover'), curTint.classList.add('hover')));
+      el.addEventListener('mouseleave', () => (cur.classList.remove('hover'), curTint.classList.remove('hover')));
     });
 
     /* ── MENU ── */

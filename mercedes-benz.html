@@ -21,6 +21,8 @@
 
     #cursor { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #ffffff; mix-blend-mode: difference; pointer-events: none; z-index: 10000; top: 0; left: 0; transform: translate(-50%,-50%); will-change: left, top; }
     #cursor.hover { width: 40px; height: 40px; }
+    #cursorTint { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #FF4400; mix-blend-mode: screen; pointer-events: none; z-index: 10001; top: 0; left: 0; transform: translate(-50%, -50%); will-change: left, top; opacity: 0; transition: opacity 0.15s ease; }
+    #cursorTint.hover { width: 40px; height: 40px; opacity: 1; }
 
     #menuOverlay { position: fixed; inset: 0; background: #000000; z-index: 500; display: flex; flex-direction: column; padding: 0 36px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
     #menuOverlay.open { opacity: 1; pointer-events: all; }
@@ -137,7 +139,7 @@
 
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
-      #cursor { display: none; }
+      #cursor, #cursorTint { display: none; }
       #mainNav { padding: 0 24px; }
       .nav-links { display: none; }
       .nav-trigger { display: flex; min-width: 44px; min-height: 44px; }
@@ -238,6 +240,7 @@
 <body>
 
 <div id="cursor"></div>
+<div id="cursorTint"></div>
 
 <!-- Menu Overlay -->
 <div id="menuOverlay">
@@ -329,10 +332,11 @@
 
 <script>
   const cur = document.getElementById('cursor');
+  const curTint = document.getElementById('cursorTint');
   let mx=0,my=0,cx=0,cy=0;
   window.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-  (function loop(){cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;cur.style.left=cx+'px';cur.style.top=cy+'px';requestAnimationFrame(loop);})();
-  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>cur.classList.add('hover'));el.addEventListener('mouseleave',()=>cur.classList.remove('hover'));});
+  (function loop(){cx+=(mx-cx)*0.15;cy+=(my-cy)*0.15;cur.style.left=cx+'px';cur.style.top=cy+'px';curTint.style.left=cx+'px';curTint.style.top=cy+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button').forEach(el=>{el.addEventListener('mouseenter',()=>(cur.classList.add('hover'), curTint.classList.add('hover')));el.addEventListener('mouseleave',()=>(cur.classList.remove('hover'), curTint.classList.remove('hover')));});
   function toggleMenu(){const sw=window.innerWidth-document.documentElement.clientWidth;document.body.style.paddingRight=sw+'px';document.getElementById('menuOverlay').style.paddingRight=(parseFloat(getComputedStyle(document.getElementById('menuOverlay')).paddingRight)+sw)+'px';document.getElementById('menuOverlay').classList.add('open');document.body.classList.add('no-scroll');}
   function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.body.classList.remove('no-scroll');document.body.style.paddingRight='';document.getElementById('menuOverlay').style.paddingRight='';}
   document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu();});
