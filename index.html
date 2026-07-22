@@ -64,11 +64,17 @@
       justify-content: center;
     }
     #cursor.hover {
-      width: 40px;
-      height: 40px;
-      background: transparent;
-      border: 2px solid var(--accent);
+      width: auto;
+      height: 44px;
+      padding: 0 18px;
+      border-radius: 999px;
+      background: var(--accent);
       mix-blend-mode: normal;
+    }
+    #cursor.hover .cursor-label {
+      opacity: 1;
+      color: #ffffff;
+      font-size: 13px;
     }
     #cursor.view {
       width: 64px;
@@ -1267,6 +1273,7 @@
   <script>
     /* ── CURSOR LERP ── */
     const cur = document.getElementById('cursor');
+    const curLabel = cur.querySelector('.cursor-label');
     let mx = 0, my = 0, cx = 0, cy = 0;
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
     (function loop() {
@@ -1277,8 +1284,14 @@
       requestAnimationFrame(loop);
     })();
     document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('hover'));
+      el.addEventListener('mouseenter', () => {
+        curLabel.textContent = el.textContent.trim();
+        cur.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cur.classList.remove('hover');
+        curLabel.textContent = 'VIEW';
+      });
     });
     document.querySelectorAll('.work-item').forEach(el => {
       el.addEventListener('mouseenter', () => cur.classList.add('view'));
@@ -1286,7 +1299,6 @@
     });
     const footerEmail = document.getElementById('footer-email');
     if (footerEmail) {
-      const curLabel = cur.querySelector('.cursor-label');
       let copyTimer = null;
       footerEmail.addEventListener('click', e => {
         e.preventDefault();
