@@ -63,19 +63,27 @@
       align-items: center;
       justify-content: center;
     }
-    #cursor.hover {
-      width: auto;
-      height: 44px;
-      padding: 0 18px;
-      border-radius: 999px;
+    #cursor.hover { width: 40px; height: 40px; }
+    /* Orange tint layer: sits over the difference-blend cursor. screen()
+       turns the inverted black disc into the accent color while leaving
+       the white knocked-out text untouched. */
+    #cursorTint {
+      position: fixed;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
       background: var(--accent);
-      mix-blend-mode: normal;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      z-index: 10001;
+      top: 0; left: 0;
+      transform: translate(-50%, -50%);
+      transition: width 0.28s cubic-bezier(0.16,1,0.3,1), height 0.28s cubic-bezier(0.16,1,0.3,1), opacity 0.15s ease;
+      will-change: left, top;
+      opacity: 0;
     }
-    #cursor.hover .cursor-label {
-      opacity: 1;
-      color: #ffffff;
-      font-size: 13px;
-    }
+    #cursorTint.hover { width: 40px; height: 40px; opacity: 1; }
+    #cursorTint.view, #cursorTint.copied { opacity: 0; }
     #cursor.view {
       width: 64px;
       height: 64px;
@@ -964,7 +972,7 @@
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
-      #cursor { display: none; }
+      #cursor, #cursorTint { display: none; }
 
       #mainNav { padding: 0 24px; }
       .nav-links { display: none; }
@@ -1069,6 +1077,7 @@
 
   <!-- ── CURSOR ── -->
   <div id="cursor"><span class="cursor-label">VIEW</span></div>
+  <div id="cursorTint"></div>
 
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
@@ -1273,6 +1282,7 @@
   <script>
     /* ── CURSOR LERP ── */
     const cur = document.getElementById('cursor');
+    const curTint = document.getElementById('cursorTint');
     const curLabel = cur.querySelector('.cursor-label');
     let mx = 0, my = 0, cx = 0, cy = 0;
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
@@ -1281,21 +1291,21 @@
       cy += (my - cy) * 0.25;
       cur.style.left = cx + 'px';
       cur.style.top  = cy + 'px';
+      curTint.style.left = cx + 'px';
+      curTint.style.top  = cy + 'px';
       requestAnimationFrame(loop);
     })();
+    function _curState(cls, on) {
+      cur.classList.toggle(cls, on);
+      curTint.classList.toggle(cls, on);
+    }
     document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        curLabel.textContent = el.textContent.trim();
-        cur.classList.add('hover');
-      });
-      el.addEventListener('mouseleave', () => {
-        cur.classList.remove('hover');
-        curLabel.textContent = 'VIEW';
-      });
+      el.addEventListener('mouseenter', () => _curState('hover', true));
+      el.addEventListener('mouseleave', () => _curState('hover', false));
     });
     document.querySelectorAll('.work-item').forEach(el => {
-      el.addEventListener('mouseenter', () => cur.classList.add('view'));
-      el.addEventListener('mouseleave', () => cur.classList.remove('view'));
+      el.addEventListener('mouseenter', () => _curState('view', true));
+      el.addEventListener('mouseleave', () => _curState('view', false));
     });
     const footerEmail = document.getElementById('footer-email');
     if (footerEmail) {
@@ -1304,10 +1314,10 @@
         e.preventDefault();
         navigator.clipboard.writeText('hstratev@gmail.com').then(() => {
           curLabel.textContent = 'Copied!';
-          cur.classList.add('copied');
+          _curState('copied', true);
           clearTimeout(copyTimer);
           copyTimer = setTimeout(() => {
-            cur.classList.remove('copied');
+            _curState('copied', false);
             curLabel.textContent = 'VIEW';
           }, 1800);
         });
