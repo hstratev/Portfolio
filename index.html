@@ -252,10 +252,13 @@
     /* ── HERO ── */
     #hero {
       background: #ffffff;
-      padding-top: 72px;
+      height: calc(100dvh - 72px);
       padding-left: 100px;
       padding-right: 100px;
-      padding-bottom: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow: hidden;
       position: sticky;
       top: 72px;
       z-index: 1;
@@ -275,7 +278,7 @@
       display: none;
     }
 
-    .hero-names { margin-bottom: 56px; }
+    .hero-names { margin-bottom: clamp(24px, 5vh, 56px); }
 
     .hero-name {
       display: block;
@@ -283,7 +286,7 @@
     }
     .hero-name-inner {
       display: block;
-      font-size: clamp(36px, 8.6vw, 140px);
+      font-size: clamp(36px, min(8.6vw, 13vh), 140px);
       font-weight: 700;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.04em;
@@ -371,7 +374,7 @@
     .hero-divider {
       border: none;
       border-top: 1px solid #ececec;
-      margin: 26px 0 0;
+      margin: clamp(16px, 3vh, 26px) 0 0;
     }
 
     /* ── SECTION HEADER ── */
