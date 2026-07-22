@@ -181,11 +181,13 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
     .nav-logo {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #111111;
-      font-family: 'Inter Display', sans-serif;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo img {
+      display: block;
+      width: 32px;
+      height: 32px;
     }
     .nav-links {
       display: flex;
@@ -302,9 +304,6 @@
     }
 
     .hero-bottom {
-      display: flex;
-      align-items: flex-start;
-      gap: 0;
       margin-top: 140px;
     }
     @keyframes fadeUp {
@@ -345,8 +344,8 @@
     }
 
     .hero-bio-col {
-      flex: none;
       width: 50%;
+      margin-left: 50%;
       margin-top: 70px;
     }
     .hero-bio {
@@ -974,10 +973,10 @@
         letter-spacing: -0.03em;
         line-height: 1.05;
       }
-      .hero-bottom { flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 24px; }
+      .hero-bottom { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding-top: 24px; }
       .hero-left-col { width: 100%; }
       .hero-email { font-size: 18px; letter-spacing: -0.5px; }
-      .hero-bio-col { max-width: 100%; flex: none; width: 100%; }
+      .hero-bio-col { max-width: 100%; flex: none; width: 100%; margin-left: 0; margin-top: 0; }
       .hero-bio { font-size: 20px; letter-spacing: 0px; line-height: 28px; }
       .hero-caption { font-size: 14px; margin-top: 10px; }
 
@@ -1073,7 +1072,7 @@
 
   <!-- ── NAV ── -->
   <nav id="mainNav">
-    <a href="#" class="nav-logo">[hs]</a>
+    <a href="#" class="nav-logo"><img src="logo.png" alt="Hristiyan Stratev"></a>
     <div class="nav-links">
       <a href="#work">Work</a>
       <a href="#about">About</a>
