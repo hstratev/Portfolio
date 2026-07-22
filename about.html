@@ -58,6 +58,7 @@
     #cursor.hover { width: 40px; height: 40px; }
     #cursorTint { position: fixed; width: 26px; height: 26px; border-radius: 50%; background: #FF4400; mix-blend-mode: screen; pointer-events: none; z-index: 10001; top: 0; left: 0; transform: translate(-50%, -50%); will-change: left, top; opacity: 0; transition: opacity 0.15s ease; }
     #cursorTint.hover { width: 40px; height: 40px; opacity: 1; }
+    #cursorTint.dark { mix-blend-mode: multiply; }
 
     /* ── MENU OVERLAY ── */
     #menuOverlay {
@@ -613,8 +614,15 @@
       requestAnimationFrame(loop);
     })();
     document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => (cur.classList.add('hover'), curTint.classList.add('hover')));
-      el.addEventListener('mouseleave', () => (cur.classList.remove('hover'), curTint.classList.remove('hover')));
+      const darkSection = !!el.closest('#contact, #menuOverlay');
+      el.addEventListener('mouseenter', () => {
+        curTint.classList.toggle('dark', darkSection);
+        cur.classList.add('hover'); curTint.classList.add('hover');
+      });
+      el.addEventListener('mouseleave', () => {
+        cur.classList.remove('hover'); curTint.classList.remove('hover');
+        curTint.classList.remove('dark');
+      });
     });
 
     /* ── MENU ── */

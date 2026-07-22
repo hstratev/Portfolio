@@ -84,18 +84,22 @@
     }
     #cursorTint.hover { width: 40px; height: 40px; opacity: 1; }
     #cursorTint.view, #cursorTint.copied { opacity: 0; }
+    /* Over dark sections the difference layer yields a WHITE disc, which
+       screen() can't tint (screen(c, white) = white). multiply() does the
+       mirror job there: white disc -> accent, knocked-out letters -> black. */
+    #cursorTint.dark { mix-blend-mode: multiply; }
     #cursor.view {
       width: 64px;
       height: 64px;
       border-radius: 50%;
-      background: #111111;
+      background: var(--accent);
       mix-blend-mode: normal;
     }
     #cursor.copied {
       width: 72px;
       height: 72px;
       border-radius: 50%;
-      background: #1C4A2E;
+      background: var(--accent);
       mix-blend-mode: normal;
     }
     .cursor-label {
@@ -1300,8 +1304,15 @@
       curTint.classList.toggle(cls, on);
     }
     document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => _curState('hover', true));
-      el.addEventListener('mouseleave', () => _curState('hover', false));
+      const darkSection = !!el.closest('#contact, #menuOverlay');
+      el.addEventListener('mouseenter', () => {
+        curTint.classList.toggle('dark', darkSection);
+        _curState('hover', true);
+      });
+      el.addEventListener('mouseleave', () => {
+        _curState('hover', false);
+        curTint.classList.remove('dark');
+      });
     });
     document.querySelectorAll('.work-item').forEach(el => {
       el.addEventListener('mouseenter', () => _curState('view', true));
