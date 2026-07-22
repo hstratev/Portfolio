@@ -22,6 +22,7 @@
     #contact ::-moz-selection { background: #fff; color: #111; }
 
     html {
+      --accent: #FF4400;
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
     }
@@ -62,7 +63,12 @@
       align-items: center;
       justify-content: center;
     }
-    #cursor.hover { width: 40px; height: 40px; }
+    #cursor.hover {
+      width: 40px;
+      height: 40px;
+      background: var(--accent);
+      mix-blend-mode: normal;
+    }
     #cursor.view {
       width: 64px;
       height: 64px;
