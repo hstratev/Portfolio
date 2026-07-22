@@ -382,6 +382,30 @@
       text-align: left;
       color: #3A3A3A;
     }
+    .hero-clients {
+      margin-top: 32px;
+      width: 100%;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+      mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+    }
+    .hero-clients-track {
+      display: flex;
+      align-items: center;
+      width: max-content;
+      animation: heroClientsScroll 30s linear infinite;
+    }
+    .hero-clients-track img {
+      height: 22px;
+      width: auto;
+      display: block;
+      margin-right: 64px;
+      flex-shrink: 0;
+    }
+    @keyframes heroClientsScroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
     .hero-caption {
       font-size: 16px;
       font-weight: 300;
@@ -1121,6 +1145,12 @@
       </div>
       <div class="hero-bio-col">
         <p class="hero-bio mask-reveal" data-reveal-delay="400">Hello, I design Digital products &amp; Experiences - 13 years shaping emerging tech, from MercedesBenz to AI&#8209;native homes.</p>
+        <div class="hero-clients">
+          <div class="hero-clients-track">
+            <img src="Company_logos/Logos_lane.png" alt="Clients: General Motors, Mercedes-Benz, Maserati, Cannes Lions, Visteon, Nvidia, Qualcomm, Ford">
+            <img src="Company_logos/Logos_lane.png" alt="" aria-hidden="true">
+          </div>
+        </div>
       </div>
     </div>
 
