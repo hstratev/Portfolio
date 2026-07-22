@@ -66,8 +66,12 @@
     #cursor.hover {
       width: 40px;
       height: 40px;
-      background: rgba(255, 68, 0, 0.8);
+      background: var(--accent);
       mix-blend-mode: normal;
+    }
+    a:hover, button:hover {
+      position: relative;
+      z-index: 10001;
     }
     #cursor.view {
       width: 64px;
@@ -173,7 +177,7 @@
     #mainNav {
       position: sticky;
       top: 0;
-      z-index: 400;
+      z-index: 10001;
       height: 72px;
       display: flex;
       justify-content: space-between;
@@ -959,7 +963,7 @@
       body, body * { cursor: auto; }
       #cursor { display: none; }
 
-      #mainNav { padding: 0 24px; }
+      #mainNav { padding: 0 24px; z-index: 400; }
       .nav-links { display: none; }
       .nav-trigger { display: flex; min-width: 44px; min-height: 44px; }
       #menuOverlay { padding-left: 24px; padding-right: 24px; }
