@@ -388,7 +388,11 @@
       overflow: hidden;
       -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
       mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
     }
+    .hero-clients.in { opacity: 1; transform: translateY(0); }
     .hero-clients-track {
       display: flex;
       align-items: center;
@@ -1611,6 +1615,17 @@
                 }, 1000);
               }
             }, 38);
+          }, { once: true });
+        }
+      }
+
+      // Client logos strip fades in right after the bio's last line settles
+      const heroClients = document.querySelector('.hero-clients');
+      if (heroBio && heroClients) {
+        const lastLine = heroBio.querySelector('.line-inner:last-child');
+        if (lastLine) {
+          lastLine.addEventListener('transitionend', () => {
+            heroClients.classList.add('in');
           }, { once: true });
         }
       }
