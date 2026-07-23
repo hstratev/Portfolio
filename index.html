@@ -382,6 +382,7 @@
       text-align: left;
       color: #3A3A3A;
     }
+    .hero-bio-accent { color: var(--accent); }
     .hero-clients {
       margin-top: 32px;
       width: 100%;
@@ -1559,8 +1560,13 @@
           lines = groups.map(g => g.join(' '));
         }
 
-        el.innerHTML = lines.map((line, i) =>
-          `<span class="line-mask"><span class="line-inner" style="transition-delay:${baseDelay + i * 100}ms">${line}</span></span>`
+        const isHeroBio = el.classList.contains('hero-bio');
+        el.innerHTML = lines.map((line, i) => {
+          const content = isHeroBio
+            ? line.replace(/Digital products/i, '<span class="hero-bio-accent">$&</span>')
+            : line;
+          return `<span class="line-mask"><span class="line-inner" style="transition-delay:${baseDelay + i * 100}ms">${content}</span></span>`;
+        }
         ).join('');
       });
 
