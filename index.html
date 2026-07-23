@@ -88,6 +88,24 @@
        screen() can't tint (screen(c, white) = white). multiply() does the
        mirror job there: white disc -> accent, knocked-out letters -> black. */
     #cursorTint.dark { mix-blend-mode: multiply; }
+    #heroPortrait {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 208px;
+      height: 312px;
+      border-radius: 12px;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 9998;
+      opacity: 0;
+      transform: scale(0.92);
+      transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1), transform 0.35s cubic-bezier(0.22,1,0.36,1);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.28);
+      will-change: left, top;
+    }
+    #heroPortrait.active { opacity: 1; transform: scale(1); }
+    #heroPortrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
     #cursor.view {
       width: 64px;
       height: 64px;
@@ -1005,7 +1023,7 @@
     /* ── MOBILE ── */
     @media (max-width: 768px) {
       body, body * { cursor: auto; }
-      #cursor, #cursorTint { display: none; }
+      #cursor, #cursorTint, #heroPortrait { display: none; }
 
       #mainNav { padding: 0 24px; }
       .nav-links { display: none; }
@@ -1111,6 +1129,7 @@
   <!-- ── CURSOR ── -->
   <div id="cursor"><span class="cursor-label">VIEW</span></div>
   <div id="cursorTint"></div>
+  <div id="heroPortrait"><img src="Photo.jpg" alt=""></div>
 
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
@@ -1323,6 +1342,7 @@
     const cur = document.getElementById('cursor');
     const curTint = document.getElementById('cursorTint');
     const curLabel = cur.querySelector('.cursor-label');
+    const heroPortrait = document.getElementById('heroPortrait');
     let mx = 0, my = 0, cx = 0, cy = 0;
     window.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
     (function loop() {
@@ -1332,8 +1352,19 @@
       cur.style.top  = cy + 'px';
       curTint.style.left = cx + 'px';
       curTint.style.top  = cy + 'px';
+      // Diagonally down-left of the cursor, clamped so it never slides
+      // past the viewport's left edge.
+      const px = Math.max(16, cx - 176);
+      const py = cy + 28;
+      heroPortrait.style.left = px + 'px';
+      heroPortrait.style.top  = py + 'px';
       requestAnimationFrame(loop);
     })();
+    const heroNameEl = document.querySelector('.hero-name');
+    if (heroNameEl) {
+      heroNameEl.addEventListener('mouseenter', () => heroPortrait.classList.add('active'));
+      heroNameEl.addEventListener('mouseleave', () => heroPortrait.classList.remove('active'));
+    }
     function _curState(cls, on) {
       cur.classList.toggle(cls, on);
       curTint.classList.toggle(cls, on);
