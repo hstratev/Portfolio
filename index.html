@@ -607,52 +607,17 @@
       gap: 32px;
     }
 
-    .about-clients { display: flex; gap: 0; flex-wrap: wrap; margin-top: 32px; align-items: center; }
-    .about-clients > span {
-      border-right: 1px solid #8A8A8A;
-      padding: 0 24px;
-      display: inline-flex;
-      align-items: center;
-      height: 24px;
-    }
-    .about-clients > span:first-child { padding-left: 0; }
-    .about-clients > span:last-child { border-right: none; padding-right: 0; }
-    .client-inner {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-    }
-    .client-text {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #767676;
-      white-space: nowrap;
-      transition: opacity 0.18s ease, transform 0.18s ease;
-    }
-    .about-clients > span:hover .client-text {
+    .about-body {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
       opacity: 0;
-      transform: translateY(-4px);
+      transform: translateY(10px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .client-logo {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, calc(-50% + 4px));
-      height: 22px;
-      width: auto;
-      filter: brightness(0) invert(54%);
-      opacity: 0;
-      transition: opacity 0.18s ease, transform 0.18s ease;
-      pointer-events: none;
-      display: block;
-    }
-    .client-logo-ford { filter: grayscale(1) brightness(0.54); }
-    .client-logo-maserati { height: 32px; }
-    .client-logo-nvidia, .client-logo-qualcomm, .client-logo-visteon { height: 13px; }
-    .about-clients > span:hover .client-logo {
+    .about-body.in {
       opacity: 1;
-      transform: translate(-50%, -50%);
+      transform: translateY(0);
     }
 
     /* ── SERVICES ── */
@@ -1071,10 +1036,6 @@
       .footer-row { flex-direction: column; align-items: flex-start; gap: 16px; }
       .contact-actions { flex-direction: column; align-items: flex-start; gap: 16px; }
       .about-bio { font-size: 20px; line-height: 28px; gap: 24px; }
-      .about-clients { gap: 4px 20px; }
-      .about-clients > span { border-right: none; padding: 0; height: auto; }
-      .about-clients > span .client-text { opacity: 1 !important; transform: none !important; }
-      .about-clients > span .client-logo { display: none; }
       .footer-copy { text-align: left; }
     }
 
@@ -1267,17 +1228,10 @@
         </div>
       </div>
       <div class="about-bio reveal">
-        <p class="about-statement mask-reveal">From Mercedes-Benz's award-winning MBUX to an AI&#8209;native home that thinks, learns and speaks. My work has been featured at CES, GITEX and Shanghai Auto</p>
-        <p>I'm a product designer based in Sofia, Bulgaria, with a degree from the University of Sheffield and over a decade shaping UI/UX, motion design, and real-time 3D experiences.</p>
-        <p>My career has taken me across Germany and the U.S., leading design teams and projects on advanced automotive HMI, connected-vehicle interfaces, and AI-driven user experiences.</p>
-        <div class="about-clients">
-          <span><span class="client-inner"><span class="client-text">General Motors</span><img class="client-logo" src="Company_logos/logo-gm.png" alt="General Motors"></span></span>
-          <span><span class="client-inner"><span class="client-text">Ford</span><img class="client-logo client-logo-ford" src="Company_logos/logo-ford.svg" alt="Ford"></span></span>
-          <span><span class="client-inner"><span class="client-text">Mercedes-Benz</span><img class="client-logo" src="Company_logos/logo-mercedes.svg" alt="Mercedes-Benz"></span></span>
-          <span><span class="client-inner"><span class="client-text">Maserati</span><img class="client-logo client-logo-maserati" src="Company_logos/logo-maserati.png" alt="Maserati"></span></span>
-          <span><span class="client-inner"><span class="client-text">Nvidia</span><img class="client-logo client-logo-nvidia" src="Company_logos/logo-nvidia.png" alt="Nvidia"></span></span>
-          <span><span class="client-inner"><span class="client-text">Qualcomm</span><img class="client-logo client-logo-qualcomm" src="Company_logos/logo-qualcomm.png" alt="Qualcomm"></span></span>
-          <span><span class="client-inner"><span class="client-text">Visteon</span><img class="client-logo client-logo-visteon" src="Company_logos/logo-visteon.png" alt="Visteon"></span></span>
+        <p class="about-statement mask-reveal">From Mercedes-Benz's award-winning MBUX, to an AI&#8209;native home that thinks, learns and speaks. My work has been featured at CES, GITEX and Shanghai Auto</p>
+        <div class="about-body">
+          <p>I'm a product designer based in Sofia, Bulgaria, with a degree from the University of Sheffield and over a decade shaping UI/UX, motion design, and real-time 3D experiences.</p>
+          <p>My career has taken me across Germany and the U.S., leading design teams and projects on advanced automotive HMI, connected-vehicle interfaces, and AI-driven user experiences.</p>
         </div>
       </div>
     </div>
@@ -1667,6 +1621,31 @@
           lastLine.addEventListener('transitionend', revealClients, { once: true });
         }
         setTimeout(revealClients, 2200);
+      }
+
+      // About body paragraphs fade in right after the statement's last line settles.
+      const aboutStatement = document.querySelector('.about-statement');
+      const aboutBody = document.querySelector('.about-body');
+      if (aboutStatement && aboutBody) {
+        const revealAboutBody = () => {
+          const lastLine = aboutStatement.querySelector('.line-inner:last-child');
+          let bodyRevealed = false;
+          const doReveal = () => {
+            if (bodyRevealed) return;
+            bodyRevealed = true;
+            aboutBody.classList.add('in');
+          };
+          if (lastLine) {
+            lastLine.addEventListener('transitionend', doReveal, { once: true });
+          }
+          setTimeout(doReveal, 1800);
+        };
+        const aboutIo = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) { revealAboutBody(); aboutIo.unobserve(e.target); }
+          });
+        }, { threshold: 0.2 });
+        aboutIo.observe(aboutStatement);
       }
     }
 
