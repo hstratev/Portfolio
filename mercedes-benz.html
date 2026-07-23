@@ -54,11 +54,13 @@
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
     .nav-logo {
-      font-size: 30px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-      color: #111111;
-      font-family: 'Inter Display', sans-serif;
+      display: flex;
+      align-items: center;
+    }
+    .nav-logo img {
+      display: block;
+      width: 32px;
+      height: 32px;
     }
     .nav-links {
       display: flex;
@@ -257,7 +259,7 @@
 
 <!-- Nav -->
 <nav id="mainNav">
-  <a href="index.html" class="nav-logo">[hs]</a>
+  <a href="index.html" class="nav-logo"><img src="logo.png" alt="Hristiyan Stratev"></a>
   <div class="nav-links">
     <a href="index.html#work" class="nav-active">Work</a>
     <a href="index.html#about">About</a>
