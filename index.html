@@ -409,9 +409,11 @@
       mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
       opacity: 0;
       transform: translateY(10px);
-      transition: opacity 0.6s cubic-bezier(0.22,1,0.36,1), transform 0.6s cubic-bezier(0.22,1,0.36,1);
+      animation: heroClientsFadeIn 0.6s cubic-bezier(0.22,1,0.36,1) 1.4s forwards;
     }
-    .hero-clients.in { opacity: 1; transform: translateY(0); }
+    @keyframes heroClientsFadeIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
     .hero-clients-track {
       display: flex;
       align-items: center;
@@ -1604,24 +1606,6 @@
         }
       }
 
-      // Client logos strip fades in right after the bio's last line settles.
-      // transitionend can silently fail to fire (backgrounded tab at load,
-      // busy main thread skipping the paint the transition needs to start
-      // from) so a fallback timer guarantees it reveals either way.
-      const heroClients = document.querySelector('.hero-clients');
-      if (heroBio && heroClients) {
-        const lastLine = heroBio.querySelector('.line-inner:last-child');
-        let clientsRevealed = false;
-        const revealClients = () => {
-          if (clientsRevealed) return;
-          clientsRevealed = true;
-          heroClients.classList.add('in');
-        };
-        if (lastLine) {
-          lastLine.addEventListener('transitionend', revealClients, { once: true });
-        }
-        setTimeout(revealClients, 2200);
-      }
 
       // About body paragraphs fade in right after the statement's last line settles.
       const aboutStatement = document.querySelector('.about-statement');
