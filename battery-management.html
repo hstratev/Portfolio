@@ -11,7 +11,22 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     ::selection { background: #111; color: #fff; }
     ::-moz-selection { background: #111; color: #fff; }
-    html { -webkit-font-smoothing: antialiased; font-size: 16px; }
+    html {
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+
+      /* ── FLUID SCALE ──
+         Nav chrome scales above the 1512px design canvas so it matches the home
+         page on large monitors (value / 1512 * 100 = vw). Real CSS lengths only
+         — never `zoom`/`transform`, which desync mouse coords from hit-boxes.
+         clamp() floors equal the original fixed values, so <=1512px is
+         unchanged and existing breakpoints are untouched. */
+      --nav-h:       clamp(72px, 4.7619vw, 183px);
+      --pad-x:       clamp(100px, 6.6138vw, 254px);
+      --nav-logo:    clamp(32px, 2.1164vw, 81px);
+      --nav-gap:     clamp(40px, 2.6455vw, 102px);
+      --fs-nav-link: clamp(18px, 1.1905vw, 46px);
+    }
     body { background: #ffffff; color: #111111; font-family: 'Inter Display', sans-serif; font-weight: 400; overflow-x: hidden; cursor: none; }
     body.no-scroll { overflow: hidden; }
     body, body * { cursor: none; }
@@ -26,7 +41,7 @@
 
     #menuOverlay { position: fixed; inset: 0; background: #000000; z-index: 500; display: flex; flex-direction: column; padding: 0 36px; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; }
     #menuOverlay.open { opacity: 1; pointer-events: all; }
-    .mo-top { height: 72px; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .mo-top { height: var(--nav-h); display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
     .mo-logo { font-size: 18px; font-weight: 600; letter-spacing: -1px; color: #ffffff; font-family: 'Inter Display', sans-serif; }
     .mo-close { font-size: 20px; font-weight: 400; color: #ffffff; background: none; border: none; font-family: 'Inter Display', sans-serif; padding: 0; line-height: 1; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
     .mo-nav { flex: 1; display: flex; flex-direction: column; justify-content: center; }
@@ -41,11 +56,11 @@
       position: sticky;
       top: 0;
       z-index: 400;
-      height: 72px;
+      height: var(--nav-h);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 100px;
+      padding: 0 var(--pad-x);
       background: #ffffff;
       box-shadow: 0 2px 16px rgba(0,0,0,0);
       transition: box-shadow 0.4s ease;
@@ -59,16 +74,16 @@
     }
     .nav-logo img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: var(--nav-logo);
+      height: var(--nav-logo);
     }
     .nav-links {
       display: flex;
-      gap: 40px;
+      gap: var(--nav-gap);
       align-items: center;
     }
     .nav-links a {
-      font-size: 18px;
+      font-size: var(--fs-nav-link);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       color: #111111;

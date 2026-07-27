@@ -20,6 +20,18 @@
     html {
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
+
+      /* ── FLUID SCALE ──
+         Nav chrome scales above the 1512px design canvas so it matches the home
+         page on large monitors (value / 1512 * 100 = vw). Real CSS lengths only
+         — never `zoom`/`transform`, which desync mouse coords from hit-boxes.
+         clamp() floors equal the original fixed values, so <=1512px is
+         unchanged and existing breakpoints are untouched. */
+      --nav-h:       clamp(72px, 4.7619vw, 183px);
+      --pad-x:       clamp(100px, 6.6138vw, 254px);
+      --nav-logo:    clamp(32px, 2.1164vw, 81px);
+      --nav-gap:     clamp(40px, 2.6455vw, 102px);
+      --fs-nav-link: clamp(18px, 1.1905vw, 46px);
     }
 
     body {
@@ -76,7 +88,7 @@
     #menuOverlay.open { opacity: 1; pointer-events: all; }
 
     .mo-top {
-      height: 72px;
+      height: var(--nav-h);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -130,11 +142,11 @@
       position: sticky;
       top: 0;
       z-index: 400;
-      height: 72px;
+      height: var(--nav-h);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 100px;
+      padding: 0 var(--pad-x);
       background: transparent;
       box-shadow: 0 2px 16px rgba(0,0,0,0);
       transition: box-shadow 0.4s ease;
@@ -148,16 +160,16 @@
     }
     .nav-logo img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: var(--nav-logo);
+      height: var(--nav-logo);
     }
     .nav-links {
       display: flex;
-      gap: 40px;
+      gap: var(--nav-gap);
       align-items: center;
     }
     .nav-links a {
-      font-size: 18px;
+      font-size: var(--fs-nav-link);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       color: #111111;

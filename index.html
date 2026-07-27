@@ -25,6 +25,45 @@
       --accent: #FF4400;
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
+
+      /* ── FLUID SCALE ──
+         The layout is designed on a 1512px-wide canvas. Above that width the
+         values below grow proportionally (value / 1512 * 100 = vw) so the
+         composition holds on large monitors instead of the fixed-px design
+         shrinking into the corner — the reason Windows machines at 100% display
+         scaling (which expose far more CSS pixels than macOS HiDPI) looked wrong.
+
+         These are real CSS lengths, so mouse coordinates and element hit-boxes
+         stay in sync. Never scale this layout with `zoom` or `transform`:
+         `zoom` desyncs clientX/clientY from getBoundingClientRect() in
+         Chrome/Edge on Windows (it broke every hover target on the site), and
+         `transform` breaks the position:sticky nav and hero.
+
+         Each clamp() floor equals the original fixed value, so at <=1512px
+         rendering is byte-identical to the pre-scaling design and the existing
+         tablet/mobile breakpoints are untouched. Ceilings are the 3840px value,
+         freezing growth beyond 4K. */
+      --nav-h:            clamp(72px,  4.7619vw, 183px);
+      --pad-x:            clamp(100px, 6.6138vw, 254px);
+      --nav-logo:         clamp(32px,  2.1164vw, 81px);
+      --nav-gap:          clamp(40px,  2.6455vw, 102px);
+      --fs-nav-link:      clamp(18px,  1.1905vw, 46px);
+
+      --fs-hero-name:     clamp(131px, 8.664vw,  333px);
+      --fs-hero-bio:      clamp(30px,  1.9841vw, 76px);
+      --lh-hero-bio:      clamp(40px,  2.6455vw, 102px);
+      --fs-hero-email:    clamp(26px,  1.7196vw, 66px);
+      --gap-hero-bottom:  clamp(70px,  4.6296vw, 178px);
+      --gap-hero-bio:     clamp(35px,  2.3148vw, 89px);
+      --gap-hero-clients: clamp(32px,  2.1164vw, 81px);
+
+      --fs-sec-label:     clamp(30px,  1.9841vw, 76px);
+      --fs-service:       clamp(80px,  5.291vw,  203px);
+      --fs-about-stmt:    clamp(40px,  2.6455vw, 102px);
+      --lh-about-stmt:    clamp(48px,  3.1746vw, 122px);
+      --fs-about-bio:     clamp(26px,  1.7196vw, 66px);
+      --lh-about-bio:     clamp(34px,  2.2487vw, 86px);
+      --fs-contact-h:     clamp(50px,  3.3069vw, 127px);
     }
 
     body {
@@ -151,7 +190,7 @@
     #menuOverlay.open { opacity: 1; pointer-events: all; }
 
     .mo-top {
-      height: 72px;
+      height: var(--nav-h);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -211,11 +250,11 @@
       position: sticky;
       top: 0;
       z-index: 400;
-      height: 72px;
+      height: var(--nav-h);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 100px;
+      padding: 0 var(--pad-x);
       background: #ffffff;
       box-shadow: 0 2px 16px rgba(0,0,0,0);
       transition: box-shadow 0.4s ease;
@@ -229,16 +268,16 @@
     }
     .nav-logo img {
       display: block;
-      width: 32px;
-      height: 32px;
+      width: var(--nav-logo);
+      height: var(--nav-logo);
     }
     .nav-links {
       display: flex;
-      gap: 40px;
+      gap: var(--nav-gap);
       align-items: center;
     }
     .nav-links a {
-      font-size: 18px;
+      font-size: var(--fs-nav-link);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       color: #111111;
@@ -297,15 +336,15 @@
     /* ── HERO ── */
     #hero {
       background: #ffffff;
-      height: calc(100dvh - 72px);
-      padding-left: 100px;
-      padding-right: 100px;
+      height: calc(100dvh - var(--nav-h));
+      padding-left: var(--pad-x);
+      padding-right: var(--pad-x);
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       overflow: hidden;
       position: sticky;
-      top: 72px;
+      top: var(--nav-h);
       z-index: 1;
       will-change: transform;
       transform-origin: center top;
@@ -331,7 +370,7 @@
     }
     .hero-name-inner {
       display: block;
-      font-size: 131px;
+      font-size: var(--fs-hero-name);
       font-weight: 700;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.04em;
@@ -347,7 +386,7 @@
     }
 
     .hero-bottom {
-      margin-top: 70px;
+      margin-top: var(--gap-hero-bottom);
     }
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(16px); }
@@ -360,7 +399,7 @@
       gap: 20px;
     }
     .hero-email {
-      font-size: 26px;
+      font-size: var(--fs-hero-email);
       font-weight: 500;
       letter-spacing: -1.56px;
       font-family: 'Inter Display', sans-serif;
@@ -389,20 +428,20 @@
     .hero-bio-col {
       width: 50%;
       margin-left: 50%;
-      margin-top: 35px;
+      margin-top: var(--gap-hero-bio);
     }
     .hero-bio {
-      font-size: 30px;
+      font-size: var(--fs-hero-bio);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.3px;
-      line-height: 40px;
+      line-height: var(--lh-hero-bio);
       text-align: left;
       color: #3A3A3A;
     }
     .hero-bio-accent { color: var(--accent); }
     .hero-clients {
-      margin-top: 32px;
+      margin-top: var(--gap-hero-clients);
       width: 100%;
       overflow: hidden;
       -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
@@ -448,7 +487,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 64px 100px 40px;
+      padding: 64px var(--pad-x) 40px;
     }
     #work .sec-head { padding-top: 30px; }
     .sec-label-row {
@@ -457,7 +496,7 @@
       gap: 12px;
     }
     .sec-label {
-      font-size: 30px;
+      font-size: var(--fs-sec-label);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -1.5px;
@@ -491,7 +530,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 24px;
-      padding: 0 100px 80px;
+      padding: 0 var(--pad-x) 80px;
     }
 
     .work-item {
@@ -564,11 +603,11 @@
     #about { background: #ffffff; position: relative; z-index: 3; }
 
     .about-statement {
-      font-size: 40px;
+      font-size: var(--fs-about-stmt);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -2px;
-      line-height: 48px;
+      line-height: var(--lh-about-stmt);
       text-align: left;
       color: #111111;
     }
@@ -577,7 +616,7 @@
       display: grid;
       grid-template-columns: 1fr 2fr;
       gap: 64px;
-      padding: 0 100px 40px;
+      padding: 0 var(--pad-x) 40px;
       align-items: center;
     }
     .about-portrait {
@@ -598,11 +637,11 @@
     }
 
     .about-bio {
-      font-size: 26px;
+      font-size: var(--fs-about-bio);
       font-weight: 400;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -0.3px;
-      line-height: 34px;
+      line-height: var(--lh-about-bio);
       color: #3A3A3A;
       display: flex;
       flex-direction: column;
@@ -625,7 +664,7 @@
     /* ── SERVICES ── */
     #services { position: relative; z-index: 3; background: #ffffff; }
     .services-head {
-      padding: 40px 100px 40px;
+      padding: 40px var(--pad-x) 40px;
     }
     .services-label {
       font-size: 30px;
@@ -635,10 +674,10 @@
       color: #111111;
     }
     .services-list {
-      padding: 0 100px 80px;
+      padding: 0 var(--pad-x) 80px;
     }
     .service-item {
-      font-size: 80px;
+      font-size: var(--fs-service);
       font-weight: 700;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -4px;
@@ -749,13 +788,13 @@
     /* ── CONTACT / FOOTER ── */
     #contact {
       background: #000000;
-      padding: 80px 100px;
+      padding: 80px var(--pad-x);
       position: relative;
       z-index: 4;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-      min-height: calc(100vh - 72px);
+      min-height: calc(100vh - var(--nav-h));
     }
     .contact-center {
       flex: 1;
@@ -783,7 +822,7 @@
     .contact-links a:hover { opacity: 0.55; }
 
     .contact-heading {
-      font-size: 50px;
+      font-size: var(--fs-contact-h);
       font-weight: 500;
       font-family: 'Inter Display', sans-serif;
       letter-spacing: -2px;
@@ -1362,11 +1401,18 @@
       else { window.addEventListener('scroll', () => fn(window.scrollY), { passive: true }); }
     }
 
+    // Nav height is fluid (--nav-h scales above the 1512px design width), so
+    // scroll offsets must read it live instead of assuming the old fixed 72px.
+    function _navH() {
+      const nav = document.getElementById('mainNav');
+      return nav ? nav.getBoundingClientRect().height : 72;
+    }
+
     function _scrollTo(target, _lenisOpts) {
       if (lenis) { lenis.scrollTo(target, _lenisOpts || { duration: 1.4 }); return; }
       if (typeof target === 'number') { window.scrollTo({ top: target, behavior: 'smooth' }); return; }
       if (target && target.getBoundingClientRect) {
-        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - 72, behavior: 'smooth' });
+        window.scrollTo({ top: target.getBoundingClientRect().top + window.scrollY - _navH(), behavior: 'smooth' });
       }
     }
 
@@ -1394,7 +1440,7 @@
         if (href === '#contact') {
           const contact = document.getElementById('contact');
           if (contact) {
-            _scrollTo(contact.offsetTop - 72);
+            _scrollTo(contact.offsetTop - _navH());
           }
         } else {
           // Work / About: scroll to the first content element *after* the
@@ -1404,7 +1450,7 @@
             '#about': document.querySelector('.about-statement'),
           };
           const scrollEl = contentTargets[href] || target;
-          _scrollTo(scrollEl, { duration: 1.4, offset: -80 });
+          _scrollTo(scrollEl, { duration: 1.4, offset: -(_navH() + 8) });
         }
       });
     });
@@ -1512,6 +1558,11 @@
       document.querySelectorAll('.mask-reveal').forEach(el => {
         if (el.dataset.maskDone) return;
         el.dataset.maskDone = '1';
+
+        // Keep the authored markup so the per-line split can be rebuilt from
+        // scratch on resize — line breaks are measured from the rendered layout,
+        // so they are only valid for the width they were measured at.
+        if (el.dataset.maskSource === undefined) el.dataset.maskSource = el.innerHTML;
 
         const baseDelay = parseInt(el.dataset.revealDelay || 0);
         let lines;
@@ -1624,6 +1675,34 @@
       }
     }
 
+    /* Re-split mask-reveal text on resize.
+       Line breaks are derived from measured word positions, so a width change
+       (or the fluid type scaling with it) invalidates them. Elements already
+       revealed are restored to their revealed state so nothing re-hides. */
+    (function initMaskRevealReflow() {
+      let lastW = window.innerWidth;
+      let t;
+      window.addEventListener('resize', () => {
+        if (window.innerWidth === lastW) return; // ignore height-only changes
+        lastW = window.innerWidth;
+        clearTimeout(t);
+        t = setTimeout(() => {
+          document.querySelectorAll('.mask-reveal').forEach(el => {
+            if (el.dataset.maskSource === undefined) return;
+            const wasRevealed = el.classList.contains('revealed');
+            el.innerHTML = el.dataset.maskSource;
+            delete el.dataset.maskDone;
+            el.classList.remove('revealed');
+            el._reRevealed = wasRevealed;
+          });
+          initMaskReveal();
+          document.querySelectorAll('.mask-reveal').forEach(el => {
+            if (el._reRevealed) el.classList.add('revealed');
+          });
+        }, 200);
+      });
+    })();
+
     /* ── NAV ACTIVE SECTION HIGHLIGHT ── */
     (function initNavHighlight() {
       // Map section IDs → which nav href they belong to
@@ -1683,7 +1762,7 @@
       setTimeout(() => {
         if (pendingScroll === '#contact') {
           const contact = document.getElementById('contact');
-          if (contact) { _scrollTo(contact.offsetTop - 72); }
+          if (contact) { _scrollTo(contact.offsetTop - _navH()); }
         } else {
           const contentTargets = {
             '#work':  document.querySelector('.work-grid'),
@@ -1691,7 +1770,7 @@
           };
           const target = document.querySelector(pendingScroll);
           const scrollEl = contentTargets[pendingScroll] || target;
-          if (scrollEl) _scrollTo(scrollEl, { duration: 1.4, offset: -80 });
+          if (scrollEl) _scrollTo(scrollEl, { duration: 1.4, offset: -(_navH() + 8) });
         }
       }, 400);
     }
