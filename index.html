@@ -26,44 +26,78 @@
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
 
-      /* ── FLUID SCALE ──
-         The layout is designed on a 1512px-wide canvas. Above that width the
-         values below grow proportionally (value / 1512 * 100 = vw) so the
-         composition holds on large monitors instead of the fixed-px design
-         shrinking into the corner — the reason Windows machines at 100% display
-         scaling (which expose far more CSS pixels than macOS HiDPI) looked wrong.
+      /* ── DESIGN TOKENS ──
+         The original fixed values. The layout is designed on a 1512px-wide
+         canvas, and at or below that width these stay exactly as authored, so
+         the rendering is bit-for-bit what it was before fluid scaling existed.
+         Only the min-width:1513px block below changes anything. */
+      --nav-h:            72px;
+      --pad-x:            100px;
+      --nav-logo:         32px;
+      --nav-gap:          40px;
+      --fs-nav-link:      18px;
 
-         These are real CSS lengths, so mouse coordinates and element hit-boxes
-         stay in sync. Never scale this layout with `zoom` or `transform`:
-         `zoom` desyncs clientX/clientY from getBoundingClientRect() in
-         Chrome/Edge on Windows (it broke every hover target on the site), and
-         `transform` breaks the position:sticky nav and hero.
+      --fs-hero-name:     131px;
+      --fs-hero-bio:      30px;
+      --lh-hero-bio:      40px;
+      --fs-hero-email:    26px;
+      --gap-hero-bottom:  70px;
+      --gap-hero-bio:     35px;
+      --gap-hero-clients: 32px;
 
-         Each clamp() floor equals the original fixed value, so at <=1512px
-         rendering is byte-identical to the pre-scaling design and the existing
-         tablet/mobile breakpoints are untouched. Ceilings are the 3840px value,
-         freezing growth beyond 4K. */
-      --nav-h:            clamp(72px,  4.7619vw, 183px);
-      --pad-x:            clamp(100px, 6.6138vw, 254px);
-      --nav-logo:         clamp(32px,  2.1164vw, 81px);
-      --nav-gap:          clamp(40px,  2.6455vw, 102px);
-      --fs-nav-link:      clamp(18px,  1.1905vw, 46px);
+      --fs-sec-label:     30px;
+      --fs-service:       80px;
+      --fs-about-stmt:    40px;
+      --lh-about-stmt:    48px;
+      --fs-about-bio:     26px;
+      --lh-about-bio:     34px;
+      --fs-contact-h:     50px;
+      --gap-work:         24px;
+      --gap-about:        64px;
+    }
 
-      --fs-hero-name:     clamp(131px, 8.664vw,  333px);
-      --fs-hero-bio:      clamp(30px,  1.9841vw, 76px);
-      --lh-hero-bio:      clamp(40px,  2.6455vw, 102px);
-      --fs-hero-email:    clamp(26px,  1.7196vw, 66px);
-      --gap-hero-bottom:  clamp(70px,  4.6296vw, 178px);
-      --gap-hero-bio:     clamp(35px,  2.3148vw, 89px);
-      --gap-hero-clients: clamp(32px,  2.1164vw, 81px);
+    /* ── FLUID SCALE (large monitors only) ──
+       Above the 1512px design canvas the layout grows proportionally
+       (value / 1512 * 100 = vw) so the composition holds instead of the fixed-px
+       design shrinking into a corner — the reason Windows machines at 100%
+       display scaling, which expose far more CSS pixels than macOS HiDPI, looked
+       wrong. min() freezes growth at the 3840px value so it can't run away on
+       ultra-wide displays.
 
-      --fs-sec-label:     clamp(30px,  1.9841vw, 76px);
-      --fs-service:       clamp(80px,  5.291vw,  203px);
-      --fs-about-stmt:    clamp(40px,  2.6455vw, 102px);
-      --lh-about-stmt:    clamp(48px,  3.1746vw, 122px);
-      --fs-about-bio:     clamp(26px,  1.7196vw, 66px);
-      --lh-about-bio:     clamp(34px,  2.2487vw, 86px);
-      --fs-contact-h:     clamp(50px,  3.3069vw, 127px);
+       These are real CSS lengths, so mouse coordinates and element hit-boxes
+       stay in sync. Never scale this layout with `zoom` or `transform`: `zoom`
+       desyncs clientX/clientY from getBoundingClientRect() in Chrome/Edge on
+       Windows (it silently broke every hover target on the site), and
+       `transform` would break the position:sticky nav and hero.
+
+       Gated at 1513px so nothing at or below the design width is affected —
+       every existing tablet/mobile breakpoint is untouched. */
+    @media (min-width: 1513px) {
+      html {
+        --nav-h:            min(4.7619vw, 183px);
+        --pad-x:            min(6.6138vw, 254px);
+        --nav-logo:         min(2.1164vw, 81px);
+        --nav-gap:          min(2.6455vw, 102px);
+        --fs-nav-link:      min(1.1905vw, 46px);
+
+        --fs-hero-name:     min(8.664vw,  333px);
+        --fs-hero-bio:      min(1.9841vw, 76px);
+        --lh-hero-bio:      min(2.6455vw, 102px);
+        --fs-hero-email:    min(1.7196vw, 66px);
+        --gap-hero-bottom:  min(4.6296vw, 178px);
+        --gap-hero-bio:     min(2.3148vw, 89px);
+        --gap-hero-clients: min(2.1164vw, 81px);
+
+        --fs-sec-label:     min(1.9841vw, 76px);
+        --fs-service:       min(5.291vw,  203px);
+        --fs-about-stmt:    min(2.6455vw, 102px);
+        --lh-about-stmt:    min(3.1746vw, 122px);
+        --fs-about-bio:     min(1.7196vw, 66px);
+        --lh-about-bio:     min(2.2487vw, 86px);
+        --fs-contact-h:     min(3.3069vw, 127px);
+        --gap-work:         min(1.5873vw, 61px);
+        --gap-about:        min(4.2328vw, 163px);
+      }
     }
 
     body {
@@ -529,7 +563,7 @@
     .work-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 24px;
+      gap: var(--gap-work);
       padding: 0 var(--pad-x) 80px;
     }
 
@@ -615,7 +649,7 @@
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 2fr;
-      gap: 64px;
+      gap: var(--gap-about);
       padding: 0 var(--pad-x) 40px;
       align-items: center;
     }

@@ -21,17 +21,32 @@
       -webkit-font-smoothing: antialiased;
       font-size: 16px;
 
-      /* ── FLUID SCALE ──
-         Nav chrome scales above the 1512px design canvas so it matches the home
-         page on large monitors (value / 1512 * 100 = vw). Real CSS lengths only
-         — never `zoom`/`transform`, which desync mouse coords from hit-boxes.
-         clamp() floors equal the original fixed values, so <=1512px is
-         unchanged and existing breakpoints are untouched. */
-      --nav-h:       clamp(72px, 4.7619vw, 183px);
-      --pad-x:       clamp(100px, 6.6138vw, 254px);
-      --nav-logo:    clamp(32px, 2.1164vw, 81px);
-      --nav-gap:     clamp(40px, 2.6455vw, 102px);
-      --fs-nav-link: clamp(18px, 1.1905vw, 46px);
+      /* ── DESIGN TOKENS ──
+         Original fixed values. At or below the 1512px design canvas these stay
+         exactly as authored, so rendering is unchanged from before fluid
+         scaling existed. Only the min-width:1513px block below alters anything. */
+      --nav-h:       72px;
+      --pad-x:       100px;
+      --nav-logo:    32px;
+      --nav-gap:     40px;
+      --fs-nav-link: 18px;
+    }
+
+    /* ── FLUID SCALE (large monitors only) ──
+       Nav chrome grows proportionally above the 1512px design canvas
+       (value / 1512 * 100 = vw) so it matches the home page on large monitors.
+       Real CSS lengths only — never `zoom`/`transform`, which desync mouse
+       coordinates from hit-boxes (`zoom` broke every hover target on Windows)
+       and would break the sticky nav. Gated at 1513px so nothing at or below
+       the design width is affected. */
+    @media (min-width: 1513px) {
+      html {
+        --nav-h:       min(4.7619vw, 183px);
+        --pad-x:       min(6.6138vw, 254px);
+        --nav-logo:    min(2.1164vw, 81px);
+        --nav-gap:     min(2.6455vw, 102px);
+        --fs-nav-link: min(1.1905vw, 46px);
+      }
     }
 
     body {
