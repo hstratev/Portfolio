@@ -493,6 +493,11 @@
       width: max-content;
       animation: heroClientsScroll 30s linear infinite;
     }
+    /* The imgs carry width/height attributes so the browser knows their aspect
+       ratio before the file downloads. Without them width:auto computes to 0
+       until load, the track is only its margins wide, and translateX(-50%) —
+       which resolves against the track's own width — animates ~64px instead of
+       ~1106px, i.e. the marquee crawls at 2px/s on a cold cache. */
     .hero-clients-track img {
       height: 22px;
       width: auto;
@@ -1194,8 +1199,8 @@
         <p class="hero-bio mask-reveal" data-reveal-delay="400">Hi, I'm Hris - I design Digital Products &amp; Experiences. 13 years of shaping emerging tech, from Mercedes Benz to AI&#8209;native homes.</p>
         <div class="hero-clients">
           <div class="hero-clients-track">
-            <img src="Company_logos/Logos_lane.png" alt="Clients: General Motors, Mercedes-Benz, Maserati, Cannes Lions, Visteon, Nvidia, Qualcomm, Ford">
-            <img src="Company_logos/Logos_lane.png" alt="" aria-hidden="true">
+            <img src="Company_logos/Logos_lane.png" width="5779" height="122" alt="Clients: General Motors, Mercedes-Benz, Maserati, Cannes Lions, Visteon, Nvidia, Qualcomm, Ford">
+            <img src="Company_logos/Logos_lane.png" width="5779" height="122" alt="" aria-hidden="true">
           </div>
         </div>
       </div>
