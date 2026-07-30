@@ -567,7 +567,7 @@
 
     .work-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: var(--gap-work);
       padding: 0 var(--pad-x) 80px;
     }
@@ -1040,7 +1040,9 @@
       .sec-head { padding: 60px 80px 32px; }
       #work .sec-head { padding-top: 28px; }
       .sec-label { font-size: 26px; }
-      .work-grid { padding: 0 80px 60px; }
+      /* 3 columns would be ~187px wide at the 769px low end of this range, so
+         hold at 2 here and only go to 3 on desktop. */
+      .work-grid { grid-template-columns: 1fr 1fr; padding: 0 80px 60px; }
 
       .about-statement {
         font-size: 36px;
