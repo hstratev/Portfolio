@@ -577,9 +577,9 @@
     }
 
     /* Reserved circular space at the centre of the bento — an asset goes here
-       later. Painted in the section background so it reads as a hole punched
-       through the cards it overlaps, matching the reference layout.
-       pointer-events:none so it never blocks a card underneath. */
+       later. It paints nothing: the void is carved out of the three cards
+       around it with masks (see below), so it stays genuinely transparent and
+       this element just marks the position and size for the asset. */
     .work-bento-hole { display: none; }
 
     /* ── DESKTOP BENTO ──
@@ -612,18 +612,57 @@
       .wb-7 { grid-column: 3;         grid-row: 3; }
       .wb-8 { grid-column: 4;         grid-row: 3; }
 
+      /* ── CENTRE VOID ──
+         The void is centred on the crossing of the column gap (between cols 2
+         and 3) and the row gap (between rows 2 and 3). Sitting on the gap
+         crossing is what gives the clean finish: each arc meets the card edge
+         it crosses at a right angle, so there are no shallow slivers or sharp
+         points. An overlaid circle placed inside the cards produced exactly
+         those hard cuts.
+
+         Radius is derived from the bento's own width so the circle stays round
+         and scales with the fluid layout. The 1px feather on each mask keeps
+         the arc smoothly antialiased rather than stair-stepped. */
+      .work-bento {
+        --bento-w: calc(100vw - 2 * var(--pad-x));
+        --void-r: calc(var(--bento-w) * 0.14);
+        --void-off: calc(var(--gap-work) / 2);
+      }
+
+      /* hero: semicircular bite out of the middle of its bottom edge */
+      .wb-2 {
+        --void-at: 50% calc(100% + var(--void-off));
+      }
+      /* bottom-middle-left: quarter bite at its top-right corner */
+      .wb-6 {
+        --void-at: calc(100% + var(--void-off)) calc(var(--void-off) * -1);
+      }
+      /* bottom-middle-right: quarter bite at its top-left corner */
+      .wb-7 {
+        --void-at: calc(var(--void-off) * -1) calc(var(--void-off) * -1);
+      }
+      .wb-2, .wb-6, .wb-7 {
+        -webkit-mask-image: radial-gradient(circle var(--void-r) at var(--void-at),
+                    #0000 calc(100% - 1px), #000 100%);
+        mask-image: radial-gradient(circle var(--void-r) at var(--void-at),
+                    #0000 calc(100% - 1px), #000 100%);
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+      }
+
+      /* Marks the void for the asset that goes in later — draws nothing.
+         Its centre is the row gap crossing: rows 1+2 are 612 of the 1302 total
+         fr units, measured over the height left after the two gaps, then half a
+         gap further down. */
       .work-bento-hole {
         display: block;
         position: absolute;
         left: 50%;
-        top: 60%;
-        width: 31.7%;
+        top: calc(0.47005 * (100% - 2 * var(--gap-work)) + 1.5 * var(--gap-work));
+        width: calc(var(--void-r) * 2);
         aspect-ratio: 1;
         transform: translate(-50%, -50%);
-        border-radius: 50%;
-        background: #ffffff;
         pointer-events: none;
-        z-index: 3;
       }
     }
 
