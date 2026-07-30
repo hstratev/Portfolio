@@ -639,8 +639,14 @@
     }
     /* TEST (Genesis card only): pill tag below the caption, same pattern as
        a category tag — sits outside the title/description stack entirely so
-       it can't disturb the flow tuned there. */
-    .work-tag-row { margin-top: 12px; }
+       it can't disturb the flow tuned there.
+
+       Hidden until hover, then slides down into view. The row's height comes
+       from the pill's normal (untransformed) box, so overflow:hidden on the
+       row clips it at exactly that height: translateY(-100%) sits the pill
+       fully above that line — off, not just invisible — and hovering
+       animates it back to translateY(0), i.e. down into the clipped row. */
+    .work-tag-row { margin-top: 12px; overflow: hidden; }
     .work-protected-tag {
       display: inline-block;
       font-size: calc(var(--fs-work-title) * 0.82);
@@ -651,7 +657,14 @@
       line-height: 1;
       background: #f0f0f0;
       border-radius: 6px;
+      transform: translateY(-100%);
+      opacity: 0;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
       padding: 8px 12px;
+    }
+    .work-item:hover .work-protected-tag {
+      transform: translateY(0);
+      opacity: 1;
     }
     .work-title {
       font-size: var(--fs-work-title);
