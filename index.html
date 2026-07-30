@@ -637,25 +637,21 @@
       opacity: 1;
       transform: scale(1);
     }
-    /* TEST (Genesis card only): password-protected tag sits inline with the
-       title, on its own row, so it never enters the title->description
-       stack and can't disturb the flow tuned there. Wraps under the title on
-       narrow cards if it doesn't fit rather than forcing overflow. */
-    .work-title-row {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      column-gap: 10px;
-      row-gap: 2px;
-    }
+    /* TEST (Genesis card only): pill tag below the caption, same pattern as
+       a category tag — sits outside the title/description stack entirely so
+       it can't disturb the flow tuned there. */
+    .work-tag-row { margin-top: 12px; }
     .work-protected-tag {
-      font-size: calc(var(--fs-work-title) * 0.8);
+      display: inline-block;
+      font-size: calc(var(--fs-work-title) * 0.82);
       font-weight: 400;
       font-family: 'Inter Display', sans-serif;
-      color: #9a9a9a;
+      color: #545454;
       letter-spacing: -0.1px;
-      line-height: 1.45;
-      white-space: nowrap;
+      line-height: 1;
+      background: #f0f0f0;
+      border-radius: 6px;
+      padding: 8px 12px;
     }
     .work-title {
       font-size: var(--fs-work-title);
@@ -1275,11 +1271,11 @@
             </div>
         </div>
         <div class="work-caption">
-          <div class="work-title-row">
-            <span class="work-title">Genesis AI</span>
-            <span class="work-protected-tag">Password protected</span>
-          </div>
+          <span class="work-title">Genesis AI</span>
           <span class="work-desc">AI-native home platform with a conversational steward, across TV, tablet and mobile.</span>
+        </div>
+        <div class="work-tag-row">
+          <span class="work-protected-tag">Password protected</span>
         </div>
       </a>
 
