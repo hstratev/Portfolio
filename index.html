@@ -662,8 +662,11 @@
       /* Matched duration and curve on both properties — same easing used for
          #heroPortrait and the hero-clients/about-body reveals elsewhere on
          the site — so transform and opacity finish together instead of
-         racing each other at different speeds. */
-      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+         racing each other at different speeds.
+         A short delay so the tag lags slightly behind the cursor's own
+         (near-instant) hover reaction, rather than both moving in the same
+         frame — small enough to read as considered, not sluggish. */
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.09s, opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.09s;
       padding: 8px 12px;
     }
     .work-item:hover .work-protected-tag {
