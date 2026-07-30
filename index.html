@@ -659,7 +659,11 @@
       border-radius: 6px;
       transform: translateY(-100%);
       opacity: 0;
-      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.22s ease;
+      /* Matched duration and curve on both properties — same easing used for
+         #heroPortrait and the hero-clients/about-body reveals elsewhere on
+         the site — so transform and opacity finish together instead of
+         racing each other at different speeds. */
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       padding: 8px 12px;
     }
     .work-item:hover .work-protected-tag {
