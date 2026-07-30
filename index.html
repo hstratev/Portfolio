@@ -606,10 +606,14 @@
     }
     .work-item:hover .work-thumb img { transform: scale(1.05); }
 
+    /* No gap between the two lines: in the reference the title-to-description
+       spacing equals the description's own line rhythm, so the caption reads as
+       one continuous block. Any flex gap here makes it looser than its own
+       line-height and breaks that. */
     .work-caption {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 0;
       padding-top: 14px;
     }
     .lock-badge {
