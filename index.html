@@ -654,6 +654,9 @@
       line-height: 1.45;
       max-width: 46ch;
     }
+    /* The wide card is roughly twice the width of the others, so the shared
+       46ch cap would wrap its description for no reason. Let it use the card. */
+    .wk-wide .work-desc { max-width: none; }
 
     /* ── ABOUT ── */
     #about { background: #ffffff; position: relative; z-index: 3; }
@@ -1061,7 +1064,10 @@
          The wide card also drops to one column: spanning 2 would push it onto
          its own row and leave an empty cell beside the first card. */
       .work-grid { grid-template-columns: repeat(2, 1fr); row-gap: 48px; padding: 0 80px 60px; }
+      /* The wide card is the same size as the others here, so it takes the
+         same text measure back. */
       .wk-wide { grid-column: span 1; }
+      .wk-wide .work-desc { max-width: 46ch; }
 
       .about-statement {
         font-size: 36px;
