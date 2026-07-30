@@ -637,6 +637,26 @@
       opacity: 1;
       transform: scale(1);
     }
+    /* TEST (Genesis card only): password-protected tag sits inline with the
+       title, on its own row, so it never enters the title->description
+       stack and can't disturb the flow tuned there. Wraps under the title on
+       narrow cards if it doesn't fit rather than forcing overflow. */
+    .work-title-row {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      column-gap: 10px;
+      row-gap: 2px;
+    }
+    .work-protected-tag {
+      font-size: calc(var(--fs-work-title) * 0.8);
+      font-weight: 400;
+      font-family: 'Inter Display', sans-serif;
+      color: #9a9a9a;
+      letter-spacing: -0.1px;
+      line-height: 1.45;
+      white-space: nowrap;
+    }
     .work-title {
       font-size: var(--fs-work-title);
       font-weight: 500;
@@ -1255,7 +1275,10 @@
             </div>
         </div>
         <div class="work-caption">
-          <span class="work-title">Genesis AI</span>
+          <div class="work-title-row">
+            <span class="work-title">Genesis AI</span>
+            <span class="work-protected-tag">Password protected</span>
+          </div>
           <span class="work-desc">AI-native home platform with a conversational steward, across TV, tablet and mobile.</span>
         </div>
       </a>
