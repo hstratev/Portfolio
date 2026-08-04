@@ -582,35 +582,7 @@
       align-items: start;
       padding: 0 var(--pad-x) 80px;
     }
-    /* Genesis + Hummer EV stack in column 1 across two explicit rows; the wide
-       CognitoAI card spans both those rows in columns 2-3, so it reads as one
-       tall card beside the stack rather than sitting only next to Genesis.
-       Remaining cards are unplaced and auto-flow into row 3 onward, since
-       grid auto-placement skips cells already taken by explicit placement. */
-    .wk-wide { grid-column: span 2; grid-row: span 2; }
-    .wk-stack-a { grid-column: 1; grid-row: 1; }
-    .wk-stack-b { grid-column: 1; grid-row: 2; }
-
-    /* Two full cards stacked (each with its own caption) are inherently
-       taller than one wide card with a single caption, even though their
-       thumbnails alone are roughly the same height. So let CognitoAI's
-       thumb fill whatever height the stack ends up being — stretch the card
-       to the row-spanned area's full height, and let the thumb (not a fixed
-       3:2 aspect) take up the leftover space above the caption. */
-    /* .work-item.wk-wide (not .wk-wide alone): .work-item's own display:block
-       is defined later in this file, so a single-class .wk-wide rule of equal
-       specificity would lose that cascade tie and silently stay display:block
-       regardless of source order here. */
-    .work-item.wk-wide {
-      align-self: stretch;
-      display: flex;
-      flex-direction: column;
-    }
-    .wk-wide .work-thumb {
-      flex: 1 1 auto;
-      min-height: 0;
-      aspect-ratio: auto;
-    }
+    .wk-wide { grid-column: span 2; }
 
     .work-item {
       display: block;
@@ -1108,15 +1080,9 @@
          its own row and leave an empty cell beside the first card. */
       .work-grid { grid-template-columns: repeat(2, 1fr); row-gap: 48px; padding: 0 80px 60px; }
       /* The wide card is the same size as the others here, so it takes the
-         same text measure back. The desktop-only stack/span placement, and
-         the flex-stretch treatment that only makes sense alongside that
-         2-row span, are both reset — this range goes back to plain auto-flow
-         with a normal 3:2 card. */
-      .wk-wide { grid-column: span 1; grid-row: span 1; }
+         same text measure back. */
+      .wk-wide { grid-column: span 1; }
       .wk-wide .work-desc { max-width: 46ch; }
-      .wk-stack-a, .wk-stack-b { grid-column: auto; grid-row: auto; }
-      .work-item.wk-wide { align-self: auto; display: block; }
-      .wk-wide .work-thumb { aspect-ratio: 3/2; }
 
       .about-statement {
         font-size: 36px;
@@ -1175,10 +1141,7 @@
       .sec-dot { width: 18px; height: 18px; }
 
       .work-grid { grid-template-columns: 1fr; column-gap: 12px; row-gap: 32px; padding: 0 24px 48px; }
-      .wk-wide { grid-column: span 1; grid-row: span 1; }
-      .wk-stack-a, .wk-stack-b { grid-column: auto; grid-row: auto; }
-      .work-item.wk-wide { align-self: auto; display: block; }
-      .wk-wide .work-thumb { aspect-ratio: 3/2; }
+      .wk-wide { grid-column: span 1; }
       .work-thumb img { transition: none; }
 
       .about-statement { font-size: 26px; letter-spacing: -1.5px; line-height: 33px; }
@@ -1297,7 +1260,7 @@
 
     <div class="work-grid">
 
-      <a class="work-item reveal wk-stack-a" href="genesis.html">
+      <a class="work-item reveal" href="genesis.html">
         <div class="work-thumb">
           <img src="Genesis/Thumbnail.jpg" alt="Genesis" loading="lazy">
         </div>
@@ -1310,16 +1273,6 @@
         </div>
       </a>
 
-      <a class="work-item reveal wk-stack-b" href="hummer-ev.html">
-        <div class="work-thumb">
-          <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/d21a274f-b317-44dc-b0e1-c6e264f20ce8_rwc_220x0x2558x2000x2560.jpg?h=0ec6e418f7d63e6cf39e4972009e624d" alt="Hummer EV" loading="lazy">
-        </div>
-        <div class="work-caption">
-          <span class="work-title">Hummer EV</span>
-          <span class="work-desc">In-vehicle UI &amp; UX design for the first ever electric super-truck.</span>
-        </div>
-      </a>
-
       <a class="work-item reveal wk-wide" href="cognito-ai.html">
         <div class="work-thumb">
           <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6d4d7edc-8731-47cf-977e-29c3a86a8e4e_rwc_540x0x2762x2160x2762.jpg?h=48f18f38d6317edeb5c483771bf9529b" alt="CognitoAI" loading="lazy">
@@ -1327,6 +1280,16 @@
         <div class="work-caption">
           <span class="work-title">CognitoAI</span>
           <span class="work-desc">On-device LLM vehicle assistant with responsive 3D avatars, shown at CES 2025.</span>
+        </div>
+      </a>
+
+      <a class="work-item reveal" href="hummer-ev.html">
+        <div class="work-thumb">
+          <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/d21a274f-b317-44dc-b0e1-c6e264f20ce8_rwc_220x0x2558x2000x2560.jpg?h=0ec6e418f7d63e6cf39e4972009e624d" alt="Hummer EV" loading="lazy">
+        </div>
+        <div class="work-caption">
+          <span class="work-title">Hummer EV</span>
+          <span class="work-desc">In-vehicle UI &amp; UX design for the first ever electric super-truck.</span>
         </div>
       </a>
 
