@@ -1501,14 +1501,18 @@
       const video = el.querySelector('.work-thumb-video');
       if (video) {
         el.addEventListener('mouseenter', () => {
-          if (!video.src) video.src = video.dataset.src;
-          video.currentTime = 0;
-          video.play().catch(() => {}); // autoplay can be blocked; fail silently
           video.classList.add('active');
+          if (!video.src) video.src = video.dataset.src;
+          // preload="none" means just setting src does not start fetching —
+          // calling play() is what actually triggers the load (play()
+          // overrides the preload hint per spec). It'll start playing once
+          // enough data has arrived; no need to gate this on readyState.
+          video.play().catch(() => {}); // autoplay can be blocked; fail silently
         });
         el.addEventListener('mouseleave', () => {
           video.classList.remove('active');
           video.pause();
+          video.currentTime = 0; // reset for the next hover, now that it's safely paused
         });
       }
     });
