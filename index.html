@@ -606,23 +606,6 @@
     }
     .work-item:hover .work-thumb img { transform: scale(1.05); }
 
-    /* Video preview: only on cards that have one (.work-thumb-video is only
-       present in CognitoAI's markup). Sits over the image rather than
-       replacing it, so there's no layout shift and nothing to load until the
-       card is actually hovered — src is set from data-src in JS on first
-       hover, not here, so the file isn't fetched on page load. */
-    .work-thumb-video {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-    }
-    .work-thumb-video.active { opacity: 1; }
-
     /* No gap between the two lines: in the reference the title-to-description
        spacing equals the description's own line rhythm, so the caption reads as
        one continuous block. Any flex gap here makes it looser than its own
@@ -1293,7 +1276,6 @@
       <a class="work-item reveal wk-wide" href="cognito-ai.html">
         <div class="work-thumb">
           <img src="https://cdn.myportfolio.com/53a3c8e7-5717-4a73-907b-1c1593614708/6d4d7edc-8731-47cf-977e-29c3a86a8e4e_rwc_540x0x2762x2160x2762.jpg?h=48f18f38d6317edeb5c483771bf9529b" alt="CognitoAI" loading="lazy">
-          <video class="work-thumb-video" data-src="Videos/Cognito/CES2025_CognitoAI.mp4" muted loop playsinline preload="none"></video>
         </div>
         <div class="work-caption">
           <span class="work-title">CognitoAI</span>
@@ -1494,23 +1476,6 @@
     document.querySelectorAll('.work-item').forEach(el => {
       el.addEventListener('mouseenter', () => _curState('view', true));
       el.addEventListener('mouseleave', () => _curState('view', false));
-
-      // Hover video preview — only wired for cards that actually have one.
-      // src comes from data-src on first hover, not on page load, so the
-      // file isn't fetched until someone actually hovers the card.
-      const video = el.querySelector('.work-thumb-video');
-      if (video) {
-        el.addEventListener('mouseenter', () => {
-          if (!video.src) video.src = video.dataset.src;
-          video.currentTime = 0;
-          video.play().catch(() => {}); // autoplay can be blocked; fail silently
-          video.classList.add('active');
-        });
-        el.addEventListener('mouseleave', () => {
-          video.classList.remove('active');
-          video.pause();
-        });
-      }
     });
     const footerEmail = document.getElementById('footer-email');
     if (footerEmail) {
