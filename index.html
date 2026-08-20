@@ -171,18 +171,27 @@
       left: 0;
       width: 208px;
       height: 312px;
-      border-radius: 12px;
-      overflow: hidden;
       pointer-events: none;
       z-index: 9998;
       opacity: 0;
       transform: scale(0.92);
       transition: opacity 0.35s cubic-bezier(0.22,1,0.36,1), transform 0.35s cubic-bezier(0.22,1,0.36,1);
-      box-shadow: 0 24px 48px rgba(0,0,0,0.28);
       will-change: left, top;
     }
     #heroPortrait.active { opacity: 1; transform: scale(1); }
-    #heroPortrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* Trail cards: up to 3 stacked, each one ranked 0 (front) to 2 (back).
+       Rank drives both the horizontal peek offset and the stacking order,
+       so as a new photo cycles in, the older ones visibly slide back a step
+       rather than just vanishing. */
+    .hp-card {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 24px 48px rgba(0,0,0,0.28);
+      transition: transform 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.8s cubic-bezier(0.22,1,0.36,1);
+    }
+    .hp-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
     #cursor.view {
       width: 64px;
       height: 64px;
@@ -616,15 +625,6 @@
       gap: 0;
       padding-top: 14px;
     }
-    /* TEST (Genesis card only): pill tag below the caption, same pattern as
-       a category tag — sits outside the title/description stack entirely so
-       it can't disturb the flow tuned there.
-
-       Hidden until hover, then slides down into view. The row's height comes
-       from the pill's normal (untransformed) box, so overflow:hidden on the
-       row clips it at exactly that height: translateY(-100%) sits the pill
-       fully above that line — off, not just invisible — and hovering
-       animates it back to translateY(0), i.e. down into the clipped row. */
     .work-tag-row { margin-top: 12px; overflow: hidden; }
     .work-protected-tag {
       display: inline-block;
@@ -1199,7 +1199,11 @@
   <!-- ── CURSOR ── -->
   <div id="cursor"><span class="cursor-label">VIEW</span></div>
   <div id="cursorTint"></div>
-  <div id="heroPortrait"><img src="Photo.jpg" alt=""></div>
+  <div id="heroPortrait">
+    <div class="hp-card"><img src="Photo.jpg" alt=""></div>
+    <div class="hp-card"><img src="Photo.jpg" alt=""></div>
+    <div class="hp-card"><img src="Photo.jpg" alt=""></div>
+  </div>
 
   <!-- ── MENU OVERLAY ── -->
   <div id="menuOverlay" role="dialog" aria-modal="true" aria-label="Navigation menu">
@@ -1455,8 +1459,100 @@
     })();
     const heroNameEl = document.querySelector('.hero-name');
     if (heroNameEl) {
-      heroNameEl.addEventListener('mouseenter', () => heroPortrait.classList.add('active'));
-      heroNameEl.addEventListener('mouseleave', () => heroPortrait.classList.remove('active'));
+      /* Cycle through a few photos while the cursor is actively moving over
+         the name; pause on whichever one is showing as soon as the cursor
+         goes still (but is still over the name), then resume if it moves
+         again. Preloaded up front so the cycle never stutters on a late
+         image load.
+
+         Trail effect: 3 real .hp-card nodes are kept in a "rank" order
+         (front → back). Each tick, the back-most card is recycled to the
+         front with the next photo, and every card's rank-based transform
+         transitions smoothly — so the two older photos visibly slide back
+         a step instead of just being replaced. */
+      const heroPhotos = ['Photo.jpg', 'Hero/hero-2.jpg', 'Hero/hero-3.jpg', 'Hero/hero-4.jpg', 'Hero/hero-5.jpg', 'Hero/hero-6.jpg', 'Hero/hero-7.jpg', 'Hero/hero-8.jpg', 'Hero/hero-9.jpg', 'Hero/hero-10.jpg'];
+      heroPhotos.forEach(src => { const im = new Image(); im.src = src; });
+      const heroCards = Array.from(heroPortrait.querySelectorAll('.hp-card'));
+      let heroOrder = heroCards.slice();
+      const HP_OFFSET = 16;
+      // On first hover only the front card should show — the trail builds
+      // up as photos actually cycle in, rather than starting pre-stacked
+      // with 3 copies of the same photo.
+      let heroVisibleCount = 1;
+      function renderHeroOrder() {
+        heroOrder.forEach((card, i) => {
+          card.style.transform = `translateX(${i * HP_OFFSET}px)`;
+          card.style.zIndex = heroOrder.length - i;
+          card.style.opacity = i < heroVisibleCount ? '1' : '0';
+        });
+      }
+      renderHeroOrder();
+      let heroPhotoIdx = 0;
+      let heroCycleTimer = null;
+      let heroStillTimer = null;
+      function advanceHeroPhoto() {
+        heroPhotoIdx = (heroPhotoIdx + 1) % heroPhotos.length;
+        const card = heroOrder.pop();
+        card.querySelector('img').src = heroPhotos[heroPhotoIdx];
+        heroOrder.unshift(card);
+        if (heroVisibleCount < heroOrder.length) heroVisibleCount++;
+        renderHeroOrder();
+      }
+      function startHeroCycle() {
+        if (heroCycleTimer) return;
+        heroCycleTimer = setInterval(advanceHeroPhoto, 200);
+      }
+      function stopHeroCycle() {
+        clearInterval(heroCycleTimer);
+        heroCycleTimer = null;
+      }
+      // A longer pause (still hovering, just not moving) collapses the
+      // trail back down to the single current photo — same look as the
+      // initial hover state, just showing whichever photo it paused on.
+      let heroCollapseTimer = null;
+      function collapseHeroTrail() {
+        heroVisibleCount = 1;
+        renderHeroOrder();
+      }
+      heroNameEl.addEventListener('mouseenter', () => {
+        heroPortrait.classList.add('active');
+        heroVisibleCount = 1;
+        renderHeroOrder();
+        startHeroCycle();
+      });
+      // Real pointers (especially trackpads) rarely report exactly zero
+      // movement — sub-pixel jitter keeps firing mousemove even when the
+      // cursor looks still, which would keep resetting the timers below
+      // forever. Ignore movement under this threshold so a genuine pause
+      // actually reads as a pause.
+      const HERO_MOVE_THRESHOLD = 3;
+      let heroLastX = null, heroLastY = null;
+      heroNameEl.addEventListener('mousemove', (e) => {
+        if (heroLastX !== null) {
+          const dx = e.clientX - heroLastX, dy = e.clientY - heroLastY;
+          if (Math.hypot(dx, dy) < HERO_MOVE_THRESHOLD) return;
+        }
+        heroLastX = e.clientX;
+        heroLastY = e.clientY;
+        startHeroCycle();
+        clearTimeout(heroStillTimer);
+        heroStillTimer = setTimeout(stopHeroCycle, 150);
+        clearTimeout(heroCollapseTimer);
+        heroCollapseTimer = setTimeout(collapseHeroTrail, 2000);
+      });
+      heroNameEl.addEventListener('mouseleave', () => {
+        heroPortrait.classList.remove('active');
+        stopHeroCycle();
+        clearTimeout(heroStillTimer);
+        clearTimeout(heroCollapseTimer);
+        heroLastX = null;
+        heroLastY = null;
+        heroPhotoIdx = 0;
+        heroCards.forEach(card => { card.querySelector('img').src = heroPhotos[0]; });
+        heroOrder = heroCards.slice();
+        heroVisibleCount = 1;
+        renderHeroOrder();
+      });
     }
     function _curState(cls, on) {
       cur.classList.toggle(cls, on);
